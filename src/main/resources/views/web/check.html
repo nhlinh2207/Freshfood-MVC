@@ -259,12 +259,7 @@
    <script type="text/javascript">
      $(document).ready(function(){
     	 $("#button-cart").click(function(){
-     	    var user = "[[${user}]]";
-     	    if(user == "") {
-     	    	alert("Vui lòng đăng nhập !");
-     	    	window.location = "/freshfood/dang-nhap";
-     	    }
-     	    else{
+     	    
      	    	   var token = $('meta[name = "_csrf"]').attr('content');
      	    	   var name = $('meta[name = "_csrf_header"]').attr('content');
     	           $.ajax(
@@ -294,7 +289,7 @@
     	    		   alert("Không thành công !");
     	    	    }
     	        });
-     	    }
+     	    
         }); 
      });
    </script>

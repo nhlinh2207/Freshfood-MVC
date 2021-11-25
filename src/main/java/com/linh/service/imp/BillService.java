@@ -19,9 +19,9 @@ public class BillService implements InBillService{
 	
 	@Override
 	@Transactional
-	public void save(BillEntity b) {
+	public BillEntity save(BillEntity b) {
 		// TODO Auto-generated method stub
-		bill.save(b);
+		return bill.save(b);
 	}
 
 	@Override

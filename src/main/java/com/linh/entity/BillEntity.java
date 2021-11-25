@@ -1,19 +1,15 @@
 package com.linh.entity;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -49,13 +45,11 @@ public class BillEntity {
 	
 	private Date create_time;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(
-	      name = "prod_bill",
-	      joinColumns =@JoinColumn(name = "bill_id"),
-	      inverseJoinColumns = @JoinColumn(name = "pro_id")
+	@OneToMany(
+			mappedBy = "bill",
+	    	cascade = CascadeType.ALL
 	)
-	private List<ProductEntity> productlist = new ArrayList<ProductEntity>();
+	private List<BillDetailEntity> billdetailList;
 
 	public Integer getId() {
 		return id;
@@ -121,14 +115,6 @@ public class BillEntity {
 		this.mess = mess;
 	}
 
-	public List<ProductEntity> getProductlist() {
-		return productlist;
-	}
-
-	public void setProductlist(List<ProductEntity> productlist) {
-		this.productlist = productlist;
-	}
-
 	public String getShipaddress() {
 		return shipaddress;
 	}
@@ -144,6 +130,6 @@ public class BillEntity {
 	public void setCreate_time(Date create_time) {
 		this.create_time = create_time;
 	}
-	
+
 	
 }

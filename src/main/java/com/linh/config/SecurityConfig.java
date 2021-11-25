@@ -43,7 +43,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		    .antMatchers("/oauth/**").permitAll()
 		    .antMatchers("/freshfood/trang-chu").permitAll()
 		    .antMatchers("/freshfood/admin/**").hasRole("ADMIN")
-		    .antMatchers("/freshfood/checkout").authenticated()
 		    .and()
 		    .formLogin().loginProcessingUrl("/signin")
 		                .loginPage("/freshfood/dang-nhap")

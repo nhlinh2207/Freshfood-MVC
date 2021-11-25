@@ -7,12 +7,10 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -55,8 +53,6 @@ public class ProductEntity {
 	)
 	List<CartItemEntity> carts = new ArrayList<CartItemEntity>();
 	
-	@ManyToMany(mappedBy = "productlist", fetch = FetchType.LAZY)
-	private List<BillEntity> bills = new ArrayList<BillEntity>();
 	
 	public String getExtra_img1() {
 		return extra_img1;
@@ -142,18 +138,6 @@ public class ProductEntity {
 	public void setCategory(CategoryEntity category) {
 		this.category = category;
 	}
-	
-	
-	
-	public List<BillEntity> getBills() {
-		return bills;
-	}
-
-
-	public void setBills(List<BillEntity> bills) {
-		this.bills = bills;
-	}
-
 
 	@Transient
 	public String getProductImagePath() {

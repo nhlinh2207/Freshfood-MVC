@@ -1,13 +1,18 @@
 package com.linh.controller.web;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -192,18 +197,34 @@ public class HomeController {
     }
     
     @RequestMapping(value = "/cartitems", method = RequestMethod.GET)
-    public ModelAndView allCartItem() {
+    public ModelAndView allCartItem(HttpServletRequest request) {
     	UserEntity user = userservice.getLoggingInUsser();
     	List<CartItemEntity> cartlist = new ArrayList<CartItemEntity>();
+    	long tongtien = 0;
     	if(user != null) {
     		cartlist = cartservice.findByUser(user);
+    	}else {
+    		HttpSession session = request.getSession();
+    		Map<Integer, Integer> cart = (Map<Integer, Integer>)session.getAttribute("cart");
+    		if (cart == null) {
+				cart = new LinkedHashMap<Integer, Integer>();
+			}
+    		int id = 0;
+    		for (Entry<Integer, Integer> item: cart.entrySet()) {
+				CartItemEntity c = new CartItemEntity();
+				c.setProduct(product.findOneById(item.getKey()));
+				c.setQuantity(item.getValue());
+				c.setUser(user);
+				c.setId(id);
+				cartlist.add(c);
+				id++;
+			}
     	}
-    	ModelAndView mv = new ModelAndView("web/cartitems");
-    	mv.addObject("cartitems", cartlist);
-    	long tongtien = 0;
     	for (CartItemEntity itemEntity : cartlist){
     		tongtien += itemEntity.getProduct().getPrice() * itemEntity.getQuantity();
 		}
+    	ModelAndView mv = new ModelAndView("web/cartitems");
+    	mv.addObject("cartitems", cartlist);
     	mv.addObject("tongtien",tongtien);
     	return mv;
     }
@@ -223,5 +244,22 @@ public class HomeController {
     public String thanhtoan(Model model){
     	model.addAttribute("country", country.findAll());
     	return "web/thanh-toan";
+    }
+    
+    @GetMapping(value = "/profile")
+    public String profile(Model model) {
+    	UserEntity user = userservice.getLoggingInUsser();
+    	model.addAttribute("user", user);
+    	return "web/profile";
+    }
+    
+    @GetMapping(value = "/lien-he")
+    public String contact(Model model) {
+    	return "web/lien-he";
+    }
+    
+    @GetMapping(value = "/res")
+    public ResponseEntity<String> resp0nse() {
+    	return ResponseEntity.ok().body("linh");
     }
 }

@@ -6,7 +6,7 @@ import com.linh.entity.BillEntity;
 
 public interface InBillService {
    
-	void save(BillEntity b);
+	BillEntity save(BillEntity b);
 	void delete(Integer id);
 	List<BillEntity> findAll();
 	BillEntity findOneById(Integer id);

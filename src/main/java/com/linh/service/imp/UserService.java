@@ -68,4 +68,10 @@ public class UserService implements InUserService {
 		return user.getEmails();
 	}
 
+	@Override
+	public UserEntity findOneById(Integer id) {
+		// TODO Auto-generated method stub
+		return user.findOneById(id);
+	}
+
 }

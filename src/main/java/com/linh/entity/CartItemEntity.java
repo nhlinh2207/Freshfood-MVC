@@ -29,6 +29,10 @@ public class CartItemEntity {
 	public Integer getId() {
 		return id;
 	}
+	
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public ProductEntity getProduct() {
 		return product;

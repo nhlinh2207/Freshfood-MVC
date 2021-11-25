@@ -18,6 +18,8 @@ public interface InUserService {
       
       UserEntity findOneByEmail(String email);
       
+      UserEntity findOneById(Integer id);
+      
       void updateUser(String email, String name, AuthProvider authprovider);
       
       List<String> getEmails();

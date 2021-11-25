@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.linh.entity.ProductEntity;
+import com.linh.service.InBillService;
 import com.linh.service.InCategoryService;
 import com.linh.service.InProductService;
 import com.linh.utils.FileUploadUtils;
@@ -33,6 +34,10 @@ public class HomeController {
 	
 	@Autowired
 	private InCategoryService categoryservice;
+	
+	@Autowired
+	private InBillService billservice;
+	
 	
 	@RequestMapping(value = "/admin/trang-chu", method = RequestMethod.GET)
 	public ModelAndView trangchu() {
@@ -121,5 +126,16 @@ public class HomeController {
 	@GetMapping(value = "/admin/danh-muc")
 	public String category() {
 		return "/admin/danh-muc-admin";
+	}
+	
+	@GetMapping(value = "/admin/don-hang")
+	public String bill() {
+		return "/admin/don-hang";
+	}
+	
+	@GetMapping(value = "/admin/don-hang-chi-tiet")
+	public String billdetail(@RequestParam("id") Integer id, Model model) {
+		model.addAttribute("bill", billservice.findOneById(id));
+		return "/admin/chi-tiet-don-hang";
 	}
 }

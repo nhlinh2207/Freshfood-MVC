@@ -17,4 +17,6 @@ public interface InUserRes extends JpaRepository<UserEntity, Integer> {
 	
 	@Query("SELECT e.email FROM UserEntity e")
 	List<String> getEmails();
+	
+	UserEntity findOneById(Integer id);
 }

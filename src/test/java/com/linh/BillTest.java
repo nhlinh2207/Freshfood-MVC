@@ -32,19 +32,13 @@ public class BillTest {
         b.setEmail("user123@gmail.com");
         b.setProvince("hn");
         b.setTelephone("099999");
-        b.getProductlist().add(p1);
-        b.getProductlist().add(p2);
-        p1.getBills().add(b);
-        p2.getBills().add(b);
         bill.save(b);
         System.out.println("Yes");
 	}
 	
 	@Test
 	public void findallPro() {
-		for(ProductEntity p: bill.findallProduct(2)) {
-			System.out.println(p.getName());
-		}
+		
 	}
 	
 }

@@ -1097,3 +1097,30 @@ ul#cart-slidebar .right_ct{
     font-style: italic;
     font-weight: 600 !important;
 }
+
+/*******/
+
+.contact .contact-box-info .item .fa {
+    width: 40px;
+    height: 40px;
+    background: #80BB35;
+    color: #FFFFFF;
+    float: left;
+    text-align: center;
+    justify-content: center;
+    line-height: 40px;
+    border-radius: 50%;
+}
+.contact .contact-box-info .item > div {
+    margin-bottom: 20px;
+}
+
+.contact .contact-box-info .item .info {
+    margin-left: 20px;
+}
+.contact .contact-box-info .item .info label{
+    font-weight: bold;
+}
+.contact .contact-box-info .item .info a{
+    color: #FE9705;
+}

@@ -25,12 +25,12 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li class="dropdown-item">
-                        <a class="language-select" href="javascript:void(0)" name="en-gb">
-                            <img th:src="@{/image/language/en-gb.png}" alt="Tiếng Anh" title="Tiếng Anh" /> Tiếng Anh
+                        <a class="language-select" href="/freshfood/trang-chu?lang=en" name="en-gb">
+                            <img th:src="@{/image/language/en-gb.png}" alt="Tiếng Anh" title="Tiếng Anh" /> English
                         </a>
                     </li>
                     <li class="dropdown-item">
-                        <a class="language-select" href="javascript:void(0)" name="vi-vn">
+                        <a class="language-select" href="/freshfood/trang-chu?lang=vi" name="vi-vn">
                             <img th:src="@{/image/language/vi-vn.png}" alt="Tiếng Việt" title="Tiếng Việt" /> Tiếng Việt
                         </a>
                     </li>
@@ -64,7 +64,7 @@
                     <div class="col-sm-6 col-md-6 col-lg-6 a-left">
                         <ul class="list-inline d-flex info-header">
                             <li>
-                                <i class="fa fa-mobile"></i> <b>Điện thoại:</b>
+                                <i class="fa fa-mobile"></i> <b>[[#{app.phone}]]:</b>
                                 <span>
                                       <a href="tell:0123456789"> 0123456789</a>
                                    </span>
@@ -86,13 +86,13 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-item">
-                                        <a class="language-select" href="javascript:void(0)" name="vi-vn">
+                                        <a class="language-select" href="/freshfood/trang-chu?lang=vi" name="vi-vn">
                                             <img th:src="@{/image/language/vi-vn.png}" alt="Tiếng Việt" title="Tiếng Việt" /> Tiếng Việt
                                         </a>
                                     </li>
                                     <li class="dropdown-item">
-                                        <a class="language-select" href="javascript:void(0)" name="en-gb">
-                                            <img th:src="@{/image/language/en-gb.png}" alt="TIếng anh" title="TIếng anh" /> TIếng anh
+                                        <a class="language-select" href="/freshfood/trang-chu?lang=en" name="en-gb">
+                                            <img th:src="@{/image/language/en-gb.png}" alt="TIếng anh" title="TIếng anh" /> English
                                         </a>
                                     </li>
                                 </ul>
@@ -119,24 +119,24 @@
                                 </ul>
                             </li>
                             <li sec:authorize="isAnonymous()">
-                                <a th:href="@{/freshfood/dang-nhap}"><i class="fa fa-user"></i> Đăng nhập</a>
+                                <a th:href="@{/freshfood/dang-nhap}"><i class="fa fa-user"></i> [[#{app.login}]]</a>
                             </li>
                             <li sec:authorize="isAnonymous()">
                                 <span> -</span>
                             </li>
                             <li sec:authorize="isAnonymous()">
-                                <a th:href="@{/freshfood/dang-ki}">Đăng ký</a>
+                                <a th:href="@{/freshfood/dang-ki}">[[#{app.registry}]]</a>
                             </li>
                             <li sec:authorize="isAuthenticated()">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">Xin chào [[${#request.userPrincipal.principal.username}]]</a>    
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">[[#{app.welcome}]] [[${#request.userPrincipal.principal.username}]]</a>    
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-item">
-                                       <a href="#">Chỉnh sửa thông tin</a>
+                                       <a href="/freshfood/profile">[[#{app.profile}]]</a>
                                     </li>
                                     <li class="dropdown-item">
                                        <form action="/logout" method="POST">
                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                                           <input class="w-100" style="background-color:none" type="submit" value="Đăng xuất"/>
+                                           <input class="w-100" style="background-color:none" type="submit" th:value="#{app.logout}"/>
                                        </form>
                                     </li>
                                 </ul>
@@ -147,7 +147,7 @@
                                     <div class="content align-content-center">
                                         <div class="header-search search-form">
                                             <div class="form input-group search-bar search-form">
-                                                <input type="search" name="search" th:value="${search}" placeholder="Tìm kiếm" class="input-group-field st-default-search-input search-text" autocomplete="off" />
+                                                <input type="search" name="search" th:value="${search}" th:placeholder="#{app.search}" class="input-group-field st-default-search-input search-text" autocomplete="off" />
                                                 <span class="input-group-btn">
                                                         <button class="btn icon-fallback-text">
                                                             <i class="fa fa-search"></i>
@@ -193,7 +193,7 @@
                                             <span class="cartCount count_item_pr d-xl-none" id="cart-total">0</span>
                                         </div>
                                         <div class="right-content d-none d-xl-block">
-                                            <span class="label">Giỏ hàng</span>
+                                            <span class="label">[[#{app.cart}]]</span>
                                             <span class="cartCount2">(0)</span>
                                         </div>
                                     </a>
@@ -207,7 +207,7 @@
             <div class="menu-bar d-lg-none">
                 <img th:src="@{/image/logo/menu-bar.png}" alt="menu bar" />
             </div>
-            <div class="icon-cart-mobile d-block d-lg-none float-left position-absolute" onclick="window.location.href='checkout/cart.html'">
+            <div class="icon-cart-mobile d-block d-lg-none float-left position-absolute" onclick="window.location.href='/freshfood/checkout'">
                 <div class="icon position-relative">
                     <i class="fa fa-shopping-bag"></i>
                     <span class="cartCount count_item_pr">0</span>
@@ -220,25 +220,25 @@
                 <div class="d-none d-sm-none d-md-none d-lg-flex justify-content-between">
                     <ul class="nav nav-left">
                         <li class="nav-item nav-item-lv1">
-                            <a class="nav-link" th:href="@{/freshfood/trang-chu}">Trang chủ</a>
+                            <a class="nav-link" th:href="@{/freshfood/trang-chu}">[[#{app.homepage}]]</a>
                         </li>
                         <li class="nav-item nav-item-lv1">
-                            <a class="nav-link" th:href="@{/freshfood/gioi-thieu}">Giới thiệu</a>
+                            <a class="nav-link" th:href="@{/freshfood/gioi-thieu}">[[#{app.intro}]]</a>
                         </li>
                         <li class="nav-item nav-item-lv1">
-                            <a class="nav-link" th:href="@{/freshfood/san-pham}">Sản phẩm</a>
+                            <a class="nav-link" th:href="@{/freshfood/san-pham}">[[#{app.product}]]</a>
                         </li>
                         <li class="nav-item nav-item-lv1">
-                            <a class="nav-link" th:href="@{/freshfood/tin-tuc}">Tin tức</a>
+                            <a class="nav-link" href = "javascript:void(0)">[[#{app.news}]]</a>
                         </li>
                         <li class="nav-item nav-item-lv1">
-                            <a class="nav-link" th:href="@{/freshfood/lien-he}">Liên hệ</a>
+                            <a class="nav-link" th:href = "@{/freshfood/lien-he}">[[#{app.contact}]]</a>
                         </li>
                     </ul>
                     <div class="menu-search  bbbbb">
                         <div class="header-search search-form">
                             <div class="form input-group search-bar search-form">
-                                <input type="search" name="search" th:value="${search}" placeholder="Tìm kiếm" class="input-group-field st-default-search-input search-text" autocomplete="off" />
+                                <input type="search" name="search" th:value="${search}" th:placeholder="#{app.search}" class="input-group-field st-default-search-input search-text" autocomplete="off" />
                                 <span class="input-group-btn">
                                     <button class="btn icon-fallback-text">
                                         <i class="fa fa-search"></i>
@@ -258,18 +258,18 @@
                     <div class="clearfix head-menu">
                         <ul class="list-inline">
                             <li>
-                                <a th:href="@{/freshfood/dang-nhap}"><i class="fa fa-user"></i> Đăng nhập</a>
+                                <a th:href="@{/freshfood/dang-nhap}"><i class="fa fa-user"></i>[[#{app.login}]]</a>
                             </li>
                             <li>
                                 <span> -</span>
                             </li>
                             <li>
-                                <a th:href="@{/freshfood/dang-ki}">Đăng ký</a>
+                                <a th:href="@{/freshfood/dang-ki}">[[#{app.registry}]]</a>
                             </li>
                             <li class="li-search">
                                 <div class="header-search search-form">
                                     <div class="form input-group search-bar search_form">
-                                        <input type="search" name="search" th:value="${search}" placeholder="Tìm kiếm" class="input-group-field st-default-search-input search-text" autocomplete="off">
+                                        <input type="search" name="search" th:value="${search}" th:placeholder="#{search}" class="input-group-field st-default-search-input search-text" autocomplete="off">
                                         <span class="input-group-btn">
                                             <button class="btn icon-fallback-text">
                                                 <i class="fa fa-search"></i>
@@ -289,19 +289,19 @@
                     </div>
                     <ul class="nav-mobile">
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/freshfood/trang-chu}">Trang chủ</a>
+                            <a class="nav-link" th:href="@{/freshfood/trang-chu}">[[#{app.homepage}]]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/freshfood/gioi-thieu}">Giới thiệu</a>
+                            <a class="nav-link" th:href="@{/freshfood/gioi-thieu}">[[#{app.intro}]]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/freshfood/san-pham}">Sản phẩm</a>
+                            <a class="nav-link" th:href="@{/freshfood/san-pham}">[[#{app.product}]]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/freshfood/tin-tuc}">Tin tức</a>
+                            <a class="nav-link" href="javascript:void(0)">[[#{app.news]}]]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/freshfood/lien-he}">Liên hệ</a>
+                            <a class="nav-link" th:href="@{/freshfood/lien-he}">[[#{app.contact}]]</a>
                         </li>
                     </ul>
                 </div>
