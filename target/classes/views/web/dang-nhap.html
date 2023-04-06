@@ -4,8 +4,6 @@
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="_csrf" data-th-content="${_csrf.token}" />
-   <meta name="_csrf_header" data-th-content="${_csrf.headerName}" />
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link type="text/css" rel="stylesheet" th:href="@{/font/fontawesome/css/all.css}"/>
    <link type="text/css" rel="stylesheet" th:href="@{/css/owl.carousel.min.css}"/>
@@ -28,10 +26,6 @@
                     <ul class="breadcrumb">
                         <li>
                             <a th:href="@{/freshfood/trang-chu}"><span ><i class="fa fa-home"></i> Trang chủ</span></a>
-                            <span><i class="fa fa-angle-right"></i></span>
-                        </li>
-                        <li>
-                            <a th:href="@{/freshfood/dang-nhap}"> <span>Tài khoản</span></a>
                             <span><i class="fa fa-angle-right"></i></span>
                         </li>
                         <li>
@@ -93,7 +87,7 @@
                                Bằng việc tạo tài khoản bạn có thể mua sắm nhanh hơn,
                                theo dõi trạng thái đơn hàng và theo doxp đơn hàng bạn đã đặt
                            </p>
-                           <a class="btn btn-primary" th:href="@{/freshfood/dang-ki}">Tiếp tục</a>
+                           <a class="btn btn-primary" th:href="@{/freshfood/dang-ky}">Tiếp tục</a>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6">

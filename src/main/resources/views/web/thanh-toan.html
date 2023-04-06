@@ -3,8 +3,6 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
    <meta charset="UTF-8">
-   <meta name="_csrf" data-th-content="${_csrf.token}" />
-   <meta name="_csrf_header" data-th-content="${_csrf.headerName}" />
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link type="text/css" rel="stylesheet" th:href="@{/font/fontawesome/css/all.css}"/>
@@ -14,9 +12,10 @@
    <link type="text/css" rel="stylesheet" th:href="@{/css/base.css}"/>
    <link type="text/css" rel="stylesheet" th:href="@{/css/index.css}"/>
    <link type="text/css" rel="stylesheet" th:href="@{/css/responsive.css}"/>
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-   <title>Thanh toán</title>
+    <title>Thanh toán</title>
 </head>
 <body>
    <header th:replace = "fragment::header"></header>
@@ -31,11 +30,8 @@
                             <span><i class="fa fa-angle-right"></i></span>
                         </li>
                         <li>
-                            <a href="javascript:void(0)"> <span>Giỏ hàng</span></a>
+                            <a href="javascript:void(0)"> <span>Đặt hàng</span></a>
                             <span><i class="fa fa-angle-right"></i></span>
-                        </li>
-                        <li>
-                            <strong>Thanh toán</strong>              
                         </li>
                     </ul>
                 </div>
@@ -95,9 +91,9 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="form-group required row">
-                                        <label class="control-label col-sm-12 col-md-2" for="input-firstname">Tên đầy đủ</label>
+                                        <label class="control-label col-sm-12 col-md-2" for="input-receiverName">Tên người nhận hàng</label>
                                         <div class="col-sm-12 col-md-10">
-                                            <input type="text" name="firstname" id="input-firstname" value="" placeholder="Ví dụ: Nguyễn Văn A" class="form-control" />
+                                            <input type="text" name="receiverName" id="input-receiverName" value="" placeholder="Ví dụ: Nguyễn Văn A" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -111,9 +107,9 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group required row">
-                                                <label class="control-label col-sm-12 col-md-4" for="input-telephone">Điện thoại</label>
+                                                <label class="control-label col-sm-12 col-md-4" for="input-receiverPhone">Điện thoại</label>
                                                 <div class="col-sm-12 col-md-8">
-                                                    <input type="text" name="telephone" id="input-telephone" value="" placeholder="Ví dụ: 01234567890" class="form-control" />
+                                                    <input type="text" name="receiverPhone" id="input-receiverPhone" value="" placeholder="Ví dụ: 01234567890" class="form-control" />
                                                 </div>
                                             </div>
                                         </div>
@@ -121,21 +117,21 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                              <div class="form-group required row">
-                                                <label class="control-label col-sm-12 col-md-4" for="input-countryid">Quốc gia</label>
+                                                <label class="control-label col-sm-12 col-md-4" for="input-countryId">Quốc gia</label>
                                                 <div class="col-sm-12 col-md-8">
-                                                    <select name="country_id" id="input-countryid" class="form-control">
+                                                    <select name="countryId" id="input-countryId" class="form-control">
                                                         <option value="">--Chọn quốc gia--</option>
                                                         <option th:each="i:${country}" th:value="${i.id}">[[${i.name}]]</option>
-                                                    </select>    
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group required row">
-                                                <label class="control-label col-sm-12 col-md-4" for="input-zoneid" id="label-zone">Tỉnh/TP</label>
+                                                <label class="control-label col-sm-12 col-md-4" for="input-cityId" id="label-zone">Tỉnh/TP</label>
                                                 <div class="col-sm-12 col-md-8">
                                                     <span id="load-ajax-zone">
-                                                        <select name="zone_id" id="input-zoneid" class="form-control">
+                                                        <select name="cityId" id="input-cityId" class="form-control">
                                                           <option value="">--Chọn tỉnh thành--</option>
                                                         </select>
                                                     </span>
@@ -146,23 +142,15 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-group required row">
-                                                <label class="control-label col-sm-12 col-md-4" for="input-address">Quận / Huyện</label>
+                                                <label class="control-label col-sm-12 col-md-4" for="input-deliveryAddress">Địa chỉ chi tiết</label>
                                                 <div class="col-sm-12 col-md-8">
-                                                    <input type="text" name="ward_id" id="input-wardid" placeholder="Ví dụ: Q. Cầu Giấy" class="form-control"></select>                                       
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group required row">
-                                                <label class="control-label col-sm-12 col-md-4" for="input-address">Địa chỉ chi tiết</label>
-                                                <div class="col-sm-12 col-md-8">
-                                                    <input type="text" name="address_1" value="" id="input-address" placeholder="Ví dụ: Số 247, Cầu Giấy, Q. Cầu Giấy" class="form-control" />
+                                                    <input type="text" name="deliveryAddress" value="" id="input-deliveryAddress" placeholder="Ví dụ: Số 247, Cầu Giấy, Q. Cầu Giấy" class="form-control" />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="control-label col-sm-12 col-md-2" for="input-zoneid" id="label-zone">Lời nhắn</label>
+                                        <label class="control-label col-sm-12 col-md-2" for="input-comment">Lời nhắn</label>
                                         <div class="col-sm-12 col-md-10">
                                             <textarea name="comment" id="input-comment" rows="3" class="form-control" placeholder="Ví dụ: Chuyển hàng ngoài giờ hành chính"></textarea>
                                         </div>
@@ -199,7 +187,7 @@
                                 </div>
                             </div>
                             <div class="text-center mb-4 d-flex justify-content-between">
-                                <a class="pull-left" href="/freshfood/checkout" title="Quay lại giỏ hàng">
+                                <a class="pull-left" href="/freshfood/chi-tiet-gio-hang" title="Quay lại giỏ hàng">
                                     <i class="fa fa-mail-reply-all" aria-hidden="true"></i> Quay lại giỏ hàng                                
                                 </a>
                                 <button class="btn btn-primary pull-right" type="button" id="submit_form_button"
@@ -225,12 +213,12 @@
    <script type="text/javascript" th:src="@{/js/index.js}"></script>
    <script type="text/javascript">
    $(function(){
-	   $('select[name="country_id"]').change(function(){
+	   $('select[name="countryId"]').change(function(){
 		   $.ajax({
-			   url: '/freshfood/api/city?id='+this.value,
+			   url: '/freshfood/api/city/'+this.value,
        		   dataType  : 'json',
        		   beforeSend: function () {
-                   $("select[name='country_id']").after("<i class='fa fa-circle-o-notch fa-spin'></i>");
+                   $("select[name='countryId']").after("<i class='fa fa-circle-o-notch fa-spin'></i>");
                },
                complete: function () {
                    $(".fa-spin").remove();
@@ -241,15 +229,15 @@
                		html += '<option value="'+c.id+'">'+c.name+'</option>';
                		// c là tên của mảng truyền trả về trong api
                	});
-               	$('select[name="zone_id"]').html(html);
+               	$('select[name="cityId"]').html(html);
                },
                error: function(){
                	alert("không tìm đc city !")
                }
 		   });
-		   
+
 	   });
-	   
+
        var $valid = $("#checkout-form");
        $.validator.addMethod("phone", function(value, element){
           return value.length >=10 && value.length <= 11;
@@ -257,43 +245,41 @@
        if ($valid.length){
            $valid.validate({
                rules:{
-                   firstname:{
+                   receiverName:{
                       required: true,
-                      lettersonly: true
                    },
                    email:{
                        required: true,
                        email: true
                    },
-                   telephone:{
+                   receiverPhone:{
                        required: true,
                        phone: true,
                        number:true
                    },
-                   address_1:{
+                   deliveryAddress:{
                        required: true
                    },
-                   country_id:{
+                   countryId:{
                        required: true
                    }
                },
                messages:{
-                   firstname:{
+                   receiverName:{
                        required: 'Bắt buộc',
-                       lettersonly: 'ko đc nhập số'
                    },
                    email:{
                        required:'Bắt buộc',
                        email: 'Email ko hợp lệ'
                    },
-                   telephone:{
+                   receiverPhone:{
                        required: 'Bắt buộc',
                        number: 'Chỉ nhập số',
                    },
-                   address_1:{
+                   deliveryAddress:{
                        required: 'Bắt buộc'
                    },
-                   country_id:{
+                   countryId:{
                        required: 'Bắt buộc'
                    }
                }
@@ -375,28 +361,42 @@
    
    function addbill(){
        if($("#checkout-form").valid() == true){
-    	   var name = "[[${_csrf.headerName}]]";
-		   var token = "[[${_csrf.token}]]";
-           var formData = $('#checkout-form').serializeArray();
-           var data = {};
-           $.each(formData, function (i, v) {
-	             data[""+v.name+""] = v.value;
-	       });
-           $.ajax({
-  	            url: '/freshfood/bill/add',
-  	            type: 'POST',
-  	            contentType: 'application/json',
-  	            data: JSON.stringify(data),
-  	            beforeSend: function(xhr){
-    			    xhr.setRequestHeader(name,token);
-    		    },
-  	            success: function (json) {
-  	            	alert("Đặt hàng thành công, chúng tôi sẽ liên hệ với bạn sau :)");
-  	            },
-  	            error: function (xhr, ajaxOptions, thrownError) {
-  	            	 alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-  	            }
-  	        });
+           swal({
+               title: "Đặt hàng",
+               text: "Bạn có chắc chắn muốn đặt hàng ?",
+               icon: "warning",
+               buttons: true,
+               dangerMode: true,
+           }).then((order) => {
+               if (order) {
+                   // Đặt hàng
+                   var formData = $('#checkout-form').serializeArray();
+                   var data = {};
+                   $.each(formData, function (i, v) {
+                       data[""+v.name+""] = v.value;
+                   });
+                   $.ajax({
+                       url: '/freshfood/bill/add',
+                       type: 'POST',
+                       contentType: 'application/json',
+                       data: JSON.stringify(data),
+                       success: function (json) {
+                           swal("Đặt hàng thành công !", {
+                               icon: "success",
+                           }).then((ok) => {
+                               if (ok) {
+                                   window.location = '/freshfood/trang-chu';
+                               }
+                           });
+                       },
+                       error: function (xhr, ajaxOptions, thrownError) {
+                           alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                       }
+                   });
+               } else {
+                   swal("Bạn chưa đặt hàng!");
+               }
+           });
        }else{
     	   $('.alert').remove();
 		   $('.breadcrumb').after('<div class="mt-3 alert alert-danger"><strong>Vui lòng điền đầy đủ thông tin !</strong></div>');

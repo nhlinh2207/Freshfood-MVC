@@ -25,7 +25,7 @@
                               </p>
                           </div>
                           <div class="product-details-bottom">
-                              <span class="price">[[${citem.product.price}]]</span>
+                              <span class="price">[[${citem.product.PriceCurrency}]]</span>
                               <a th:item-id="${citem.id}" onclick= "del(this)" title="Xóa" class="remove-item-cart fa">x</a>
                               <div class="quantity-select qty_drop_cart">
                                   <span class="input-text number-slidebar">x [[${citem.quantity}]]</span>
@@ -48,7 +48,7 @@
       </li>
       <li th:if = "${cartitems.size() > 0}" class = "text-center pd right_ct">
           <a class="btn btn-primary" th:href="@{/freshfood/checkout}">
-             <span>Giỏ hàng</span>
+             <span>Chi tiết</span>
           </a>
       </li>
    </ul>

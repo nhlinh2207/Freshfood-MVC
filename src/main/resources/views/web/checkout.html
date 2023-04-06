@@ -4,8 +4,6 @@
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="_csrf" data-th-content="${_csrf.token}" />
-   <meta name="_csrf_header" data-th-content="${_csrf.headerName}" />
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link type="text/css" rel="stylesheet" th:href="@{/font/fontawesome/css/all.css}"/>
    <link type="text/css" rel="stylesheet" th:href="@{/css/owl.carousel.min.css}"/>
@@ -14,7 +12,8 @@
    <link type="text/css" rel="stylesheet" th:href="@{/css/base.css}"/>
    <link type="text/css" rel="stylesheet" th:href="@{/css/index.css}"/>
    <link type="text/css" rel="stylesheet" th:href="@{/css/responsive.css}"/>
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
    <title>Giỏ hàng</title>
 </head>
@@ -241,39 +240,41 @@
        };
        
        function deletecartitems(id){
-    	   let token = $('meta[name = "_csrf"]').attr('content');
-    	   let name = $('meta[name = "_csrf_header"]').attr('content');
-    	   $.ajax({
-    		   url: '/freshfood/cart/delete/'+id,
-    		   type: 'delete',
-    		   dataType: 'json',
-    		   beforeSend: function(xhr){
-    			   xhr.setRequestHeader(name,token);
-    		   },
-    		   success: function(json){
-    			   loadcartitems();
-    			   $('#cart .top-cart-content').load('/freshfood/cartitems ul#cart-slidebar');
- 		           $('.cartCount2').html('('+json['total']+')');
- 		           $('.alert').remove();
-		           $('.breadcrumb').after('<div class="mt-3 alert alert-success"><strong>'+ json['success'] +'</strong></div>');
-   		           $('html, body').animate({scrollTop: 0}, 'slow');
-    		   },
-    		   error: function(){
-    			   alert("Không xóa thành công !")
-    		   }
-    	   });
-       };
+           swal({
+               title: "Xóa mặt hàng",
+               text: "Bạn có chắc chắn muốn xóa ?",
+               icon: "warning",
+               buttons: true,
+               dangerMode: true,
+           }).then((order) => {
+               if (order) {
+                   $.ajax({
+                       url: '/freshfood/cart/delete/'+id,
+                       type: 'delete',
+                       dataType: 'json',
+                       success: function(json){
+                           loadcartitems();
+                           $('#cart .top-cart-content').load('/freshfood/cartitems ul#cart-slidebar');
+                           $('.cartCount2').html('('+json['total']+')');
+                           $('.alert').remove();
+                           $('.breadcrumb').after('<div class="mt-3 alert alert-success"><strong>'+ json['success'] +'</strong></div>');
+                           $('html, body').animate({scrollTop: 0}, 'slow');
+                       },
+                       error: function(){
+                           alert("Không xóa thành công !")
+                       }
+                   });
+               } else {
+                   swal("Bạn chưa xóa mặt hàng!");
+               }
+           });
+       }
        
        function updatecartitems(id, val){
-    	   let token = $('meta[name = "_csrf"]').attr('content');
-    	   let name = $('meta[name = "_csrf_header"]').attr('content');
     	   $.ajax({
     		   url: '/freshfood/cart/update/'+id+'/'+val,
     		   type: 'put',
     		   dataType: 'json',
-    		   beforeSend: function(xhr){
-    			   xhr.setRequestHeader(name,token);
-    		   },
     		   success: function(json){
     			   loadcartitems();
     			   $('.alert').remove();
@@ -296,17 +297,12 @@
     	 let ids =$("#cartitem-table tbody tr").map(
                       function(){return $(this).attr('cartitem-id');}
                    ).get();
-    	 let token = $('meta[name = "_csrf"]').attr('content');
-  	     let name = $('meta[name = "_csrf_header"]').attr('content');
     	 $.ajax({
     		url: '/freshfood/cart/order',
 	        contentType: 'application/json',
     		data: JSON.stringify(ids),
     		type: 'post',
     		dataType: 'json',
-    		beforeSend: function(xhr){
- 			   xhr.setRequestHeader(name,token);
- 		   },
     		success: function(json){
     			alert(json);
     		},

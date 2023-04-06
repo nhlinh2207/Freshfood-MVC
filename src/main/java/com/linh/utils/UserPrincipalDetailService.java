@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.linh.respository.InUserRes;
+import com.linh.respository.IUserRepository;
 
 @Service
 public class UserPrincipalDetailService implements UserDetailsService{
@@ -16,7 +16,7 @@ public class UserPrincipalDetailService implements UserDetailsService{
 	private static final Logger log = LoggerFactory.getLogger(UserPrincipalDetailService.class);
 
 	@Autowired
-	private InUserRes user;
+	private IUserRepository user;
 	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -29,7 +29,7 @@ public class UserPrincipalDetailService implements UserDetailsService{
 		}else {
 			log.warn("Testing email ...");
 			log.info("Authenticated successfully");
-			return new UserPrincipal(user.findByEmail(email).stream().findFirst().get());
+			return new UserPrincipal(user.findByEmail(email));
 		}        
 	}
 }

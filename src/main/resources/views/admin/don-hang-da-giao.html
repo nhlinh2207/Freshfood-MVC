@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin 2 - Dashboard</title>
+
+    <!-- Custom fonts for this template-->
+    <link th:href="@{/font/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <title>Đơn hàng Admin</title>
+</head>
+<body  id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul th:replace="fragment-admin::sidebar"></ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav th:replace="fragment-admin::topbar"></nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="breadcrumbs" id="breadcrumbs">
+                    <script type="text/javascript">
+                        try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                    </script>
+
+                    <ul class="breadcrumb">
+                        <li>
+                            <i class="ace-icon fa fa-home home-icon"></i>
+                            <a th:href="@{/freshfood/admin/trang-chu}">Freshfood </a>
+                            <span><i class="fa fa-angle-right"></i></span>
+                        </li>
+                        &nbsp;<li class="active">Đơn hàng đã giao</li>
+                    </ul><!-- /.breadcrumb -->
+                </div>
+
+                <!-- Content Row -->
+                <div class="card shadow my-4">
+                    <form>
+                        <div class="table-responsive table-cart-content">
+                            <table id="order-table" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <td class="text-center"><strong>Id</strong></td>
+                                    <td class="text-center"><strong>Tên khách hàng</strong></td>
+                                    <td class="text-center"><strong>Số điện thoại</strong></td>
+                                    <td class="text-center"><strong>Tổng tiền</strong></td>
+                                    <td class="text-center"><strong>Thời gian đặt</strong></td>
+                                    <td class="text-center"><strong>Xem chi tiết</strong></td>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Content Row -->
+
+
+                <!-- Content Row -->
+
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="fragment-admin::footer"></footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+<div th:replace="fragment-admin::scroll-top"></div>
+
+<!-- Bootstrap core JavaScript-->
+<script type="text/javascript" th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script type="text/javascript" th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script type="text/javascript" th:src="@{/js/sb-admin-2.min.js}"></script>
+
+<!-- Page level plugins -->
+<script type="text/javascript" th:src="@{/js/Chart.min.js}"></script>
+
+<!-- Page level custom scripts -->
+<script type="text/javascript" th:src="@{/js/chart-area-demo.js}"></script>
+<script type="text/javascript" th:src="@{/js/chart-pie-demo.js}"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        loadbill();
+    });
+
+    function loadbill(){
+        $.ajax({
+            url : '/freshfood/bill/all/sent',
+            type : 'get',
+            dataType: 'json',
+            success: function(json){
+                let table = '';
+                for(let i = 0;i<json.length; i++){
+                    var item = '<tr>'+
+                        '<td class="text-center">'+
+                        '<span>'+json[i]['bill-id']+' </span>'+
+                        '</td>'+
+                        '<td class="text-center">'+
+                        '<span>'+json[i]['name']+' </span>'+
+                        '</td>'+
+                        '<td class="text-center">'+
+                        '<span>'+json[i]['phone']+' </span>'+
+                        '</td>'+
+                        '<td class="text-center">'+
+                        '<span>'+json[i]['tongtien']+' </span>'+
+                        '</td>'+
+                        '<td class="text-center">'+
+                        '<span>'+json[i]['time']+' </span>'+
+                        '</td>'+
+                        '<td class="text-center">'+
+                        '<button cate-id="'+json[i]['id']+'" type="button" data-toggle="tooltip" title class="btn btn-primary update-btn" data-original-title="Cập nhật">'+
+                        '<a style="color: #fff" href = "/freshfood/admin/sent-order-detail?id='+json[i]['bill-id']+'">'+
+                        '<i class="fa fa-arrow-circle-right"></i>'+
+                        '</a>'+
+                        '</button>'+
+                        '</td>'+
+                        '</tr>';
+                    table += item;
+                }
+                $('#order-table tbody').html(table);
+            },
+            error: function(xhr, ajaxOptions, thrownError){
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    }
+</script>
+</body>
+</html>

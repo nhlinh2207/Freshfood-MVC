@@ -1,52 +1,64 @@
 package com.linh.service.imp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.linh.dto.CategoryDto;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import com.linh.entity.CategoryEntity;
-import com.linh.respository.InCategoryRes;
-import com.linh.service.InCategoryService;
+import com.linh.model.Category;
+import com.linh.respository.ICategoryRepo;
+import com.linh.service.ICategoryService;
 
 @Service
-public class CategoryService implements InCategoryService{
+@AllArgsConstructor
+public class CategoryService implements ICategoryService {
 
-	@Autowired
-	private InCategoryRes category;
+	private final ICategoryRepo categoryRepository;
 	
 	@Override
 	@Transactional
-	public void save(CategoryEntity categoryEntity) {
-		category.save(categoryEntity);
+	public Category save(Category categoryEntity) {
+		return categoryRepository.save(categoryEntity);
 	}
 
 	@Override
-	public CategoryEntity findOneById(Integer id) {
+	public Category findById(Integer id) {
 		// TODO Auto-generated method stub
-		return category.findOneById(id);
+		return categoryRepository.findById(id).get();
 	}
 
 	@Override
-	public List<CategoryEntity> findAll() {
+	public List<CategoryDto> findAll() {
 		// TODO Auto-generated method stub
-		return category.findAll();
+		List<CategoryDto> data = new ArrayList<>();
+		categoryRepository.findAll().forEach(i -> {
+			data.add(
+					CategoryDto.builder().id(i.getId())
+							.name(i.getName())
+							.description(i.getDescription())
+							.totalProducts(i.getProducts().size())
+							.build()
+			);
+		});
+		return data;
 	}
 
 	@Override
 	public void delete(Integer id) {
 		// TODO Auto-generated method stub
-		category.deleteById(id);
+		categoryRepository.deleteById(id);
 	}
 
 	@Override
-	public CategoryEntity update(Integer id, String newname) {
+	public Category update(Integer id, String name) {
 		// TODO Auto-generated method stub
-		CategoryEntity categoryEntity = category.findOneById(id);
-		categoryEntity.setName(newname);
-		return category.save(categoryEntity);
+		Category categoryEntity = categoryRepository.findById(id).get();
+		categoryEntity.setName(name);
+		return categoryRepository.save(categoryEntity);
 	}
     
 }

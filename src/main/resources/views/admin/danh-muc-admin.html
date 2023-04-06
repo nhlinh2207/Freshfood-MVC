@@ -1,108 +1,126 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta charset="UTF-8" />
-   <meta name="description" content="overview &amp; stats" />
-   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-	<link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
-	<link rel="stylesheet" th:href="@{/assets/font-awesome/4.2.0/css/font-awesome.min.css}" />
-    <link type="text/css" rel="stylesheet" th:href="@{/font/fontawesome/css/all.css}"/>
-    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-    
-	<link rel="stylesheet" th:href="@{/assets/fonts/fonts.googleapis.com.css}" />
+	<title>SB Admin 2 - Dashboard</title>
 
-	<link rel="stylesheet" th:href="@{/assets/css/ace.min.css}" class="ace-main-stylesheet" id="main-ace-style" />
-    <link th:href="@{/css/base.css}" rel="stylesheet" />
-    <link th:href="@{/css/index.css}" rel="stylesheet" />
-    <link th:href="@{/css/responsive.css}" rel="stylesheet" />
-   
-	<!-- ace settings handler -->
-	<script th:src="@{/assets/js/ace-extra.min.js}"></script>
-	<script th:src="@{/assets/js/jquery.2.1.1.min.js}"></script>
-	
-   <title>Danh mục Admin</title>
+	<!-- Custom fonts for this template-->
+	<link th:href="@{/font/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+		  rel="stylesheet">
+
+	<!-- Custom styles for this template-->
+	<link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<title>Danh mục Admin</title>
 </head>
-<body class="no-skin">
+<body id="page-top">
 
-    <div th:replace="fragment-admin::navbar"></div> 
-  
-    <div class="main-container" id="main-container">
-        <script type="text/javascript">
-		    try{ace.settings.check('main-container' , 'fixed')}catch(e){}
-	    </script>
-	    <div th:replace="fragment-admin::sidebar"></div> 
-	    <div class="main-content">
-		     <div class="main-content-inner">
-		         <div class="breadcrumbs" id="breadcrumbs">
-						<script type="text/javascript">
-							try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
-						</script>
+<!-- Page Wrapper -->
+<div id="wrapper">
 
-						<ul class="breadcrumb">
-							<li>
-								<i class="ace-icon fa fa-home home-icon"></i>
-								<a th:href="@{/freshfood/admin/trang-chu}">Freshfood</a>
-							</li>
-							<li class="active">Danh mục</li>
-						</ul><!-- /.breadcrumb -->
+	<!-- Sidebar -->
+	<ul th:replace="fragment-admin::sidebar"></ul>
+	<!-- End of Sidebar -->
 
-						<div class="nav-search" id="nav-search">
-							<form class="form-search">
-								<span class="input-icon">
-									<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
-									<i class="ace-icon fa fa-search nav-search-icon"></i>
-								</span>
-							</form>
-						</div><!-- /.nav-search -->
-				  </div>
-				  
-				  <div>
-                         <div style="margin: 20px 10%; width:fit-content">
-                            <input style="width: 200px; margin-right:20px; margin-top: 5px; float:left" class="form-control" type = "text" placeholder="Thêm danh mục" />
-                            <a onclick = "addcate(this)" style="border-radius: 15px" class=" btn btn-success">Thêm danh mục</a>
-                         </div> 
-                  </div>
-				  
-				  <form>
-                       <div class="table-responsive table-cart-content">
-                            <table id="cate-table" class="table table-bordered">
-                                  <thead>
-                                      <tr>
-                                          <td class="text-center"><strong>ID</strong></td>
-                                          <td class="text-center"><strong>Tên danh mục</strong></td>
-                                          <td class="text-center"><strong>Xóa</strong></td>
-                                       </tr>
-                                   </thead>
-                                 <tbody>
-                                         
-                                 </tbody>
-                            </table>
-                       </div>          
-                </form>
-		   </div>
-      </div>
-  </div>
-     
-    <script type="text/javascript">
-		window.jQuery || document.write("<script src='assets/js/jquery.min.js'>"+"<"+"/script>");
-    </script>
-	<script type="text/javascript">
-		if('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
-	</script>
-	<script th:src="@{/assets/js/bootstrap.min.js}"></script>
- 
-	<script th:src="@{/assets/js/jquery-ui.custom.min.js}"></script>
-	<script th:src="@{/assets/js/jquery.ui.touch-punch.min.js}"></script>
-	<script th:src="@{/assets/js/jquery.easypiechart.min.js}"></script>
-	<script th:src="@{/assets/js/jquery.sparkline.min.js}"></script>
-	<script th:src="@{/assets/js/jquery.flot.min.js}"></script>
-	<script th:src="@{/assets/js/jquery.flot.pie.min.js}"></script>
-	<script th:src="@{/assets/js/jquery.flot.resize.min.js}"></script>
+	<!-- Content Wrapper -->
+	<div id="content-wrapper" class="d-flex flex-column">
 
-	<script th:src="@{/assets/js/ace-elements.min.js}"></script>
-	<script th:src="@{/assets/js/ace.min.js}"></script>
+		<!-- Main Content -->
+		<div id="content">
+
+			<!-- Topbar -->
+			<nav th:replace="fragment-admin::topbar"></nav>
+			<!-- End of Topbar -->
+
+			<!-- Begin Page Content -->
+			<div class="container-fluid">
+
+				<!-- Page Heading -->
+				<div class="breadcrumbs" id="breadcrumbs">
+					<script type="text/javascript">
+						try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+					</script>
+
+					<ul class="breadcrumb">
+						<li>
+							<i class="ace-icon fa fa-home home-icon"></i>
+							<a th:href="@{/freshfood/admin/trang-chu}">Freshfood </a>
+							<span><i class="fa fa-angle-right"></i></span>
+						</li>
+						&nbsp;<li class="active">Danh mục sản phẩm</li>
+					</ul><!-- /.breadcrumb -->
+				</div>
+
+				<!-- Content Row -->
+				<div class="card shadow my-4">
+					<div style="margin: 30px 10%; width:fit-content">
+						<input style="width: 200px; margin-right:20px; margin-top: 5px; float:left" class="form-control" type = "text" placeholder="Thêm danh mục" />
+						<a onclick = "addcate(this)" style="border-radius: 15px" class=" btn btn-success">Thêm danh mục</a>
+					</div>
+					<form>
+						<div class="table-responsive table-cart-content">
+							<table id="cate-table" class="table table-striped">
+								<thead>
+								<tr>
+									<td class="text-center"><strong>Id</strong></td>
+									<td class="text-center"><strong>Tên danh mục</strong></td>
+									<td class="text-center"><strong>Tổng số sản phẩm</strong></td>
+									<td class="text-center"><strong>Xóa</strong></td>
+								</tr>
+								</thead>
+								<tbody>
+
+								</tbody>
+							</table>
+						</div>
+					</form>
+				</div>
+
+				<!-- Content Row -->
+
+
+			</div>
+			<!-- /.container-fluid -->
+
+		</div>
+		<!-- End of Main Content -->
+
+		<!-- Footer -->
+		<footer th:replace="fragment-admin::footer"></footer>
+		<!-- End of Footer -->
+
+	</div>
+	<!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+<div th:replace="fragment-admin::scroll-top"></div>
+
+<!-- Bootstrap core JavaScript-->
+<script type="text/javascript" th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script type="text/javascript" th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script type="text/javascript" th:src="@{/js/sb-admin-2.min.js}"></script>
+
+<!-- Page level plugins -->
+<script type="text/javascript" th:src="@{/js/Chart.min.js}"></script>
+
+<!-- Page level custom scripts -->
+<script type="text/javascript" th:src="@{/js/chart-area-demo.js}"></script>
+<script type="text/javascript" th:src="@{/js/chart-pie-demo.js}"></script>
+
 	<script type = "text/javascript">
 	     $(document).ready(function(){
   	        loadcategory();
@@ -130,6 +148,9 @@
 			                       '</span>'+
 			                   '</div>'+
 			               '</td>'+
+								 '<td class="text-center">'+
+								      '<span>'+json[i]['totalProducts']+'</span>'+
+								 '</td>'+
 			               '<td class="text-center">'+
 			                   '<button type="button" onclick="deletecate('+json[i]['id']+')" data-toggle="tooltip" title class="btn btn-danger" data-original-title="Xóa">'+
 			                       '<i class="fa fa-times-circle"></i>'+
@@ -153,8 +174,6 @@
 	     
 	     function addcate(element){
 	    	 var val = $(element).parent().find('input').val();
-	    	 var name = "[[${_csrf.headerName}]]";
-			 var token = "[[${_csrf.token}]]";
 			 var cate = {
 				"name" : val
 			}
@@ -164,13 +183,19 @@
 				   dataType: 'json',
 				   data: JSON.stringify(cate),
 			       contentType: 'application/json',
-				   beforeSend: function(xhr){
-			            xhr.setRequestHeader(name, token);
-		           },
+				   // beforeSend: function(xhr){
+			       //      xhr.setRequestHeader(name, token);
+		           // },
 		           success: function(json){
-			              alert("Thêm danh mục thành công id"+json);
-			              loadcategory();
-		           },
+					   swal({
+						   title: "Thành công !",
+						   text: "Thêm danh mục thành công",
+						   icon: "success",
+						   buttons: true,
+						   dangerMode: true,
+					   })
+					   loadcategory();
+				   },
 		           error: function(){
 			           alert("không thành công !");
 		           }
@@ -178,28 +203,36 @@
 	     };
 	     
 	     function deletecate(id){
-	    	   var name = "[[${_csrf.headerName}]]";
-			   var token = "[[${_csrf.token}]]";
-			   $.ajax({
-				   url : '/freshfood/category/xoa/'+id,
-				   type : 'delete',
-				   dataType: 'json',
-				   beforeSend: function(xhr){
-			            xhr.setRequestHeader(name, token);
-		           },
-		           success: function(json){
-			              alert("Bạn đã xóa danh mục có id: "+json);
-			              loadcategory();
-		           },
-		           error: function(){
-			           alert("không thành công !");
-		           }
-			   });
+			 swal({
+				 title: "Xóa danh mục",
+				 text: "Bạn có chắc chắn muốn xóa danh mục ?",
+				 icon: "warning",
+				 buttons: true,
+				 dangerMode: true,
+			 }).then((order) => {
+				 if (order) {
+					 // Đặt hàng
+					 $.ajax({
+						 url : '/freshfood/category/xoa/'+id,
+						 type : 'delete',
+						 dataType: 'json',
+						 // beforeSend: function(xhr){
+						 //      xhr.setRequestHeader(name, token);
+						 // },
+						 success: function(json){
+							 loadcategory();
+						 },
+						 error: function(){
+							 alert("không thành công !");
+						 }
+					 });
+				 } else {
+					 swal("Bạn chưa xóa mặt hàng!");
+				 }
+			 });
 	     };
 	     
 	     function updatecate(id, val){
-	    	 var name = "[[${_csrf.headerName}]]";
-			 var token = "[[${_csrf.token}]]";
 			 var cate = {
 			    "id": id,
 				"name" : val
@@ -210,9 +243,9 @@
 	    		 dataType: 'json',
 	    		 data : JSON.stringify(cate),
 	    		 contentType: 'application/json',
-	    		 beforeSend: function(xhr){
-	    			  xhr.setRequestHeader(name,token);
-	    		 },
+	    		 // beforeSend: function(xhr){
+	    			//   xhr.setRequestHeader(name,token);
+	    		 // },
 	    		 success: function(json){
 	    			 alert("Cập nhật danh mục có id: "+json+" thành công");
 	    			 loadcategory();

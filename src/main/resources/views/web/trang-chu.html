@@ -4,8 +4,6 @@
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="_csrf" data-th-content="${_csrf.token}" />
-   <meta name="_csrf_header" data-th-content="${_csrf.headerName}" />
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link type="text/css" rel="stylesheet" th:href="@{/font/fontawesome/css/all.css}"/>
    <link type="text/css" rel="stylesheet" th:href="@{/css/owl.carousel.min.css}"/>
@@ -143,18 +141,18 @@
                                                     <div class="col-sm-12">
                                                         <div class="content position-relative">
                                                            <div class="section-title">
-                                                                <h2>Trái cây nhập khẩu</h2>
+                                                                <h2>Cơm bình dân</h2>
                                                             </div>
                                                             <div>
                                                                 <ul class="tabs tabs-title ajax clearfix">
                                                                     <li class="tab-link has-content active" data-tab="category_custom20 active" href="#category_custom20" data-toggle="tab">
-                                                                        <span>Hoa quả nhập khẩu</span>
+                                                                        <span>Cơm bình dân</span>
                                                                     </li>
                                                                     <li class="tab-link has-content " data-tab="category_custom21" href="#category_custom21" data-toggle="tab">
-                                                                        <span>Rau, củ sạch</span>
+                                                                        <span>Bánh mỳ</span>
                                                                     </li>
                                                                     <li class="tab-link has-content " data-tab="category_custom22" href="#category_custom22" data-toggle="tab">
-                                                                        <span>Trái cây tươi</span>
+                                                                        <span>Đồ uống</span>
                                                                     </li>
                                                                 </ul>
                                                                 <div class="category-custom20 tab-content active" id="category_custom20">
@@ -162,16 +160,16 @@
                                                                         <div th:each="hqnk:${hoaQuaNhapKhau}" class="item">
                                                                             <div class="product-box">
                                                                                 <div class="product-thumbnail flexbox-grid">
-                                                                                    <a th:href="@{'/freshfood/check?id='+${hqnk.id}}" th:title="${hqnk.name}">
+                                                                                    <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${hqnk.id}}" th:title="${hqnk.name}">
                                                                                         <img th:src="${hqnk.ProductImagePath}" alt="${hqnk.name}" />
                                                                                     </a>
                                                                                     <div class="product-action d-none">
                                                                                         <form class="form variants form-nut-grid margin-bottom-0">
                                                                                             <div>
-                                                                                                <a class="btn-buy btn-cart btn left-to add_to_cart" data-toggle="tooltip" title="Mua ngay" th:href="@{'/freshfood/check?id='+${hqnk.id}}">
+                                                                                                <a class="btn-buy btn-cart btn left-to add_to_cart" data-toggle="tooltip" title="Mua ngay" th:href="@{'/freshfood/chi-tiet-san-pham?id='+${hqnk.id}}">
                                                                                                     <i class="fas fa-shopping-bag"></i>
                                                                                                 </a>
-                                                                                                <a th:href="@{'/freshfood/check?id='+${hqnk.id}}" data-toggle="tooltip" title="Xem" class="btn-gray btn_view btn right-to">
+                                                                                                <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${hqnk.id}}" data-toggle="tooltip" title="Xem" class="btn-gray btn_view btn right-to">
                                                                                                     <i class="fas fa-eye"></i>
                                                                                                 </a>
                                                                                             </div>
@@ -180,13 +178,13 @@
                                                                                 </div>
                                                                                 <div class="product-info text-center">
                                                                                     <h3 class="product-name">
-                                                                                        <a th:href="@{'/freshfood/check?id='+${hqnk.id}}" th:title="${hqnk.name}">
+                                                                                        <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${hqnk.id}}" th:title="${hqnk.name}">
                                                                                             <span>[[${hqnk.name}]]</span>
                                                                                         </a>
                                                                                     </h3>
                                                                                     <div class="price-box">
                                                                                         <div class="special-price">
-                                                                                            <span>[[${hqnk.price}]]</span>
+                                                                                            <span>[[${hqnk.PriceCurrency}]]</span>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -199,16 +197,16 @@
                                                                         <div th:each="rcs:${rauCuSach}" class="item">
                                                                             <div class="product-box">
                                                                                 <div class="product-thumbnail flexbox-grid">
-                                                                                    <a th:href="@{'/freshfood/check?id='+${rcs.id}}" th:title="${rcs.name}">
+                                                                                    <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${rcs.id}}" th:title="${rcs.name}">
                                                                                         <img th:src="${rcs.ProductImagePath}" alt="${rcs.name}" />
                                                                                     </a>
                                                                                     <div class="product-action d-none">
                                                                                         <form class="form variants form-nut-grid margin-bottom-0">
                                                                                             <div>
-                                                                                                <a class="btn-buy btn-cart btn left-to add_to_cart" data-toggle="tooltip" title="Mua ngay" th:href="@{'/freshfood/check?id='+${rcs.id}}">
+                                                                                                <a class="btn-buy btn-cart btn left-to add_to_cart" data-toggle="tooltip" title="Mua ngay" th:href="@{'/freshfood/chi-tiet-san-pham?id='+${rcs.id}}">
                                                                                                     <i class="fas fa-shopping-bag"></i>
                                                                                                 </a>
-                                                                                                <a th:href="@{'/freshfood/check?id='+${rcs.id}}" data-toggle="tooltip" title="Xem" class="btn-gray btn_view btn right-to">
+                                                                                                <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${rcs.id}}" data-toggle="tooltip" title="Xem" class="btn-gray btn_view btn right-to">
                                                                                                     <i class="fas fa-eye"></i>
                                                                                                 </a>
                                                                                             </div>
@@ -217,13 +215,13 @@
                                                                                 </div>
                                                                                 <div class="product-info text-center">
                                                                                     <h3 class="product-name">
-                                                                                        <a th:href="@{'/freshfood/check?id='+${rcs.id}}" th:title="${rcs.name}">
+                                                                                        <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${rcs.id}}" th:title="${rcs.name}">
                                                                                             <span>[[${rcs.name}]]</span>
                                                                                         </a>
                                                                                     </h3>
                                                                                     <div class="price-box">
                                                                                         <div class="special-price">
-                                                                                            <span>[[${rcs.price}]]</span>
+                                                                                            <span>[[${rcs.PriceCurrency}]]</span>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -236,16 +234,16 @@
                                                                         <div th:each="tct:${traiCayTuoi}" class="item">
                                                                             <div class="product-box">
                                                                                 <div class="product-thumbnail flexbox-grid">
-                                                                                    <a th:href="@{'/freshfood/check?id='+${tct.id}}" th:title="${tct.name}">
+                                                                                    <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${tct.id}}" th:title="${tct.name}">
                                                                                         <img th:src="${tct.ProductImagePath}" alt="${tct.name}" />
                                                                                     </a>
                                                                                     <div class="product-action d-none">
                                                                                         <form class="form variants form-nut-grid margin-bottom-0">
                                                                                             <div>
-                                                                                                <a class="btn-buy btn-cart btn left-to add_to_cart" data-toggle="tooltip" title="Mua ngay" th:href="@{'/freshfood/check?id='+${tct.id}}">
+                                                                                                <a class="btn-buy btn-cart btn left-to add_to_cart" data-toggle="tooltip" title="Mua ngay" th:href="@{'/freshfood/chi-tiet-san-pham?id='+${tct.id}}">
                                                                                                     <i class="fas fa-shopping-bag"></i>
                                                                                                 </a>
-                                                                                                <a th:href="@{'/freshfood/check?id='+${tct.id}}" data-toggle="tooltip" title="Xem" class="btn-gray btn_view btn right-to">
+                                                                                                <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${tct.id}}" data-toggle="tooltip" title="Xem" class="btn-gray btn_view btn right-to">
                                                                                                     <i class="fas fa-eye"></i>
                                                                                                 </a>
                                                                                             </div>
@@ -254,13 +252,13 @@
                                                                                 </div>
                                                                                 <div class="product-info text-center">
                                                                                     <h3 class="product-name">
-                                                                                        <a th:href="@{'/freshfood/check?id='+${tct.id}}" th:title="${tct.name}">
+                                                                                        <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${tct.id}}" th:title="${tct.name}">
                                                                                             <span>[[${tct.name}]]</span>
                                                                                         </a>
                                                                                     </h3>
                                                                                     <div class="price-box">
                                                                                         <div class="special-price">
-                                                                                            <span>[[${tct.price}]]</span>
+                                                                                            <span>[[${tct.PriceCurrency}]]</span>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -292,18 +290,18 @@
                                                     <div class="col-sm-12">
                                                         <div class="content position-relative">
                                                            <div class="section-title">
-                                                                <h2>Thực phẩm sạch</h2>
+                                                                <h2>Hoa quả tươi</h2>
                                                             </div>
                                                             <div>
                                                                 <ul class="tabs tabs-title ajax clearfix">
                                                                     <li class="tab-link has-content active" data-tab="category_custom30 active" href="#category_custom30" data-toggle="tab">
-                                                                        <span>Hải sản tươi</span>
+                                                                        <span>Hoa quả tươi</span>
                                                                     </li>
                                                                     <li class="tab-link has-content " data-tab="category_custom31" href="#category_custom31" data-toggle="tab">
-                                                                        <span>Thịt tươi</span>
+                                                                        <span>Đồ ăn nhẹ</span>
                                                                     </li>
                                                                     <li class="tab-link has-content " data-tab="category_custom32" href="#category_custom32" data-toggle="tab">
-                                                                        <span>Đồ uống</span>
+                                                                        <span>Sinh tố</span>
                                                                     </li>
                                                                 </ul>
                                                                 <div class="category-custom30 tab-content active" id="category_custom30">
@@ -311,16 +309,16 @@
                                                                         <div th:each="hst:${haiSanTuoi}" class="item">
                                                                             <div class="product-box">
                                                                                 <div class="product-thumbnail flexbox-grid">
-                                                                                    <a th:href="@{'/freshfood/check?id='+${hst.id}}" th:title="${hst.name}">
+                                                                                    <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${hst.id}}" th:title="${hst.name}">
                                                                                         <img th:src="${hst.ProductImagePath}" alt="${hst.name}" />
                                                                                     </a>
                                                                                     <div class="product-action d-none">
                                                                                         <form class="form variants form-nut-grid margin-bottom-0">
                                                                                             <div>
-                                                                                                <a class="btn-buy btn-cart btn left-to add_to_cart" data-toggle="tooltip" title="Mua ngay" th:href="@{'/freshfood/check?id='+${hst.id}}">
+                                                                                                <a class="btn-buy btn-cart btn left-to add_to_cart" data-toggle="tooltip" title="Mua ngay" th:href="@{'/freshfood/chi-tiet-san-pham?id='+${hst.id}}">
                                                                                                     <i class="fas fa-shopping-bag"></i>
                                                                                                 </a>
-                                                                                                <a th:href="@{'/freshfood/check?id='+${hst.id}}" data-toggle="tooltip" title="Xem" class="btn-gray btn_view btn right-to">
+                                                                                                <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${hst.id}}" data-toggle="tooltip" title="Xem" class="btn-gray btn_view btn right-to">
                                                                                                     <i class="fas fa-eye"></i>
                                                                                                 </a>
                                                                                             </div>
@@ -329,13 +327,13 @@
                                                                                 </div>
                                                                                 <div class="product-info text-center">
                                                                                     <h3 class="product-name">
-                                                                                        <a th:href="@{'/freshfood/check?id='+${hst.id}}" th:title="${hst.name}">
+                                                                                        <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${hst.id}}" th:title="${hst.name}">
                                                                                             <span>[[${hst.name}]]</span>
                                                                                         </a>
                                                                                     </h3>
                                                                                     <div class="price-box">
                                                                                         <div class="special-price">
-                                                                                            <span>[[${hst.price}]]</span>
+                                                                                            <span>[[${hst.PriceCurrency}]]</span>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -348,16 +346,16 @@
                                                                         <div th:each="tt:${thitTuoi}" class="item">
                                                                             <div class="product-box">
                                                                                 <div class="product-thumbnail flexbox-grid">
-                                                                                    <a th:href="@{'/freshfood/check?id='+${tt.id}}" th:title="${tt.name}">
+                                                                                    <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${tt.id}}" th:title="${tt.name}">
                                                                                         <img th:src="${tt.ProductImagePath}" alt="${tt.name}" />
                                                                                     </a>
                                                                                     <div class="product-action d-none">
                                                                                         <form class="form variants form-nut-grid margin-bottom-0">
                                                                                             <div>
-                                                                                                <a class="btn-buy btn-cart btn left-to add_to_cart" data-toggle="tooltip" title="Mua ngay" th:href="@{'/freshfood/check?id='+${tt.id}}">
+                                                                                                <a class="btn-buy btn-cart btn left-to add_to_cart" data-toggle="tooltip" title="Mua ngay" th:href="@{'/freshfood/chi-tiet-san-pham?id='+${tt.id}}">
                                                                                                     <i class="fas fa-shopping-bag"></i>
                                                                                                 </a>
-                                                                                                <a th:href="@{'/freshfood/check?id='+${tt.id}}" data-toggle="tooltip" title="Xem" class="btn-gray btn_view btn right-to">
+                                                                                                <a th:href="@{'/frshfood/chi-tiet-san-pham?id='+${tt.id}}" data-toggle="tooltip" title="Xem" class="btn-gray btn_view btn right-to">
                                                                                                     <i class="fas fa-eye"></i>
                                                                                                 </a>
                                                                                             </div>
@@ -366,13 +364,13 @@
                                                                                 </div>
                                                                                 <div class="product-info text-center">
                                                                                     <h3 class="product-name">
-                                                                                        <a th:href="@{'/freshfood/check?id='+${tt.id}}" th:title="${tt.name}">
+                                                                                        <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${tt.id}}" th:title="${tt.name}">
                                                                                             <span>[[${tt.name}]]</span>
                                                                                         </a>
                                                                                     </h3>
                                                                                     <div class="price-box">
                                                                                         <div class="special-price">
-                                                                                            <span>[[${tt.price}]]</span>
+                                                                                            <span>[[${tt.PriceCurrency}]]</span>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -385,16 +383,16 @@
                                                                         <div th:each="du:${doUong}" class="item">
                                                                             <div class="product-box">
                                                                                 <div class="product-thumbnail flexbox-grid">
-                                                                                    <a th:href="@{'/freshfood/check?id='+${du.id}}" th:title="${du.name}">
+                                                                                    <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${du.id}}" th:title="${du.name}">
                                                                                         <img th:src="${du.ProductImagePath}" alt="${du.name}" />
                                                                                     </a>
                                                                                     <div class="product-action d-none">
                                                                                         <form class="form variants form-nut-grid margin-bottom-0">
                                                                                             <div>
-                                                                                                <a class="btn-buy btn-cart btn left-to add_to_cart" data-toggle="tooltip" title="Mua ngay" th:href="@{'/freshfood/check?id='+${du.id}}">
+                                                                                                <a class="btn-buy btn-cart btn left-to add_to_cart" data-toggle="tooltip" title="Mua ngay" th:href="@{'/freshfood/chi-tiet-san-pham?id='+${du.id}}">
                                                                                                     <i class="fas fa-shopping-bag"></i>
                                                                                                 </a>
-                                                                                                <a th:href="@{'/freshfood/check?id='+${du.id}}" data-toggle="tooltip" title="Xem" class="btn-gray btn_view btn right-to">
+                                                                                                <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${du.id}}" data-toggle="tooltip" title="Xem" class="btn-gray btn_view btn right-to">
                                                                                                     <i class="fas fa-eye"></i>
                                                                                                 </a>
                                                                                             </div>
@@ -403,13 +401,13 @@
                                                                                 </div>
                                                                                 <div class="product-info text-center">
                                                                                     <h3 class="product-name">
-                                                                                        <a th:href="@{'/freshfood/check?id='+${du.id}}" th:title="${du.name}">
+                                                                                        <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${du.id}}" th:title="${du.name}">
                                                                                             <span>[[${du.name}]]</span>
                                                                                         </a>
                                                                                     </h3>
                                                                                     <div class="price-box">
                                                                                         <div class="special-price">
-                                                                                            <span>[[${du.price}]]</span>
+                                                                                            <span>[[${du.PriceCurrency}]]</span>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>

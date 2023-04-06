@@ -2,30 +2,30 @@ package com.linh.service.imp;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import com.linh.entity.CityEntity;
-import com.linh.entity.CountryEntity;
-import com.linh.respository.InCityRes;
-import com.linh.service.InCityService;
+import com.linh.model.City;
+import com.linh.model.Country;
+import com.linh.respository.ICitytRepo;
+import com.linh.service.ICityService;
 
 @Service
-public class CityService implements InCityService{
+@AllArgsConstructor
+public class CityService implements ICityService {
 
-	@Autowired
-	private InCityRes city;
+	private final ICitytRepo cityRepository;
 	
 	@Override
-	public List<CityEntity> findByCountry(CountryEntity countryEntity) {
+	public List<City> findByCountry(Country countryEntity) {
 		// TODO Auto-generated method stub
-		return city.findByCountry(countryEntity);
+		return cityRepository.findByCountry(countryEntity);
 	}
 
 	@Override
-	public CityEntity findOneById(Integer id) {
+	public City findById(Integer id) {
 		// TODO Auto-generated method stub
-		return city.findOneById(id);
+		return cityRepository.findById(id).get();
 	}
 	
 	

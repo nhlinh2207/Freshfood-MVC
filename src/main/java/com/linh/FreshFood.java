@@ -15,7 +15,7 @@ public class FreshFood {
     @Bean
     CommandLineRunner run() {
     	return arg -> {
-    		System.out.println("hello Freshfood !");
+    		System.out.println("hello FreshFood !");
     	};
     }
 }

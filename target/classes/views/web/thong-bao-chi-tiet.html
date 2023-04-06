@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" th:href="@{/font/fontawesome/css/all.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/owl.carousel.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/index.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/responsive.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <title>Giỏ hàng</title>
+</head>
+<body>
+
+<header th:replace = "fragment::header"></header>
+
+<section class="bread_crumb py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <ul class="breadcrumb">
+                    <li>
+                        <a th:href="@{/freshfood/trang-chu}"><span ><i class="fa fa-home"></i> Trang chủ</span></a>
+                        <span><i class="fa fa-angle-right"></i></span>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)"> <span>Thông báo chi tiết</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section>
+    <section class="page mb-4">
+        <div class="policy d-flex justify-content-around" id="header-service-0" style="background-image: none;">
+            <div class="item-policy d-flex align-items-center">
+                <a href="javascript:void(0)">
+                    <img th:src="@{/image/services/policy1-0x0.png}" alt="Miễn phí vận chuyển" class="fa" />
+                </a>
+                <div class="info">
+                    <a href="javascript:void(0)"> Miễn phí vận chuyển</a>
+                    <p>
+                    <p>B&aacute;n k&iacute;nh 100 km</p>
+                    </p>
+                </div>
+            </div>
+            <div class="item-policy d-flex align-items-center">
+                <a href="javascript:void(0)">
+                    <img th:src="@{/image/services/policy2-0x0.png}" alt="Hỗ trợ 24/7" class="fa" />
+                </a>
+                <div class="info">
+                    <a href="javascript:void(0)">Hỗ trợ 24/7</a>
+                    <p>
+                    <p>Hotline:&nbsp;<a href="callto:19001009">0123456789</a></p>
+                    </p>
+                </div>
+            </div>
+            <div class="item-policy d-flex align-items-center">
+                <a href="javascript:void(0)">
+                    <img th:src="@{/image/services/policy3-0x0.png}" alt="Giờ làm việc" class="fa" />
+                </a>
+                <div class="info">
+                    <a href="javascript:void(0)"> Giờ làm việc</a>
+                    <p>
+                    <p>T2 - T7 Giờ h&agrave;nh ch&iacute;nh</p>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $('.header .header-content .header-service').append($('#header-service-0'));
+        </script>
+        <div class="container">
+            <div class="row">
+                <div class="clearfix"></div>
+                <div class="col-sm-12">
+                    <div style="padding: 20px 50px" class="bill-detail-content">
+                        <div style="font-size: 18px; margin-bottom: 10px">
+                            <b>Mã đơn hàng: </b><spna>[[${bill.id}]]</spna>
+                        </div>
+                        <div style="font-size: 18px; margin-bottom: 10px">
+                            <b>Tên người nhận hàng: </b><spna>[[${bill.receiverName}]]</spna>
+                        </div>
+                        <div style="font-size: 18px; margin-bottom: 10px">
+                            <b>Số điện thoại: </b><span>[[${bill.receiverPhoneNumber}]]</span>
+                        </div>
+                        <div style="font-size: 18px; margin-bottom: 10px">
+                            <b>Email: </b><span>[[${bill.user.email}]]</span>
+                        </div>
+                        <div style="font-size: 18px; margin-bottom: 10px">
+                            <b>Quốc gia: </b><span>[[${bill.address.country}]]</span>
+                        </div>
+                        <div style="font-size: 18px; margin-bottom: 10px">
+                            <b>Tỉnh/Thành phố: </b><span>[[${bill.address.city}]]</span>
+                        </div>
+                        <div style="font-size: 18px; margin-bottom: 10px">
+                            <b>Địa chỉ chi tiết: </b><span>[[${bill.address.fullAddress}]]</span>
+                        </div>
+                        <div style="font-size: 18px; margin-bottom: 10px">
+                            <b>Thời gian đặt hàng: </b><spna>[[${bill.orderTime}]]</spna>
+                        </div>
+                        <div style="font-size: 18px; margin-bottom: 10px">
+                            <b>Thời gian giao hàng: </b><spna>[[${bill.deliverTime}]]</spna>
+                        </div>
+                        <div class="table-responsive table-cart-content">
+                            <table id="message-detail-table" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <td class="text-center"><strong>Ảnh</strong></td>
+                                    <td class="text-center"><strong>Sản phẩm</strong></td>
+                                    <td class="text-center"><strong>Số lượng</strong></td>
+                                    <td class="text-center"><strong>Đơn giá</strong></td>
+                                    <td class="text-center"><strong>Thành tiền</strong></td>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-12 mt-4 d-flex align-items-center justify-content-center">
+                            <a th:href="@{'/freshfood/invoice/export/'+${bill.id}}">
+                                <img th:src="@{/image/logo/pdf.jpg}" width="70px">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section th:replace="fragment::footer-nav"></section>
+
+</section>
+
+<footer th:replace="fragment::footer"></footer>
+
+<script type = "text/javascript">
+    $(document).ready(function(){
+        loadbillitems();
+    });
+    function loadbillitems(){
+        var billid = "[[${bill.id}]]"
+        $.ajax({
+            url: '/freshfood/billitem/'+billid,
+            type: 'get',
+            datatype: 'json',
+            success: function(json){
+                let finalprice = 0;
+                let table = '';
+                for(let i = 0;i<json.length; i++){
+                    finalprice += Number(json[i]['tonggia']);
+                    var html = '<tr>'+
+                        '<td class="text-center">'+
+                        '<img src="'+json[i]['image']+'" title="'+json[i]['name']+'" alt="'+json[i]['name']+'" />'+
+                        '</td>'+
+                        '<td class="text-center">'+json[i]['name']+'</td>'+
+                        '<td class="text-center">'+json[i]['solg']+'</td>'+
+                        '<td class="text-center">'+json[i]['price']+'</td>'+
+                        '<td class="text-center">'+json[i]['tonggia']+'</td>'+
+                        '</tr>';
+                    table+=html;
+                }
+                $("#message-detail-table tbody").html(table);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    }
+
+    function updateStatus(){
+        var carId = "[[${bill.id}]]";
+        $.ajax({
+            url: '/freshfood/bill/updateStatus/'+carId,
+            type: 'put',
+            success: function(){
+                alert("Đã cập nhật trạng thái đơn hàng thành công !");
+                window.location='/freshfood/admin/don-hang';
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    }
+</script>
+
+<script type="text/javascript" th:src="@{/js/owl.carousel.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/all.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}"></script>
+
+</body>
+</html>

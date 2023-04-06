@@ -4,8 +4,6 @@
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="_csrf" data-th-content="${_csrf.token}" />
-   <meta name="_csrf_header" data-th-content="${_csrf.headerName}" />
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link type="text/css" rel="stylesheet" th:href="@{/font/fontawesome/css/all.css}"/>
    <link type="text/css" rel="stylesheet" th:href="@{/css/owl.carousel.min.css}"/>
@@ -36,7 +34,7 @@
                             <span><i class="fa fa-angle-right"></i></span>
                         </li>
                         <li>
-                            <a th:href="@{'/freshfood/check?id='+${product.id}}"> <strong>[[${product.name}]]</strong></a>
+                            <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${product.id}}"> <strong>[[${product.name}]]</strong></a>
                         </li>
                     </ul>
                 </div>
@@ -92,18 +90,18 @@
                             <div class="row">
                                <div class="col-sm-12 col-md-5">
                                     <div class="large-image">
-                                        <a th:href="${product.ProductExtraImagePath2}" data-rel="prettyPhoto[product-gallery]">
-                                            <img th:src="${product.ProductExtraImagePath2}" th:alt="${product.name}"/>
+                                        <a th:href="${product.ProductImagePath}" data-rel="prettyPhoto[product-gallery]">
+                                            <img th:src="${product.ProductImagePath}" th:alt="${product.name}"/>
                                         </a>
                                         <div class="hidden"></div>
                                     </div>
-                                    <div id="gallery_01" class="owl-carousel owl-theme thumbnail-product" data-xl-items="4" data-lg-items="4" data-md-items="4" data-sm-items="4" data-xs-items="4" data-xss-items="4" data-margin="10" data-nav="true">
-                                        <div class="item">
-                                            <a class="clearfix" href="#" data-image="img/cache/catalog/san-pham/man-335x315" data-zoom-image="img/cache/catalog/san-pham/mangc-56x56.jpg">
-                                                 <img th:src="${product.ProductExtraImagePath1}"/>
-                                            </a>
-                                        </div>
-                                    </div>
+<!--                                    <div id="gallery_01" class="owl-carousel owl-theme thumbnail-product" data-xl-items="4" data-lg-items="4" data-md-items="4" data-sm-items="4" data-xs-items="4" data-xss-items="4" data-margin="10" data-nav="true">-->
+<!--                                        <div class="item">-->
+<!--                                            <a class="clearfix" href="#" data-image="img/cache/catalog/san-pham/man-335x315" data-zoom-image="img/cache/catalog/san-pham/mangc-56x56.jpg">-->
+<!--                                                 <img th:src="${product.ProductExtraImagePath1}"/>-->
+<!--                                            </a>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                </div>
                                <div class="col-sm-12 col-md-7 details-pro">
                                     <h1 class="title-head">[[${product.name}]]</h1>
@@ -119,10 +117,10 @@
                                     </div>
                                     <div class="clearfix price-box">
                                         <span class="special-price"> 
-                                            <span class="price product-price">[[${product.price}]]</span>
+                                            <span class="price product-price">[[${product.PriceCurrency}]]</span>
                                         </span>
                                         <span class="old-price">
-                                            <del class="price product-price-old">[[${product.price}]]</del>
+                                            <del class="price product-price-old">[[${product.PriceCurrency}]]</del>
                                             <span class="discount">[[${100 - product.price / product.price * 100}]] %</span>
                                         </span>
                                     </div>
@@ -218,7 +216,7 @@
                     <div th:each="sp:${splq}" class="item">
                          <div class="product-box">
                             <div class="product-thumbnail flexbox-grid">
-                                <a th:href="@{'/freshfood/check?id='+${sp.id}}" th:title="${sp.name}">
+                                <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${sp.id}}" th:title="${sp.name}">
                                     <img th:src="${sp.ProductImagePath}" th:alt="${sp.name}" />
                                 </a>
                                 <div class="product-action d-none">
@@ -227,7 +225,7 @@
                                             <a class="btn-buy btn-cart btn btn-primary left-to add_to_cart" data-toggle="tooltip" title="Mua ngay" th:href="@{'/freshfood/checkout?id='+${sp.id}}">
                                                 <i class="fa fa-shopping-bag"></i>
                                             </a>
-                                            <a th:href="@{'/freshfood/check?id='+${sp.id}}" data-toggle="tooltip" title="Xem" class="btn-gray btn_view btn right-to">
+                                            <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${sp.id}}" data-toggle="tooltip" title="Xem" class="btn-gray btn_view btn right-to">
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                         </div>
@@ -236,7 +234,7 @@
                             </div>
                             <div class="product-info text-center">
                                 <h3 class="product-name">
-                                    <a th:href="@{'/freshfood/check?id='+${sp.id}}" th:title="${sp.name}">
+                                    <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${sp.id}}" th:title="${sp.name}">
                                         <span>[[${sp.name}]]</span>
                                     </a>
                                 </h3>
@@ -260,24 +258,24 @@
      $(document).ready(function(){
     	 $("#button-cart").click(function(){
      	    
-     	    	   var token = $('meta[name = "_csrf"]').attr('content');
-     	    	   var name = $('meta[name = "_csrf_header"]').attr('content');
+     	    	   // var token = $('meta[name = "_csrf"]').attr('content');
+     	    	   // var name = $('meta[name = "_csrf_header"]').attr('content');
     	           $.ajax(
     	              {
     	    	         url  : '/freshfood/cart/add',
     	    	         data : $('#product input[type="hidden"], #product input[type="text"]'),
     	    	         dataType : 'json',
     	    	         type: 'post',
-    	    	         beforeSend: function(xhr){
-    	    	        	 xhr.setRequestHeader(name, token);
-    	    	         },
+    	    	         // beforeSend: function(xhr){
+    	    	        	//  xhr.setRequestHeader(name, token);
+    	    	         // },
     	    	         success : function(json){
     	    		       if(json['success']){
     	    		          $('.alert').remove();
     	    		          $('.breadcrumb').after('<div class="mt-3 alert alert-success"><strong>'+ json['success'] +'</strong></div>');
        	    		          $('html, body').animate({scrollTop: 0}, 'slow');
        	    		          $('#cart .top-cart-content').load('/freshfood/cartitems ul#cart-slidebar');
-    	    		          $('.cartCount2').html('('+json['total']+')');
+                               $('.cartCount2').html('('+json['total']+')');
     	    		       }
     	    		      if(json['error']){
     	    			     $('.alert').remove();

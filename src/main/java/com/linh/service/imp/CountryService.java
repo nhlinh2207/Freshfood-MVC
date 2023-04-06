@@ -2,29 +2,29 @@ package com.linh.service.imp;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import com.linh.entity.CountryEntity;
-import com.linh.respository.InCountryRes;
-import com.linh.service.InCountryService;
+import com.linh.model.Country;
+import com.linh.respository.ICountryRepo;
+import com.linh.service.ICountryService;
 
 @Service
-public class CountryService implements InCountryService {
-    
-	@Autowired
-	private InCountryRes country;
+@AllArgsConstructor
+public class CountryService implements ICountryService {
+
+	private final ICountryRepo countryRepository;
 
 	@Override
-	public List<CountryEntity> findAll() {
+	public List<Country> findAll() {
 		// TODO Auto-generated method stub
-		return country.findAll();
+		return countryRepository.findAll();
 	}
 
 	@Override
-	public CountryEntity findOneById(Integer id) {
+	public Country findOneById(Integer id) {
 		// TODO Auto-generated method stub
-		return country.findOneById(id);
+		return countryRepository.findById(id).get();
 	}
 	
 	

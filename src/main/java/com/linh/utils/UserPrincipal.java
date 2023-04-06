@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.linh.utils.enums.AuthProvider;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.linh.entity.AuthProvider;
-import com.linh.entity.UserEntity;
+import com.linh.model.User;
 //UserDetails đc dùng để xây dựng đối tượng Authentication 
 //đc luu trong SecurityContextHolder
 //và UserDetailService dùng để tạo ra UserDetails dựa theo username đc đưa vào
@@ -17,9 +17,9 @@ public class UserPrincipal implements UserDetails{
 	
 	private static final long serialVersionUID = 1L;
 	
-	private UserEntity user;
+	private User user;
 	
-	public UserPrincipal(UserEntity user) {
+	public UserPrincipal(User user) {
 		this.user = user;
 	}
 	
@@ -47,7 +47,7 @@ public class UserPrincipal implements UserDetails{
 		return this.user.getEmail();
 	}
 	
-	public UserEntity getUser() {
+	public User getUser() {
 		return this.user;
 	}
 	
@@ -58,7 +58,7 @@ public class UserPrincipal implements UserDetails{
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
-		return this.user.getFullname();
+		return this.user.getFullName();
 	}
 
 	@Override
@@ -82,6 +82,7 @@ public class UserPrincipal implements UserDetails{
 	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
-		return this.user.getStatus() == 1;
+//		return this.user.getStatus().equals("ACTIVE");
+		return true;
 	}
 }

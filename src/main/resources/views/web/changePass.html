@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" th:href="@{/font/fontawesome/css/all.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/owl.carousel.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/index.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/responsive.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <title>Cập nhật mật khẩu</title>
+</head>
+<body>
+<header th:replace="fragment::header"></header>
+
+<section class="bread_crumb py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <ul class="breadcrumb">
+                    <li>
+                        <a th:href="@{/freshfood/trang-chu}"><span ><i class="fa fa-home"></i>Freshfood</span></a>
+                        <span><i class="fa fa-angle-right"></i></span>
+                    </li>
+                    <li>
+                        <a th:href="@{/freshfood/dang-nhap}">
+                            <strong >Đổi Password</strong>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="page">
+    <div class="container">
+        <div>
+            <div style="width: 50%">
+                <div class="well">
+                    <h2>Cập nhật password</h2>
+                    <p><strong>Vui lòng nhập password mới</strong></p>
+                    <form id="changePassForm" method="POST">
+                        <input type="hidden" th:value="${token}" id="reset-token"/>
+                        <div class="form-group">
+                            <label class="control-label" for="resetPassword1">
+                                Password mới
+                            </label>
+                            <input type="password" name="resetPassword1" id="resetPassword1" placeholder="Mật khẩu" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="resetPassword2">
+                                Nhập lại password
+                            </label>
+                            <input type="password" name="resetPassword2" id="resetPassword2" placeholder="Mật khẩu" class="form-control"/>
+                        </div>
+                        <div class="method">
+                            <div class="method-control mb-3">
+                                <input id = "changePassbtn" class="btn btn-primary" value="Xác nhận"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Modal add success -->
+            <div class="modal fade" id="changeSuccessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle2">Xác nhận</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div style="color: green; font-size: 20px; font-weight: bold" class="modal-body">
+                            Cập nhật password thành công !
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center align-items-center">
+                            <button type="button" class="ml-4 btn btn-primary" onclick="redirect()">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Add Failed Modal -->
+            <div class="modal fade" id="changeFailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle3">Xác nhận</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div style="color: red; font-size: 20px; font-weight: bold" class="modal-body">
+                            Không cập nhật thành công
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center align-items-center">
+                            <button type="button" class="ml-4 btn btn-primary" data-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section th:replace="fragment::footer-nav"></section>
+
+<footer th:replace="fragment::footer"></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/additional-methods.min.js"></script>
+<script type="text/javascript" th:src="@{/js/owl.carousel.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/all.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}"></script>
+<script>
+
+    $(function (){
+        // Valid registry form
+        let $valid = $("#changePassForm");
+
+        $.validator.addMethod("password", function(value, element){
+            return value.length >=6;
+        }, "Mật khẩu ít nhất 6 kí tự");
+
+        $.validator.addMethod("confirmPassword", function(value, element){
+            return value === $("#resetPassword1").val();
+        }, "Vui lòng nhập lại đúng mật khẩu");
+
+        if ($valid.length){
+            $valid.validate({
+                rules : {
+                    resetPassword1:{
+                        password: true,
+                        blank: false
+                    },
+                    resetPassword2:{
+                        confirmPassword: true,
+                        blank: false
+                    }
+                },
+            });
+        }
+
+        $('#changePassbtn').click(function (){
+            if($('#changePassForm').valid()){
+                let token = $('#reset-token').val();
+                let newPassword = $('#resetPassword1').val();
+                let data = {};
+                data['token'] = token;
+                data['newPassword'] = newPassword;
+                $.ajax({
+                    url : '/freshfood/api/change-password',
+                    data: JSON.stringify(data),
+                    method : 'PUT',
+                    dataType : 'json',
+                    contentType : 'application/json',
+                    success: function(json){
+                        if (json["success"]){
+                            let successModal = $('#changeSuccessModal');
+                            successModal.modal('show');
+                        }
+                        if (json["error"]){
+                            let failModal = $('#changeFailModal');
+                            failModal.modal('show');
+                        }
+                    },
+                    error: function(){
+                        $('.alert').remove();
+                        $('.breadcrumb').after('<div class="mt-3 alert alert-danger"><strong>'+ json +'</strong></div>');
+                        $(window).animate({scrollTop: 0}, 'slow');
+                    }
+                });
+            }
+        })
+    });
+
+    function redirect(){
+        window.location = "/freshfood/dang-nhap";
+    }
+
+</script>
+</body>
+</html>

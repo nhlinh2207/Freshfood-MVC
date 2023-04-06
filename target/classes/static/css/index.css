@@ -98,6 +98,7 @@ header {
         background: #FE9705;
         border-radius: 15px;
         line-height: 36px;
+        font-size: 12px !important;
         color: #FFFFFF;
     }
 }

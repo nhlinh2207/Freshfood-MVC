@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" th:href="@{/font/fontawesome/css/all.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/owl.carousel.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/index.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/responsive.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <title>Giỏ hàng</title>
+</head>
+<body>
+
+<header th:replace = "fragment::header"></header>
+
+<section class="bread_crumb py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <ul class="breadcrumb">
+                    <li>
+                        <a th:href="@{/frehfood/trang-chu}"><span ><i class="fa fa-home"></i> Trang chủ</span></a>
+                        <span><i class="fa fa-angle-right"></i></span>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)"> <span>Thông báo</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section>
+    <section class="page mb-4">
+        <div class="policy d-flex justify-content-around" id="header-service-0" style="background-image: none;">
+            <div class="item-policy d-flex align-items-center">
+                <a href="javascript:void(0)">
+                    <img th:src="@{/image/services/policy1-0x0.png}" alt="Miễn phí vận chuyển" class="fa" />
+                </a>
+                <div class="info">
+                    <a href="javascript:void(0)"> Miễn phí vận chuyển</a>
+                    <p>
+                    <p>B&aacute;n k&iacute;nh 100 km</p>
+                    </p>
+                </div>
+            </div>
+            <div class="item-policy d-flex align-items-center">
+                <a href="javascript:void(0)">
+                    <img th:src="@{/image/services/policy2-0x0.png}" alt="Hỗ trợ 24/7" class="fa" />
+                </a>
+                <div class="info">
+                    <a href="javascript:void(0)">Hỗ trợ 24/7</a>
+                    <p>
+                    <p>Hotline:&nbsp;<a href="callto:19001009">0123456789</a></p>
+                    </p>
+                </div>
+            </div>
+            <div class="item-policy d-flex align-items-center">
+                <a href="javascript:void(0)">
+                    <img th:src="@{/image/services/policy3-0x0.png}" alt="Giờ làm việc" class="fa" />
+                </a>
+                <div class="info">
+                    <a href="javascript:void(0)"> Giờ làm việc</a>
+                    <p>
+                    <p>T2 - T7 Giờ h&agrave;nh ch&iacute;nh</p>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $('.header .header-content .header-service').append($('#header-service-0'));
+        </script>
+        <div class="container">
+            <div class="row">
+                <div class="clearfix"></div>
+                <div class="col-sm-12">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h3 class="mt-3 mb-4">Giỏ hàng</h3>
+                        <button class="btn btn-primary" data-toggle="tooltip" title data-original-title="Refesh" onclick="loadcartitems()">Refresh</button>
+                    </div>
+                    <form>
+                        <div class="table-responsive table-cart-content">
+                            <table id="message-table" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <td class="text-center"><strong>Tiêu đề</strong></td>
+                                    <td class="text-center"><strong>Nội dung</strong></td>
+                                    <td class="text-center"><strong>Thời gian</strong></td>
+                                    <td class="text-center"><strong>Trạng thái</strong></td>
+                                    <td class="text-center"><strong>Xem chi tiết</strong></td>
+                                    <td class="text-center"><strong>Xóa</strong></td>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section th:replace="fragment::footer-nav"></section>
+
+</section>
+
+<footer th:replace="fragment::footer"></footer>
+
+<script type = "text/javascript">
+    $(document).ready(function(){
+        loadMessages();
+    });
+
+    function loadMessages(){
+        $.ajax({
+            url: '/frehfood/message/all',
+            type: 'get',
+            datatype: 'json',
+            success: function(json){
+                let table = '';
+                for(let i = 0;i<json.length; i++){
+                    var html = '<tr message-id="'+json[i]['id']+'">'+
+                        '<td class="text-center">'+
+                        '<a href="javascript:void(0)">'+json[i]['title']+'</a>'+
+                        '</td>'+
+                        '<td class="text-center">'+json[i]['content']+'</td>'+
+                        '<td class="text-center">'+json[i]['time']+'</td>'+
+                        '<td class="text-center">'+json[i]['status']+'</td>'+
+                        '<td class="text-center">'+
+                        '<button type="button" onclick="viewMessage('+json[i]['id']+')" data-toggle="tooltip" title class="btn btn-primary" data-original-title="Xem chi tiết">'+
+                        '<i class="fa fa-arrow-circle-right"></i>'+
+                        '</button>'+
+                        '</td>'+
+                        '<td class="text-center">'+
+                        '<button type="button" onclick="deleteMessage('+json[i]['id']+')" data-toggle="tooltip" title class="btn btn-danger" data-original-title="Xóa">'+
+                        '<i class="fa fa-times-circle"></i>'+
+                        '</button>'+
+                        '</td>'+
+                        '</tr>';
+                    table+=html;
+                }
+                $('#message-table tbody').html(table);
+            },
+            error: function(){
+                alert("Không load đơn hàng thành công !");
+            }
+        });
+    };
+
+    function deleteMessage(id){
+        $.ajax({
+            url: '/frehfood/message/delete/'+id,
+            type: 'delete',
+            dataType: 'json',
+            success: function(json){
+                loadMessages();
+            },
+            error: function(){
+                alert("Không xóa thành công !")
+            }
+        });
+    };
+
+    function viewMessage(id){
+        window.location = '/frehfood/thong-bao-chi-tiet/'+id;
+    }
+
+
+</script>
+
+<script type="text/javascript" th:src="@{/js/owl.carousel.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/all.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}"></script>
+
+</body>
+</html>

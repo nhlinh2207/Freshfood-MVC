@@ -1,260 +1,345 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="_csrf" data-th-content="${_csrf.token}" />
-   <meta name="_csrf_header" data-th-content="${_csrf.headerName}" />
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link type="text/css" rel="stylesheet" th:href="@{/font/fontawesome/css/all.css}"/>
-   <link type="text/css" rel="stylesheet" th:href="@{/css/owl.carousel.min.css}"/>
-   <link type="text/css" rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}"/>
-   <link type="text/css" rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
-   <link type="text/css" rel="stylesheet" th:href="@{/css/base.css}"/>
-   <link type="text/css" rel="stylesheet" th:href="@{/css/index.css}"/>
-   <link type="text/css" rel="stylesheet" th:href="@{/css/responsive.css}"/>
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-   <title>Đăng kí</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" th:href="@{/font/fontawesome/css/all.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/owl.carousel.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/index.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/responsive.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <title>Đăng kí</title>
 </head>
-<body class="account-register">
-   <header th:replace="fragment::header"></header>
-   
-   <section class="bread_crumb py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <ul class="breadcrumb">
-                        <li>
-                            <a th:href="@{/freshfood/trang-chu}"><span ><i class="fa fa-home"></i> Trang chủ</span></a>
-                            <span><i class="fa fa-angle-right"></i></span>
-                        </li>
-                        <li>
-                            <a th:href="@{/freshfood/dang-nhap}"> <span>Tài khoản</span></a>
-                            <span><i class="fa fa-angle-right"></i></span>
-                        </li>
-                        <li>
-                            <a th:href="@{/freshfood/dang-ki}"> <strong>Đăng ký</strong></a>
-                        </li>
-                    </ul>
-                </div>
+<body class="common-home">
+<header th:replace="fragment::header"></header>
+
+<section class="bread_crumb py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <ul class="breadcrumb">
+                    <li>
+                        <a th:href="@{/freshfood/trang-chu}"><span ><i class="fa fa-home"></i>Freshfood</span></a>
+                        <span><i class="fa fa-angle-right"></i></span>
+                    </li>
+                    <li>
+                        <a th:href="@{/freshfood/dang-ky}">
+                            <strong >Đăng ký</strong>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
-   </section>  
-   
-   <section>
-        <section class="page mb-4">
-            <div class="policy d-flex justify-content-around" id="header-service-0" style="background-image: none;">
-                <div class="item-policy d-flex align-items-center">
-                    <a href="javascript:void(0)">
-                        <img th:src="@{/image/services/policy1-0x0.png}" alt="Miễn phí vận chuyển" class="fa" />
-                    </a>
-                    <div class="info">
-                        <a href="javascript:void(0)"> Miễn phí vận chuyển</a>
-                        <p>
-                            <p>B&aacute;n k&iacute;nh 100 km</p>
-                        </p>
-                    </div>
-                </div>
-                <div class="item-policy d-flex align-items-center">
-                    <a href="javascript:void(0)">
-                        <img th:src="@{/image/services/policy2-0x0.png}" alt="Hỗ trợ 24/7" class="fa" />
-                    </a>
-                    <div class="info">
-                        <a href="javascript:void(0)">Hỗ trợ 24/7</a>
-                        <p>
-                            <p>Hotline:&nbsp;<a href="callto:19001009">0123456789</a></p>
-                        </p>
-                    </div>
-                </div>
-                <div class="item-policy d-flex align-items-center">
-                    <a href="javascript:void(0)">
-                        <img th:src="@{/image/services/policy3-0x0.png}" alt="Giờ làm việc" class="fa" />
-                    </a>
-                    <div class="info">
-                        <a href="javascript:void(0)"> Giờ làm việc</a>
-                        <p>
-                            <p>T2 - T7 Giờ h&agrave;nh ch&iacute;nh</p>
-                        </p>
-                    </div>
-                </div>
+    </div>
+</section>
+
+<section class="page mb-4">
+    <div class="policy d-flex justify-content-around" id="header-service-0" style="background-image: none;">
+        <div class="item-policy d-flex align-items-center">
+            <a href="javascript:void(0)">
+                <img th:src="@{/image/services/policy1-0x0.png}" alt="Miễn phí vận chuyển" class="fa" />
+            </a>
+            <div class="info">
+                <a href="javascript:void(0)"> Miễn phí vận chuyển</a>
+                <p>
+                <p>B&aacute;n k&iacute;nh 100 km</p>
+                </p>
             </div>
-            <script type="text/javascript">
-                $('.header .header-content .header-service').append($('#header-service-0'));
-            </script>
-            <div class="container">
-                <div class="row">
-                    <div class="clearfix"></div>
-                    <div class="alert alert-danger mb-4 col-sm-12 col-xs-12 col-md-12" th:if="${alert != null}">
-                        <i class="fa fa-exclamation-circle"></i>
-                        <sapn>[[${alert}]]</sapn>
-                    </div>
-                    <div id="content" class="col-sm-12 col-xs-12 col-md-12">
-                        <h1>Đăng ký tài khoản</h1>
-                        <p>Nếu bạn đã đăng ký tài khoản với chúng tôi, vui lòng <a href="login.html">đăng nhập</a>.</p>
-                        <form th:action="@{/freshfood/dang-ki}" th:object="${user}" method="POST" enctype="multipart/form-data" class="form-horizontal">
-                            <fieldset id="account">
-                                <legend>Chi tiết tài khoản</legend>
-                                <div class="form-group required" style="display: none">
-                                    <label class="col-sm-2 control-label">Nhóm Khách hàng</label>
-                                    <div class="col-sm-10">
-                                        <div class="rodio">
-                                            <label>
-                                                <input type="type="radio" name="customer_group_id" value="1" checked="checked""/>
-                                                Mặc định
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group required row">
-                                    <label th:class="${#fields.hasErrors('fullname')?'col-sm-12 col-md-2 control-label text-lg-right text-danger':'col-sm-12 col-md-2 control-label text-lg-right'}"  for="input-firstname">Họ và Tên</label>
-                                    <div class="col-sm-12 col-md-10">
-                                        <input th:field="*{fullname}" type="text" name="firstname" value="" placeholder="Họ & Tên đệm" id="input-firstname" class="form-control" />
-                                        <div class="text-danger" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}"></div>
-                                    </div>
-                                </div>
-                                <div class="form-group required row">
-                                    <label th:class="${#fields.hasErrors('fullname')?'col-sm-12 col-md-2 control-label text-lg-right text-danger':'col-sm-12 col-md-2 control-label text-lg-right'}" for="input-email">Email</label>
-                                    <div class="col-sm-12 col-md-10">
-                                        <input th:field="*{email}" type="email" name="email" value="" placeholder="Email" id="input-email" class="form-control" />
-                                        <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
-                                    </div>
-                                </div>
-                                <div class="form-group required row">
-                                    <label th:class="${#fields.hasErrors('fullname')?'col-sm-12 col-md-2 control-label text-lg-right text-danger':'col-sm-12 col-md-2 control-label text-lg-right'}" for="input-telephone">Điện thoại</label>
-                                    <div class="col-sm-12 col-md-10">
-                                        <input th:field="*{phone}" type="tel" name="telephone" value="" placeholder="Điện thoại" id="input-telephone" class="form-control" />
-                                        <div class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
-                                    </div>
-                                </div>
-                                <div class="form-group required row">
-                                    <label class="col-sm-12 col-md-2 control-label text-lg-right" for="input-fax">Số Fax</label>
-                                    <div class="col-sm-12 col-md-10">
-                                        <input th:field="*{fax}" type="text" name="fax" value="" placeholder="Số Fax" id="input-fax" class="form-control" />
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <fieldset id="address">
-                                <legend>Địa chỉ</legend>
-                                <div class="form-group row">
-                                    <label class="col-sm-12 col-md-2 control-label text-lg-right"  for="input-company">Công ty</label>
-                                    <div class="col-sm-12 col-md-10">
-                                        <input type="text" name="company" value="" placeholder="Công ty" id="input-company" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="form-group required row">
-                                    <label th:class="${#fields.hasErrors('fullname')?'col-sm-12 col-md-2 control-label text-lg-right text-danger':'col-sm-12 col-md-2 control-label text-lg-right'}" for="input-address">Địa chỉ</label>
-                                    <div class="col-sm-12 col-md-10">
-                                        <input th:field="*{address}" type="text" name="address" value="" placeholder="Địa chỉ" id="input-address" class="form-control" />
-                                        <div class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
-                                    </div>
-                                </div>
-                                <div class="form-group required row">
-                                    <label class="col-sm-12 col-md-2 control-label text-lg-right" for="input-city">Quận / Huyện</label>
-                                    <div class="col-sm-12 col-md-10">
-                                        <input th:field="*{province}" type="text" name="city" value="" placeholder="Quận / Huyện" id="input-city" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="form-group required row">
-                                    <label th:class="${#fields.hasErrors('fullname')?'col-sm-12 col-md-2 control-label text-lg-right text-danger':'col-sm-12 col-md-2 control-label text-lg-right'}" for="input-country">Quốc gia</label>
-                                    <div class="col-sm-12 col-md-10">
-                                        <select name="country_id" id="input-country" class="form-control">
-                                            <option value=""> --- Chọn --- </option>
-                                            <option th:each="i:${country}" th:value="${i.id}">[[${i.name}]]</option>
-                                        </select>  
-                                        <div class="text-danger" th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>
-                                    </div>                                                                                                                                                                                             
-                                </div>
-                                <div class="form-group required row">
-                                    <label th:class="${#fields.hasErrors('fullname')?'col-sm-12 col-md-2 control-label text-lg-right text-danger':'col-sm-12 col-md-2 control-label text-lg-right'}" for="input-zone">Tỉnh / TP</label>
-                                    <div class="col-sm-12 col-md-10">
-                                        <select name="zone_id" id="input-zone" class="form-control">
-                                            <option value=""> --- Chọn --- </option>
-                                        </select>
-                                        <div class="text-danger" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <fieldset>
-                                <legend>Mật khẩu</legend>
-                                <div class="form-group required row">
-                                    <label th:class="${#fields.hasErrors('fullname')?'col-sm-12 col-md-2 control-label text-lg-right text-danger':'col-sm-12 col-md-2 control-label text-lg-right'}" for="input-password">Mật khẩu</label>
-                                    <div class="col-sm-12 col-md-10">
-                                        <input th:value="${user.password}" th:field="*{password}" type="password" name="password" placeholder="Mật khẩu" id="input-password" class="form-control" />
-                                        <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
-                                    </div>
-                                </div>
-                                <div class="form-group required row">
-                                    <label class="col-sm-12 col-md-2 text-lg-right control-label" for="input-confirm">Mật khẩu xác nhận</label>
-                                    <div class="col-sm-12 col-md-10">
-                                        <input th:value="${user.password}" type="password" name="confirm" placeholder="Mật khẩu xác nhận" id="input-confirm" class="form-control" />
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <fieldset class="mb-3">
-                                <legend>Đăng ký nhận tin</legend>
-                                <div class="form-group row">
-                                    <label class="col-sm-12 col-md-2 text-lg-right control-label">Đăng ký nhận tin</label>
-                                    <div class="col-sm-12 col-md-10">
-                                        <label class="radio-inline">
-                                            <input type="radio" name="newsletter" value="1" />
-                                            Có
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio" name="newsletter" value="0" checked="checked" />
-                                            Không
-                                        </label>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <div class="button">
-                                <div class="float-right">
-                                    Tôi đã đọc và đồng ý với <a href="../information/information/agree1fda.html?information_id=3" class="agree"><b>Chính sách bảo mật</b></a>              
-                                    <input type="checkbox" name="agree" value="1" /> &nbsp;
-                                    <input type="submit" value="Tiếp tục" class="btn btn-primary" />
-                                </div>
+        </div>
+        <div class="item-policy d-flex align-items-center">
+            <a href="javascript:void(0)">
+                <img th:src="@{/image/services/policy2-0x0.png}" alt="Hỗ trợ 24/7" class="fa" />
+            </a>
+            <div class="info">
+                <a href="javascript:void(0)">Hỗ trợ 24/7</a>
+                <p>
+                <p>Hotline:&nbsp;<a href="callto:19001009">0123456789</a></p>
+                </p>
+            </div>
+        </div>
+        <div class="item-policy d-flex align-items-center">
+            <a href="javascript:void(0)">
+                <img th:src="@{/image/services/policy3-0x0.png}" alt="Giờ làm việc" class="fa" />
+            </a>
+            <div class="info">
+                <a href="javascript:void(0)"> Giờ làm việc</a>
+                <p>
+                <p>T2 - T7 Giờ h&agrave;nh ch&iacute;nh</p>
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $('.header .header-content .header-service').append($('#header-service-0'));
+    </script>
+    <div class="container">
+        <div class="row">
+            <div class="clearfix"></div>
+            <div id="content" class="col-sm-12 col-xs-12 col-md-12">
+                <h1>Đăng ký tài khoản</h1>
+                <p>Nếu bạn đã đăng ký tài khoản với chúng tôi, vui lòng <a th:href="@{/freshfood/dang-nhap}">đăng nhập</a>.</p>
+                <form th:action="@{/freshfood/dang-ky}" th:object="${registryRequest}" method="POST" id="registry-form" enctype="multipart/form-data" class="form-horizontal">
+                    <fieldset id="account">
+                        <legend>Chi tiết tài khoản</legend>
+                        <div class="form-group required row">
+                            <label th:class="${#fields.hasErrors('firstName')?'col-sm-12 col-md-2 control-label text-lg-right text-danger':'col-sm-12 col-md-2 control-label text-lg-right'}"  for="input-firstName">Họ</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input th:field="*{firstName}" type="text" name="firstName" placeholder="Họ" id="input-firstName" class="form-control" />
+                                <div class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
                             </div>
-                        </form>
+                        </div>
+                        <div class="form-group required row">
+                            <label th:class="${#fields.hasErrors('middleName')?'col-sm-12 col-md-2 control-label text-lg-right text-danger':'col-sm-12 col-md-2 control-label text-lg-right'}"  for="input-middleName">Tên đệm</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input th:field="*{middleName}" type="text" name="middleName" placeholder="Tên đệm" id="input-middleName" class="form-control" />
+                                <div class="text-danger" th:if="${#fields.hasErrors('middleName')}" th:errors="*{middleName}"></div>
+                            </div>
+                        </div>
+                        <div class="form-group required row">
+                            <label th:class="${#fields.hasErrors('lastName')?'col-sm-12 col-md-2 control-label text-lg-right text-danger':'col-sm-12 col-md-2 control-label text-lg-right'}"  for="input-lastName">Tên</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input th:field="*{lastName}" type="text" name="firstName" placeholder="Tên" id="input-lastName" class="form-control" />
+                                <div class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+                            </div>
+                        </div>
+                        <div class="form-group required row">
+                            <label th:class="${#fields.hasErrors('email')?'col-sm-12 col-md-2 control-label text-lg-right text-danger':'col-sm-12 col-md-2 control-label text-lg-right'}" for="input-email">Email</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input th:field="*{email}" type="email" name="email" placeholder="Email" id="input-email" class="form-control" />
+                                <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                            </div>
+                        </div>
+                        <div class="form-group required row">
+                            <label th:class="${#fields.hasErrors('phone')?'col-sm-12 col-md-2 control-label text-lg-right text-danger':'col-sm-12 col-md-2 control-label text-lg-right'}" for="input-phone">Điện thoại</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input th:field="*{phone}" type="tel" name="phone" placeholder="Điện thoại" id="input-phone" class="form-control" />
+                                <div class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+                            </div>
+                        </div>
+                        <div class="form-group required row">
+                            <label class="col-sm-12 col-md-2 control-label text-lg-right" for="input-fax">Số Fax</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input th:field="*{fax}" type="text" name="fax" placeholder="Số Fax" id="input-fax" class="form-control" />
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset id="address">
+                        <legend>Địa chỉ</legend>
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-md-2 control-label text-lg-right"  for="input-company">Công ty</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input th:field="*{company}" type="text" name="company" placeholder="Công ty" id="input-company" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group required row">
+                            <label th:class="${#fields.hasErrors('countryId')?'col-sm-12 col-md-2 control-label text-lg-right text-danger':'col-sm-12 col-md-2 control-label text-lg-right'}" for="input-country" >Quốc gia</label>
+                            <div class="col-sm-12 col-md-10">
+                                <select th:field="*{countryId}" name="countryId" id="input-country" class="form-control">
+                                    <option value="0"> --- Chọn --- </option>
+                                    <option th:each="i:${countryList}" th:value="${i.id}">[[${i.name}]]</option>
+                                </select>
+                                <div class="text-danger" th:if="${#fields.hasErrors('countryId')}" th:errors="*{countryId}"></div>
+                            </div>
+                        </div>
+                        <div class="form-group required row">
+                            <label th:class="${#fields.hasErrors('cityId')?'col-sm-12 col-md-2 control-label text-lg-right text-danger':'col-sm-12 col-md-2 control-label text-lg-right'}" for="input-city">Tỉnh / TP</label>
+                            <div class="col-sm-12 col-md-10">
+                                <select th:field="*{cityId}" name="cityId" id="input-city" class="form-control">
+                                </select>
+                                <div class="text-danger" th:if="${#fields.hasErrors('cityId')}" th:errors="*{cityId}"></div>
+                            </div>
+                        </div>
+                        <div class="form-group required row">
+                            <label th:class="${#fields.hasErrors('address')?'col-sm-12 col-md-2 control-label text-lg-right text-danger':'col-sm-12 col-md-2 control-label text-lg-right'}" for="input-address">Địa chỉ đầy đủ</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input th:field="*{address}" type="text" name="address" placeholder="Địa chỉ đày đủ" id="input-address" class="form-control" />
+                                <div class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Mật khẩu</legend>
+                        <div class="form-group required row">
+                            <label th:class="${#fields.hasErrors('password')?'col-sm-12 col-md-2 control-label text-lg-right text-danger':'col-sm-12 col-md-2 control-label text-lg-right'}" for="input-password">Mật khẩu</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input th:field="*{password}" type="password" name="password" placeholder="Mật khẩu" id="input-password" class="form-control" />
+                                <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                            </div>
+                        </div>
+                        <div class="form-group required row">
+                            <label class="col-sm-12 col-md-2 text-lg-right control-label" for="input-confirm">Mật khẩu xác nhận</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input type="password" name="confirm" placeholder="Mật khẩu xác nhận" id="input-confirm" class="form-control" />
+                                <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="mb-3">
+                        <legend>Đăng ký nhận tin</legend>
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-md-2 text-lg-right control-label">Đăng ký nhận tin</label>
+                            <div class="col-sm-12 col-md-10">
+                                <label class="radio-inline">
+                                    <input type="radio" name="newsletter" value="1" />
+                                    Có
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="newsletter" value="0" checked="checked" />
+                                    Không
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="button mt-4">
+                        <div class="float-right">
+                            Tôi đã đọc và đồng ý với <a href="javascript:void(0)" class="agree"><b>Chính sách bảo mật</b></a>
+                            <input type="checkbox" name="agree" value="1" /> &nbsp;
+                            <input type="button" onclick="submitRegistry()" value="Đăng kí" class="btn btn-primary" />
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
-        </section>
-        <script>
-            $("select[name='country_id']").change(function(){
-            	$.ajax({
-            		url: '/freshfood/api/city?id='+this.value,
-            		dataType  : 'json',
-            		beforeSend: function () {
-                        $("select[name='country_id']").after("<i class='fa fa-circle-o-notch fa-spin'></i>");
-                    },
-                    complete: function () {
-                        $(".fa-spin").remove();
-                    },
-                    success: function(json){
-                    	html='<option value="">---Trống---</option>';
-                    	$.each(json, function(index, c){
-                    		html += '<option value="'+c.name+'">'+c.name+'</option>';
-                    		// c là tên của mảng truyền trả về trong api
-                    	});
-                    	$('select[name="zone_id"]').html(html);
-                    },
-                    error: function(){
-                    	alert("không tìm đc city !")
-                    }
-            	});
+        </div>
+    </div>
+</section>
+
+<section th:replace="fragment::footer-nav"></section>
+
+<footer th:replace="fragment::footer"></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/additional-methods.min.js"></script>
+<script type="text/javascript" th:src="@{/js/owl.carousel.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/all.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}"></script>
+
+<script>
+    $(function (){
+        // Get city with country id
+        $("select[name='countryId']").change(function(){
+            $.ajax({
+                url: '/freshfood/api/city/'+this.value,
+                dataType  : 'json',
+                beforeSend: function () {
+                    $("select[name='countryId']").after("<i class='fa fa-circle-o-notch fa-spin'></i>");
+                },
+                complete: function () {
+                    $(".fa-spin").remove();
+                },
+                success: function(json){
+                    html='<option value="0"> --- Chọn --- </option>';
+                    $.each(json, function(index, city){
+                        html += '<option value="'+city.id+'">'+city.name+'</option>';
+                    });
+                    $('select[name="cityId"]').html(html);
+                },
+                error: function(){
+                    alert("không tìm đc thành phố !")
+                }
             });
-        </script>
-        <section th:replace="fragment::footer-nav"></section> 
-    </section>
-   
-   
-   <footer th:replace="fragment::footer"></footer>
-    
-   <script type="text/javascript" th:src="@{/js/owl.carousel.min.js}"></script> 
-   <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>          
-   <script type="text/javascript" th:src="@{/js/all.js}"></script>          
-   <script type="text/javascript" th:src="@{/js/index.js}"></script>
-   
+        });
+
+        // Valid registry form
+        let $valid = $("#registry-form");
+
+        $.validator.addMethod("phone", function(value, element){
+            return value.length >=10 && value.length <= 11;
+        }, "Số điện thoại không hợp lệ");
+
+        $.validator.addMethod("password", function(value, element){
+            return value.length >=6;
+        }, "Mật khẩu ít nhất 6 kí tự");
+
+        $.validator.addMethod("confirmPassword", function(value, element){
+            return value === $("#input-password").val();
+        }, "Vui lòng nhập lại đúng mật khẩu");
+
+        $.validator.addMethod("country", function(value, element){
+            return value !== "0";
+        }, "Vui lòng chọn quốc gia");
+
+        $.validator.addMethod("city", function(value, element){
+            return value !== "0";
+        }, "Vui lòng chọn thành phố");
+
+        if ($valid.length){
+            $valid.validate({
+                rules : {
+                    fullname:{
+                        required: true,
+                        blank: false
+                    },
+                    email:{
+                        required: true,
+                        email: true,
+                        blank: false
+                    },
+                    phone:{
+                        required: true,
+                        phone: true,
+                        number:true,
+                        blank: false
+                    },
+                    address:{
+                        required: true,
+                        blank: false
+                    },
+                    countryId:{
+                        country: true
+                    },
+                    cityId:{
+                        city: true,
+                    },
+                    password:{
+                        password: true,
+                        blank: false
+                    },
+                    confirm:{
+                        confirmPassword: true,
+                        blank: false
+                    }
+                },
+                messages:{
+                    fullname:{
+                        required: 'Vui lòng nhập họ và tên',
+                        lettersonly: 'Chỉ nhập kí tự chữ cái',
+                        blank: 'Vui lòng nhập họ và tên'
+                    },
+                    email:{
+                        required:'Vui lòng nhập email',
+                        email: 'Email không hợp lệ',
+                        blank:'Vui lòng nhập email'
+                    },
+                    phone:{
+                        required: 'Vui lòng nhập số điện thoại',
+                        number: 'Số điện thoại chỉ được chứa chữ số',
+                        blank: 'Vui lòng nhập số điện thoại'
+                    },
+                    address:{
+                        required: 'Vui lòng nhập đầy đủ địa chỉ',
+                        blank: 'Vui lòng nhập đầy đủ địa chỉ'
+                    },
+                }
+            });
+        }
+    })
+
+    function submitRegistry(){
+        if($("#registry-form").valid()){
+            $("#registry-form").submit();
+        }else{
+            $('.alert').remove();
+            $('.breadcrumb').after('<div class="mt-3 alert alert-danger"><strong>Vui lòng điền đầy đủ thông tin !</strong></div>');
+            $('html, body').animate({scrollTop: 0}, 'slow');
+        }
+    }
+</script>
 </body>
 </html>

@@ -1,9 +1,9 @@
 package com.linh.api.web;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -11,208 +11,138 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import com.linh.model.*;
+import com.linh.service.IMessageService;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
-import com.linh.entity.CartItemEntity;
-import com.linh.entity.ProductEntity;
-import com.linh.entity.UserEntity;
-import com.linh.service.InCartItemService;
-import com.linh.service.InProductService;
-import com.linh.service.InUserService;
+import com.linh.dto.CreateCartRequest;
+import com.linh.service.ICartItemService;
+import com.linh.service.ICartService;
+import com.linh.service.ICityService;
+import com.linh.service.ICountryService;
+import com.linh.service.IProductService;
+import com.linh.service.IUserService;
 
 @RestController
+@AllArgsConstructor
+@Slf4j
 public class CartAPI {
-	
-	@Autowired
-	private InProductService productservice;
-	
-	@Autowired
-	private InUserService userservice;
-	
-	@Autowired
-	private InCartItemService cartItemService;
-        
-	@GetMapping(value = "/freshfood/cart/total")
-	 public Map<String, String> getTotal(HttpServletRequest request){
-		Map<String, String> aMap = new HashMap<String, String>();
-		UserEntity userEntity = userservice.getLoggingInUsser();
-		int total = 0;
-        if (userEntity != null) {
-        	total = cartItemService.findByUser(userEntity).size();
-		}else {
-			HttpSession session = request.getSession();
-    		Map<Integer, Integer> cart = (Map<Integer, Integer>)session.getAttribute("cart");
-    		if (cart == null) {
-				total = 0;
-			}else {
-				total = cart.size();
-			}
-		}
-		
-        aMap.put("total", Integer.toString(total));
-        return aMap;
-	}
-	
-	@GetMapping(value = "/freshfood/cart/all")
-	public List<Map<String, String>> findall(HttpServletRequest request){
-		UserEntity userEntity = userservice.getLoggingInUsser();
-        List<Map<String, String>> all = new ArrayList<Map<String,String>>();
-		if (userEntity != null) {
-			 for (CartItemEntity c: cartItemService.findByUser(userEntity)) {
-					Map<String, String> i = new HashMap<String, String>();
-					i.put("image", c.getProduct().getProductExtraImagePath1());
-					i.put("name", c.getProduct().getName());
-					i.put("price", c.getProduct().getPrice().toString());
-					i.put("quantity",c.getQuantity().toString());
-					i.put("totalprice", Long.toString(c.getProduct().getPrice()*c.getQuantity()));
-					i.put("id",c.getId().toString());
-					i.put("proid", c.getProduct().getId().toString());
-					i.put("mainimg", c.getProduct().getProductImagePath());
-					all.add(i);
-			}
-		}else {
-			HttpSession session = request.getSession();
-			if (session.getAttribute("cart") == null) {
-				return all;
-			}
-    		Map<Integer, Integer> cart = (Map<Integer, Integer>)session.getAttribute("cart");
-    		int id = 0;
-    		for (Entry<Integer, Integer> item: cart.entrySet()) {
-				ProductEntity p = productservice.findOneById(item.getKey());
-				Map<String, String> i = new HashMap<String, String>();
-				i.put("image", p.getProductExtraImagePath1());
-				i.put("name", p.getName());
-				i.put("price", p.getPrice().toString());
-				i.put("quantity",item.getValue()+"");
-				i.put("totalprice", Long.toString(p.getPrice() * item.getValue()));
-				i.put("id", id+"");
-				id++;
-				i.put("proid", p.getId()+"");
-				i.put("mainimg", p.getProductImagePath());
-				all.add(i);
-			}
-		}
-       
-		return all;
-	}
-	
-	@PostMapping(value = "/freshfood/cart/add")
-	public Map<String, String> cart(HttpServletRequest request) {
-		
-		String idString = request.getParameter("pro-id");
-		String qu = request.getParameter("quantity");
-		Map<String, String> a = new HashMap<String, String>();
-		
-		a.put("id", idString);
-		a.put("quantity", qu);
-		
-		ProductEntity product = productservice.findOneById(Integer.parseInt(idString));
-		UserEntity userEntity = userservice.getLoggingInUsser();
-		
-		if (product.getQuantity() < Integer.parseInt(qu)) {
-			a.put("error", "Số lượng bạn đặt quá số lượng còn trong kho !");
-		    return a;
-		}
-		
-		if(userEntity != null) {
-			a.put("success", "Bạn đã thêm "+product.getName()+" thành công !");
-			cartItemService.save(product,userservice.getLoggingInUsser(), Integer.parseInt(qu));
-			int total = cartItemService.findByUser(userEntity).size();
-			a.put("total", Integer.toString(total));
-		}else {
-			HttpSession session = request.getSession();
+
+	private final ICountryService countryService;
+	private final ICityService cityService;
+	private final IUserService userService;
+	private final ICartService cartService;
+	private final ICartItemService cartDetailService;
+	private final IProductService fastFoodService;
+	private final IMessageService messageService;
+
+	@PostMapping(value = "/freshfood/bill/add")
+	public void add(@RequestBody CreateCartRequest request, HttpServletRequest req) {
+		User user = userService.getCurrentLoginUser();
+		Address address = Address.builder()
+				.cityId(cityService.findById(request.getCityId()).getId())
+				.countryId(countryService.findOneById(request.getCountryId()).getId())
+				.fullAddress(request.getDeliveryAddress())
+				.createTime(new Date())
+				.type("DELIVERY ADDRESS")
+				.build();
+
+		if (user != null){
+			List<Cart> carts = cartService.findByUser(user);
+			Cart currentCart = carts.get(carts.size() - 1);
+			currentCart.setAddress(address);
+			// Set cart for address
+			address.setCart(currentCart);
+			//Update current cart info
+			currentCart.setReceiverName(request.getReceiverName());
+			currentCart.setReceiverPhoneNumber(request.getReceiverPhone());
+			currentCart.setReceiverEmail(request.getReceiverEmail());
+			currentCart.setOrderTime(new Date());
+			currentCart.setTotalPrice((float) currentCart.getCartItems().stream().mapToInt(cItem -> cItem.getProduct().getPrice() * cItem.getQuantity()).sum());
+			currentCart.setStatus("UNSENT");
+			cartService.save(currentCart);
+			// Add new Cart
+			cartService.save(Cart.builder()
+					.user(user)
+					.status("UNSENT")
+					.build()
+			);
+		}else{
+			Cart newCart = Cart.builder()
+					.address(address)
+					.receiverName(request.getReceiverName())
+					.receiverPhoneNumber(request.getReceiverPhone())
+					.receiverEmail(request.getReceiverEmail())
+					.orderTime(new Date())
+					.status("UNSENT")
+					.build();
+			address.setCart(newCart);
+			newCart = cartService.save(newCart);
+			HttpSession session = req.getSession();
+			float totalPrice = 0;
 			Map<Integer, Integer> cart = (Map<Integer, Integer>)session.getAttribute("cart");
-			if (cart == null) {
-				cart = new LinkedHashMap<Integer, Integer>();
+			for (Entry<Integer, Integer> item : cart.entrySet()) {
+				CartItem cartDetail = new CartItem();
+				cartDetail.setProduct(fastFoodService.findById(item.getKey()));
+				cartDetail.setQuantity(item.getValue());
+				cartDetail.setCart(newCart);
+				cartDetailService.save(cartDetail);
+				totalPrice += cartDetail.getProduct().getPrice() * cartDetail.getQuantity();
 			}
-			cart.put(Integer.valueOf(idString), Integer.valueOf(qu));
-			session.setAttribute("cart", cart);
-		    a.put("success", "Bạn đã thêm "+product.getName()+" thành công !");
-		    a.put("total", cart.size()+"");
+			newCart.setTotalPrice(totalPrice);
+			cartService.save(newCart);
 		}
-		
-		return a;
+	}
+
+	@GetMapping(path = "/freshfood/bill/assignToStaff/{cartId}/{staffId}")
+	public Map<String, String> assignCartToStaff(@PathVariable Integer cartId, @PathVariable Integer staffId){
+		Map<String, String> result = new LinkedHashMap<>();
+		try {
+			cartService.assignToStaff(cartId, staffId);
+			result.put("success", "success");
+		}catch (Exception e){
+			result.put("success", "success");
+		}
+		return result;
 	}
 	
-	@DeleteMapping(value = "/freshfood/cart/delete/{id}")
-	public Map<String, String> delete(@PathVariable("id") Integer id, HttpServletRequest request) {
-		Map<String, String> a = new HashMap<String, String>();
-		UserEntity userEntity = userservice.getLoggingInUsser();
-		if (userEntity != null) {
-			CartItemEntity c = cartItemService.findOneById(id);
-			String name = c.getProduct().getName();
-			a.put("success", "Bạn đã xóa "+name+" khỏi giỏ hàng !");
-			cartItemService.delete(id);
-			int total = cartItemService.findByUser(userEntity).size();
-			a.put("total", total+"");
-		}else {
-			HttpSession session = request.getSession();
-    		Map<Integer, Integer> cart = (Map<Integer, Integer>)session.getAttribute("cart");
-			int index = 0;
-			for (Entry<Integer, Integer> e: cart.entrySet()) {
-				if (index == id) {
-					a.put("success","Bạn đã xóa "+productservice.findOneById(e.getKey()).getName()+" khỏi giỏ hàng !");
-				    cart.remove(e.getKey());
-				    break;
-				}
-				index++;
-			}
-		    session.setAttribute("cart", cart);
-		    int total = cart.size();
-			a.put("total", total+"");
+	@GetMapping(value = "/freshfood/bill/all/{type}")
+	public List<Map<String, String>> findall(@PathVariable String type){
+		List<Map<String, String>> maps = new ArrayList<Map<String,String>>();
+		List<Cart> carts = cartService.findAll(type);
+		for (int i = 0; i < carts.size(); i++) {
+			Map<String, String> cartItems = new LinkedHashMap<String, String>();
+			cartItems.put("name", carts.get(i).getReceiverName());
+			cartItems.put("phone", carts.get(i).getReceiverPhoneNumber());
+			cartItems.put("bill-id", carts.get(i).getId()+"");
+			List<CartItem> cartDetails =  cartDetailService.findByCart(carts.get(i));
+			Integer tongtien = 0;
+            for (CartItem item: cartDetails) {
+				tongtien += item.getProduct().getPrice() * item.getQuantity();
+			}			
+			cartItems.put("tongtien", tongtien+"");
+			cartItems.put("time", new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(carts.get(i).getOrderTime()));
+			maps.add(cartItems);
 		}
-		
-		return a;
+		return maps;
 	}
 	
-	@PutMapping(value = "/freshfood/cart/update/{id}/{val}")
-	public Map<String, String> update(@PathVariable("id") Integer id,
-			                          @PathVariable("val") Integer val,
-			                          HttpServletRequest request){
-		Map<String, String> aMap = new HashMap<String, String>();
-		if (userservice.getLoggingInUsser() != null) {
-			CartItemEntity cartItemEntity = cartItemService.findOneById(id);
-			if(val > cartItemEntity.getProduct().getQuantity()) {
-				aMap.put("error", "Quá số lượng hco phép !");
-			}else {
-				aMap.put("success", "Cập nhật thành công !");
-				cartItemEntity.setQuantity(val);
-				cartItemService.save(cartItemEntity.getProduct(), cartItemEntity.getUser(), cartItemEntity.getQuantity());
-			}
-		}else {
-			HttpSession session = request.getSession();
-    		Map<Integer, Integer> cart = (Map<Integer, Integer>)session.getAttribute("cart");
-		    int index = 0;
-		    for (Entry<Integer, Integer> e: cart.entrySet()) {
-				if (id == index) {
-					 if(val > productservice.findOneById(e.getKey()).getQuantity()) {
-						aMap.put("error", "Quá số lượng hco phép !");
-					 }else {
-						aMap.put("success", "Cập nhật thành công !");
-						cart.put(e.getKey(), val);
-					}
-					break;
-				}
-				index++;
-			}
-		    session.setAttribute("cart", cart);
+	@GetMapping(value = "/freshfood/billitem/{billid}")
+	public List<Map<String, String>> findallbillitem(@PathVariable("billid") Integer billid){
+		List<Map<String, String>> res = new ArrayList<>();
+		List<CartItem> cartDetails =  cartDetailService.findByCart(cartService.findOneById(billid));
+		for (CartItem item : cartDetails) {
+			Map<String, String> a = new LinkedHashMap<String, String>();
+			Product p = item.getProduct();
+			a.put("image", p.getProductExtraImagePath1());
+			a.put("name",p.getName());
+			a.put("price", p.getPrice()+"");
+			a.put("solg", item.getQuantity()+"");
+			a.put("tonggia", (item.getQuantity() * p.getPrice())+"");
+		    res.add(a);
 		}
-		
-		return aMap;
-	}
-	
-	@PostMapping(value = "/freshfood/cart/order")
-	public Integer[] order(@RequestBody Integer ids[]) {
-	     for(Integer id: ids) {
-	    	System.out.println(id+" ");
-	     }
-	     return ids;
+		return res;
 	}
 }

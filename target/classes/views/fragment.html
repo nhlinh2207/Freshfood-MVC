@@ -10,7 +10,7 @@
    <link th:href="@{/css/base.css}" rel="stylesheet" />
    <link th:href="@{/css/index.css}" rel="stylesheet" />
    <link th:href="@{/css/responsive.css}" rel="stylesheet" />
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
   <!-- HEADER CHO WEB -->
@@ -125,7 +125,7 @@
                                 <span> -</span>
                             </li>
                             <li sec:authorize="isAnonymous()">
-                                <a th:href="@{/freshfood/dang-ki}">[[#{app.registry}]]</a>
+                                <a th:href="@{/freshfood/dang-ky}">[[#{app.registry}]]</a>
                             </li>
                             <li sec:authorize="isAuthenticated()">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">[[#{app.welcome}]] [[${#request.userPrincipal.principal.username}]]</a>    
@@ -133,9 +133,11 @@
                                     <li class="dropdown-item">
                                        <a href="/freshfood/profile">[[#{app.profile}]]</a>
                                     </li>
+                                    <li class="dropdown-item text-center">
+                                        <a class="text-center" href="/freshfood/thong-bao">Thông báo</a>
+                                    </li>
                                     <li class="dropdown-item">
                                        <form action="/logout" method="POST">
-                                           <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                                            <input class="w-100" style="background-color:none" type="submit" th:value="#{app.logout}"/>
                                        </form>
                                     </li>

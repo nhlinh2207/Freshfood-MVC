@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" th:href="@{/font/fontawesome/css/all.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/owl.carousel.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/index.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/responsive.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <title>Quên mật khẩu</title>
+</head>
+<body class="common-home">
+<header th:replace="fragment::header"></header>
+
+<section class="bread_crumb py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <ul class="breadcrumb">
+                    <li>
+                        <a th:href="@{/freshfood/trang-chu}"><span ><i class="fa fa-home"></i>Freshfood</span></a>
+                        <span><i class="fa fa-angle-right"></i></span>
+                    </li>
+                    <li>
+                        <a th:href="@{/freshfood/quen-pass}">
+                            <strong >Quên Password</strong>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="page">
+    <div class="container">
+        <div class="row">
+            <div class="clearfix"></div>
+            <div class="col-sm-12 col-md-6">
+                <div class="well">
+                    <h2>Khách đặt phòng mới</h2>
+                    <p><strong>Đăng kí</strong></p>
+                    <p>
+                        Bằng việc tạo tài khoản bạn có thể đặt phòng nhanh hơn và
+                        theo dõi trạng thái các phòng bạn đã đặt
+                    </p>
+                    <a class="btn btn-primary" th:href="@{/registry}">Tiếp tục</a>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="well">
+                    <h2>Quên password</h2>
+                    <p><strong>Vui lòng nhập email để có thể lấy lại password</strong></p>
+                    <form method="POST">
+                        <div class="form-group">
+                            <label class="control-label" for="reset-email">
+                                Địa chỉ email
+                            </label>
+                            <input type="text" name="email" id="reset-email" placeholder="Địa chỉ email" class="form-control" required/>
+                        </div>
+                        <div class="method">
+                            <div class="method-control mb-3">
+                                <input onclick="resetPass()" class="btn btn-primary" value="Xác nhận"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Modal add success -->
+            <div class="modal fade" id="resetSuccessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle2">Xác nhận</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div style="color: green; font-size: 20px; font-weight: bold" class="modal-body">
+                            Vui lòng kiểm tra email để có thể tạo password mới
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center align-items-center">
+                            <button type="button" class="ml-4 btn btn-primary" data-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Add Failed Modal -->
+            <div class="modal fade" id="resetFailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle3">Xác nhận</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div style="color: red; font-size: 20px; font-weight: bold" class="modal-body">
+                            Email không chính xác
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center align-items-center">
+                            <button type="button" class="ml-4 btn btn-primary" data-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section th:replace="fragment::footer-nav"></section>
+
+<footer th:replace="fragment::footer"></footer>
+
+<script type="text/javascript" th:src="@{/js/owl.carousel.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/all.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}"></script>
+<script>
+    function resetPass(){
+        let email = $('#reset-email').val();
+        let data = {};
+        data['email'] = email;
+        $.ajax({
+            url : '/frehfood/api/send-reset-mail',
+            data: JSON.stringify(data),
+            method : 'PUT',
+            dataType : 'json',
+            contentType : 'application/json',
+            success: function(json){
+                if (json["success"]){
+                    let successModal = $('#resetSuccessModal');
+                    successModal.modal('show');
+                }
+                if (json["error"]){
+                    let failModal = $('#resetFailModal');
+                    failModal.modal('show');
+                }
+            },
+            error: function(){
+                $('.alert').remove();
+                $('.breadcrumb').after('<div class="mt-3 alert alert-danger"><strong>'+ json +'</strong></div>');
+                $(window).animate({scrollTop: 0}, 'slow');
+            }
+        });
+    }
+</script>
+</body>
+</html>

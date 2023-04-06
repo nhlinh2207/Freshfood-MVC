@@ -3,31 +3,27 @@ package com.linh.api.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.linh.entity.CityEntity;
-import com.linh.respository.InCityRes;
-import com.linh.respository.InCountryRes;
+import com.linh.model.City;
+import com.linh.respository.ICitytRepo;
+import com.linh.respository.ICountryRepo;
 
 @RestController
+@AllArgsConstructor
 public class CityAPI {
-	
-	@Autowired
-	private InCityRes city;
-	
-	@Autowired
-	private InCountryRes country;
+
+	private final ICitytRepo city;
+	private final ICountryRepo country;
     
-	@GetMapping(value = "/freshfood/api/city")
-	public List<CityEntity> getcity(HttpServletRequest request) {
-		Integer countryid = Integer.parseInt(request.getParameter("id"));
-		List<CityEntity> c = new ArrayList<CityEntity>();
-		for(CityEntity i : city.findByCountry(country.findOneById(countryid))) {
-			  CityEntity e = new CityEntity(i.getId(), i.getName());
+	@GetMapping(value = "/freshfood/api/city/{id}")
+	public List<City> getCity(@PathVariable Integer id) {
+		List<City> c = new ArrayList<City>();
+		for(City i : city.findByCountry(country.findById(id).get())) {
+			  City e = City.builder().id(i.getId()).name(i.getName()).build();
 			  c.add(e);
 		}
 		return c;

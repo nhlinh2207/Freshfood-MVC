@@ -4,65 +4,65 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.linh.model.Product;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.linh.entity.CategoryEntity;
-import com.linh.entity.ProductEntity;
-import com.linh.respository.InProductRes;
-import com.linh.service.InProductService;
+import com.linh.model.Category;
+import com.linh.respository.IProductRepo;
+import com.linh.service.IProductService;
 
 @Service
-public class ProductService implements InProductService{
+@AllArgsConstructor
+public class ProductService implements IProductService {
 
-	@Autowired
-	private InProductRes productres;
+	private final IProductRepo productRepo;
 	
 	@Override
 	@Transactional
-	public ProductEntity save(ProductEntity productEntity) {
+	public Product save(Product product) {
 		// TODO Auto-generated method stub
-		return productres.save(productEntity);
+		return productRepo.save(product);
 	}
 
 	@Override
-	public ProductEntity findOneById(Integer id) {
+	public Product findById(Integer id) {
 		// TODO Auto-generated method stub
-		return productres.findOneById(id);
+		return productRepo.findById(id).get();
 	}
 
 	@Override
-	public List<ProductEntity> findAll() {
+	public List<Product> findAll() {
 		// TODO Auto-generated method stub
-		return productres.findAll();
+		return productRepo.findAll();
 	}
 
 	@Override
-	public List<ProductEntity> findByCategory(CategoryEntity categoryEntity) {
+	public List<Product> findByCategory(Category category) {
 		// TODO Auto-generated method stub
-		return productres.findByCategory(categoryEntity);
+		return productRepo.findByCategory(category);
 	}
 
 	@Override
-	public Page<ProductEntity> findAll(int pagenumber,String search, String sortBy, String sortDir) {
+	public Page<Product> findAll(int pageNumber, String search, String sortBy, String sortDir) {
 		// TODO Auto-generated method stub
-		Sort sort = null;
+		Sort sort;
 		if(sortBy.equals("creTime")) sort = Sort.by("createTime");
 		else if(sortBy.equals("name")) sort = Sort.by("name");	
 		else sort = Sort.by("price");
 		sort = (sortDir.equals("asc")) ? sort.ascending() : sort.descending();
-		Pageable pageable = PageRequest.of(pagenumber -1 , 12, sort);
-		Page<ProductEntity> findall = (search == null) ? productres.findAll(pageable) : productres.findAll(search, pageable);
-		return findall;
+		Pageable pageable = PageRequest.of(pageNumber -1 , 12, sort);
+		Page<Product> findAll = (search == null) ? productRepo.findAll(pageable) : productRepo.findAll(search, pageable);
+		return findAll;
 	}
 
 	@Override
 	public void delete(Integer id) {
-		productres.deleteById(id);
+		productRepo.deleteById(id);
 	}
  
 }

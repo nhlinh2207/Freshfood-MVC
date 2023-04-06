@@ -1,22 +1,22 @@
 package com.linh.service.imp;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import com.linh.entity.RoleEntity;
-import com.linh.respository.InRoleRes;
-import com.linh.service.InRoleService;
+import com.linh.model.Role;
+import com.linh.respository.IRoleRepository;
+import com.linh.service.IRoleService;
 
 @Service
-public class RoleService implements InRoleService {
+@AllArgsConstructor
+public class RoleService implements IRoleService {
 
-	@Autowired
-	private InRoleRes role;
+	private final IRoleRepository roleRepository;
 	
 	@Override
-	public RoleEntity findOneByName(String name) {
+	public Role findOneByName(String name) {
 		// TODO Auto-generated method stub
-		return role.findOneByName(name);
+		return roleRepository.findByName(name);
 	}
 
 }

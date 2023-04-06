@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+	<title>SB Admin 2 - Dashboard</title>
+
+	<!-- Custom fonts for this template-->
+	<link th:href="@{/font/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+		  rel="stylesheet">
+
+	<!-- Custom styles for this template-->
+	<link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<title>Chi tiết đơn hàng Admin</title>
+</head>
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+	<!-- Sidebar -->
+	<ul th:replace="fragment-staff::sidebar-staff"></ul>
+	<!-- End of Sidebar -->
+
+	<!-- Content Wrapper -->
+	<div id="content-wrapper" class="d-flex flex-column">
+
+		<!-- Main Content -->
+		<div id="content">
+
+			<!-- Topbar -->
+			<nav th:replace="fragment-staff::topbar-staff"></nav>
+			<!-- End of Topbar -->
+
+			<!-- Begin Page Content -->
+			<div class="container-fluid">
+
+				<!-- Page Heading -->
+				<div class="breadcrumbs" id="breadcrumbs">
+					<script type="text/javascript">
+						try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+					</script>
+
+					<ul class="breadcrumb">
+						<li>
+							<i class="ace-icon fa fa-home home-icon"></i>
+							<a th:href="@{/freshfood/admin/trang-chu}">Freshfood </a>
+							<span><i class="fa fa-angle-right"></i></span>
+						</li>
+						&nbsp;<li class="active">Chi tiết đơn hàng</li>
+					</ul><!-- /.breadcrumb -->
+				</div>
+
+				<!-- Content Row -->
+				<div class="card shadow my-4">
+					<div class="text-center">
+						<div style="margin-top: 20px; margin-bottom: 20px">
+							<h3>Chi tiết đơn hàng: [[${bill.id}]]</h3>
+						</div>
+					</div>
+                     <div class="main-content">
+                         <div class="content-inner">
+							 <div style="padding: 20px 50px" class="bill-detail-content">
+								 <div style="font-size: 18px; margin-bottom: 10px">
+									 <b>Mã đơn hàng: </b><spna>[[${bill.id}]]</spna>
+								 </div>
+								 <div style="font-size: 18px; margin-bottom: 10px">
+									 <b>Tên khách hàng: </b><spna>[[${bill.receiverName}]]</spna>
+								 </div>
+								 <div style="font-size: 18px; margin-bottom: 10px">
+									 <b>Số điện thoại: </b><span>[[${bill.receiverPhoneNumber}]]</span>
+								 </div>
+								 <div style="font-size: 18px; margin-bottom: 10px">
+									 <b>Email: </b><span>[[${bill.receiverEmail}]]</span>
+								 </div>
+								 <div style="font-size: 18px; margin-bottom: 10px">
+									 <b>Quốc gia: </b><span>[[${bill.address.countryId}]]</span>
+								 </div>
+								 <div style="font-size: 18px; margin-bottom: 10px">
+									 <b>Tỉnh/Thành phố: </b><span>[[${bill.address.cityId}]]</span>
+								 </div>
+								 <div style="font-size: 18px; margin-bottom: 10px">
+									 <b>Địa chỉ chi tiết: </b><span>[[${bill.address.fullAddress}]]</span>
+								 </div>
+								 <div style="font-size: 18px; margin-bottom: 10px">
+									 <b>Thời gian đặt hàng: </b><spna>[[${bill.orderTime}]]</spna>
+								 </div>
+								 <div th:if='${bill.status.equals("SENT")}' style="font-size: 18px; margin-bottom: 10px">
+									 <b>Thời gian giao hàng: </b><spna>[[${bill.deliverTime}]]</spna>
+								 </div>
+								 <div class="table-responsive table-cart-content">
+									 <table id="bill-table" class="table table-bordered">
+										 <thead>
+										 <tr>
+											 <td class="text-center"><strong>Ảnh</strong></td>
+											 <td class="text-center"><strong>Sản phẩm</strong></td>
+											 <td class="text-center"><strong>Số lượng</strong></td>
+											 <td class="text-center"><strong>Đơn giá</strong></td>
+											 <td class="text-center"><strong>Tổng tiền</strong></td>
+										 </tr>
+										 </thead>
+										 <tbody>
+
+										 </tbody>
+									 </table>
+								 </div>
+							 </div>
+						 </div>
+					 </div>
+					<div class="row mb-3" style="padding: 20px 50px">
+						<div class="col-sm-12 col-lg-6">
+							<div class="form-group required d-flex justify-content-center align-items-center">
+								<div class="mx-3">
+									<input style="width: 40px; height: 40px" class="form-control" type="checkbox" id="sent-success"/>
+								</div>
+								<label for="sent-success"><strong>Giao hàng thành công</strong></label>
+							</div>
+						</div>
+						<div class="col-sm-12 col-lg-6">
+							<table id="bill-price" class="table table-bordered">
+
+							</table>
+						</div>
+					</div>
+					<div class="text-center my-3">
+						<button onclick="updateStatus()" class="btn btn-primary">Xác nhận</button>
+					</div>
+				</div>
+
+
+				<!-- Content Row -->
+
+
+				<!-- Content Row -->
+
+
+			</div>
+			<!-- /.container-fluid -->
+
+		</div>
+		<!-- End of Main Content -->
+
+		<!-- Footer -->
+		<footer th:replace="fragment-staff::footer-staff"></footer>
+		<!-- End of Footer -->
+
+	</div>
+	<!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+<div th:replace="fragment-staff::scroll-top-staff"></div>
+
+<!-- Bootstrap core JavaScript-->
+<script type="text/javascript" th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script type="text/javascript" th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script type="text/javascript" th:src="@{/js/sb-admin-2.min.js}"></script>
+
+<!-- Page level plugins -->
+<script type="text/javascript" th:src="@{/js/Chart.min.js}"></script>
+
+<!-- Page level custom scripts -->
+<script type="text/javascript" th:src="@{/js/chart-area-demo.js}"></script>
+<script type="text/javascript" th:src="@{/js/chart-pie-demo.js}"></script>
+	
+	<script type = "text/javascript">
+       $(document).ready(function(){
+    	   loadbillitems();
+       });
+       function loadbillitems(){
+    	   var billid = "[[${bill.id}]]"
+    	   $.ajax({
+    		   url: '/freshfood/billitem/'+billid,
+    		   type: 'get',
+    		   datatype: 'json',
+    	       success: function(json){
+    	    	   let finalprice = 0;
+    			   let table = '';
+    			   for(let i = 0;i<json.length; i++){
+    				   finalprice += Number(json[i]['tonggia']);
+    				   var html = '<tr>'+
+			           '<td class="text-center">'+
+			                '<img src="'+json[i]['image']+'" title="'+json[i]['name']+'" alt="'+json[i]['name']+'" />'+
+			           '</td>'+
+			           '<td class="text-center">'+json[i]['name']+'</td>'+
+			           '<td class="text-center">'+json[i]['solg']+'</td>'+
+			           '<td class="text-center">'+json[i]['price']+'</td>'+
+			           '<td class="text-center">'+json[i]['tonggia']+'</td>'+
+			        '</tr>';
+			        table+=html;  
+    			   }
+    			   $("#bill-table tbody").html(table);
+    			   finalpricetable = '<tbody>'+
+                         '<tr>'+
+                               '<td><b>Thành tiền</b></td>'+
+                               '<td><strong>'+finalprice+'</strong></td>'+
+                         '</tr>'+
+                         '<tr>'+
+                               '<td><b>Phí vận chuyển</b></td>'+
+                               '<td><strong>0</strong></td>'+
+                         '</tr>'+
+                         '<tr>'+
+                               '<td><b>Tổng cộng</b></td>'+
+                               '<td><strong>'+finalprice+'</strong></td>'+
+                         '</tr>'+
+                     '</tbody>';
+               $("#bill-price").html(finalpricetable);
+    			   
+    	       },
+    	       error: function (xhr, ajaxOptions, thrownError) {
+	            	 alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+	            }
+    	   });
+       }
+
+	   function updateStatus(){
+		   swal({
+			   title: "Xác nhận",
+			   text: "Xác nhận giao thành công đơn hàng [[${bill.id}]] ?",
+			   icon: "warning",
+			   buttons: true,
+			   dangerMode: true,
+		   }).then((confirm) => {
+			   if (confirm) {
+				   var cartId = "[[${bill.id}]]";
+				   $.ajax({
+					   url: '/freshfood/staff/cart/updateStatus/'+cartId,
+					   type: 'put',
+					   success: function(){
+						   swal({
+							   title: "Xác nhận",
+							   text: "Xác nhận đơn hàng [[${bill.id}]] ?",
+							   icon: "success",
+							   buttons: true,
+							   dangerMode: true,
+						   }).then((ok) => {
+							   if(ok) {
+								   window.location='/freshfood/staff/don-hang-chua-giao';
+							   }
+						   })
+					   },
+					   error: function (xhr, ajaxOptions, thrownError) {
+						   alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					   }
+				   });
+			   } else {
+				   swal("Bạn chưa hoàn thành xác nhận");
+			   }
+		   });
+	   }
+    </script>
+</body>
+</html>

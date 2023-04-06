@@ -13,15 +13,14 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import com.linh.entity.AuthProvider;
-import com.linh.entity.UserEntity;
-import com.linh.service.InUserService;
+import com.linh.model.User;
+import com.linh.service.IUserService;
 
 @Component
 public class OauthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 
 	@Autowired
-	private InUserService userservice;
+	private IUserService userService;
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -30,11 +29,11 @@ public class OauthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 		OauthUserPrincipal oauthuser = (OauthUserPrincipal) authentication.getPrincipal();
 		String email = oauthuser.getEmail();
 		String name = oauthuser.getName();
-		UserEntity user = userservice.findOneByEmail(email);
+		User user = userService.findByEmail(email);
 		if (user == null) {
 			System.out.println("Chưa có");
 		}else {
-		    userservice.updateUser(email, name, AuthProvider.GOOGLE);
+//		    userservice.updateUser(email, name, AuthProvider.GOOGLE);
 		}
 		super.onAuthenticationSuccess(request, response, authentication);
 	}

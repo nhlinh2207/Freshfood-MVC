@@ -1,87 +1,113 @@
 package com.linh.controller.admin;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.linh.model.Cart;
+import com.linh.model.Product;
+import com.linh.respository.ICartRepo;
+import com.linh.service.ICartService;
+import com.linh.service.IUserService;
+import com.linh.utils.MoneyFormatUtil;
+import com.linh.utils.PDFExporter;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.linh.entity.ProductEntity;
-import com.linh.service.InBillService;
-import com.linh.service.InCategoryService;
-import com.linh.service.InProductService;
+import com.linh.service.ICategoryService;
+import com.linh.service.IProductService;
 import com.linh.utils.FileUploadUtils;
 
 @Controller(value = "Controller_Of_Admin")
 @RequestMapping(value = "/freshfood")
+@AllArgsConstructor
+@Slf4j
 public class HomeController {
 
-	@Autowired
-	private InProductService productservice;
-	
-	@Autowired
-	private InCategoryService categoryservice;
-	
-	@Autowired
-	private InBillService billservice;
-	
+	private final IProductService fastFoodService;
+	private final ICategoryService categoryService;
+	private final ICartService cartService;
+	private final IUserService userService;
+	private final ICartRepo cartRepo;
 	
 	@RequestMapping(value = "/admin/trang-chu", method = RequestMethod.GET)
-	public ModelAndView trangchu() {
+	public ModelAndView trangchu() throws ParseException {
 		ModelAndView mv = new ModelAndView("admin/trang-chu-admin");
+		SimpleDateFormat smf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		Date currentDate = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(currentDate);
+		int currentMonth = cal.get(Calendar.MONTH)+1;
+		int currentYear = cal.get(Calendar.YEAR);
+		Date startDate = smf.parse("01/01/"+currentYear+" 00:00:00");
+		Date endDate = smf.parse("31/12/"+currentYear+" 23:59:59");
+		List<Cart> carts = cartRepo.findByYear(startDate, endDate);
+		int totalMoneyInYear = 0, totalMoneyInMonth = 0;
+		for (Cart c : carts){
+			totalMoneyInYear += c.getTotalPrice();
+			cal.setTime(c.getOrderTime());
+			int month = cal.get(Calendar.MONTH)+1;
+			if (month == currentMonth)
+				totalMoneyInMonth += c.getTotalPrice();
+		}
+
+		int totalUser = userService.findAll().size();
+		mv.addObject("totalMoneyInYear", MoneyFormatUtil.format(totalMoneyInYear));
+		mv.addObject("totalMoneyInMonth", MoneyFormatUtil.format(totalMoneyInMonth));
+		mv.addObject("totalUser", totalUser);
 		return mv;
 	}
 	
 	@GetMapping(value = "/admin/san-pham")
 	public String sanpham(Model model, 
-			              @RequestParam(name = "page", required = false) Integer pagenumber, 
+			              @RequestParam(name = "page", required = false) Integer pageNumber,
 			              @RequestParam(name = "search", required = false) String search) {
-		int curentpage = (pagenumber == null) ? 1: pagenumber;
-		Page<ProductEntity> pages = productservice.findAll(curentpage, search, "creTime", "asc");
-		List<ProductEntity> productlist = pages.getContent();
-		model.addAttribute("productList", productlist);
+		int currentPage = (pageNumber == null) ? 1: pageNumber;
+		Page<Product> pages = fastFoodService.findAll(currentPage, search, "creTime", "asc");
+		List<Product> productList = pages.getContent();
+		model.addAttribute("productList", productList);
 		model.addAttribute("totalPages", pages.getTotalPages());
 		model.addAttribute("totalItems", pages.getTotalElements());
-        model.addAttribute("currentPage", curentpage);        
+        model.addAttribute("currentPage", currentPage);
         return "admin/san-pham";
 	}
 	
 	@RequestMapping(value = "/admin/them-moi", method = RequestMethod.GET)
 	public ModelAndView themmoi(@RequestParam(value = "id", required = false) Integer id) {
 		ModelAndView mv = new ModelAndView("admin/them-moi");
-		ProductEntity product = (id != null) ? productservice.findOneById(id) : new ProductEntity();
+		Product product = (id != null) ? fastFoodService.findById(id) : new Product();
 		mv.addObject("product", product);
-		mv.addObject("category", categoryservice.findAll());
+		mv.addObject("category", categoryService.findAll());
 		return mv;
 	}
 	
 	@RequestMapping(value = "/admin/them-moi", method = RequestMethod.POST)
-	public ModelAndView saveProduct(@ModelAttribute("product") ProductEntity productEntity, 
-			                        @RequestParam("main-img") MultipartFile mainmultipartFile,
-			                        @RequestParam("ex-img") MultipartFile[] extramultipartFiles,
+	public ModelAndView saveProduct(@ModelAttribute("product") Product productEntity,
+			                        @RequestParam("main-img") MultipartFile mainMultipartFile,
+			                        @RequestParam("ex-img") MultipartFile[] extraMultipartFiles,
 			                        HttpServletRequest request) throws IOException {
 		ModelAndView mv = new ModelAndView("redirect:/freshfood/admin/san-pham");
-		ProductEntity newProduct = null;
+		Product newProduct = null;
 		
 		Integer id = request.getParameter("id").equals("") ? null: Integer.valueOf(request.getParameter("id"));
 				
 		if(id != null) {
-			newProduct = productservice.findOneById(id);
+			newProduct = fastFoodService.findById(id);
 		}else {
-			newProduct = new ProductEntity();
+			newProduct = new Product();
 		}
 		
 		newProduct.setCreateTime(new Date());
@@ -89,13 +115,13 @@ public class HomeController {
 		newProduct.setPrice(productEntity.getPrice());
 		newProduct.setQuantity(productEntity.getQuantity());
 	    
-		String mainIngName = StringUtils.cleanPath(mainmultipartFile.getOriginalFilename()); //Lấy tên file ảnh đc gửi về
+		String mainIngName = StringUtils.cleanPath(mainMultipartFile.getOriginalFilename()); //Lấy tên file ảnh đc gửi về
 	    if (!mainIngName.equals("")) {
-			newProduct.setImg(mainIngName);
+			newProduct.setImage(mainIngName);
 		}
 	    
 	    int c = 1;
-		for(MultipartFile m : extramultipartFiles) {
+		for(MultipartFile m : extraMultipartFiles) {
 			String extraImgName = StringUtils.cleanPath(m.getOriginalFilename());
             if (!extraImgName.equals("")) {
             	if(c == 1) newProduct.setExtra_img1(extraImgName);
@@ -104,16 +130,16 @@ public class HomeController {
             c++;
 		}
 		
-		newProduct.setCategory(categoryservice.findOneById(Integer.parseInt(request.getParameter("category"))));
-		ProductEntity savedProduct = productservice.save(newProduct);
+		newProduct.setCategory(categoryService.findById(Integer.parseInt(request.getParameter("category"))));
+		Product savedProduct = fastFoodService.save(newProduct);
 		//tạo thư mục chứa ảnh
 		String uploadDir = "./image/san-pham/"+savedProduct.getId();
 		//tạo đối tượng path chứ đg dẫn trong uploadDir
 		if (!mainIngName.equals("")) {
-			FileUploadUtils.saveFile(mainmultipartFile, mainIngName, uploadDir);
+			FileUploadUtils.saveFile(mainMultipartFile, mainIngName, uploadDir);
 		}
 		
-		for(MultipartFile m : extramultipartFiles) {
+		for(MultipartFile m : extraMultipartFiles) {
 			String extraImgName = StringUtils.cleanPath(m.getOriginalFilename());
 			if (!extraImgName.equals("")) {
 				FileUploadUtils.saveFile(m,extraImgName,uploadDir);
@@ -128,14 +154,42 @@ public class HomeController {
 		return "/admin/danh-muc-admin";
 	}
 	
-	@GetMapping(value = "/admin/don-hang")
-	public String bill() {
-		return "/admin/don-hang";
+	@GetMapping(value = "/admin/don-hang-chua-giao")
+	public String unsentOrder() {
+		return "/admin/don-hang-chua-giao";
+	}
+
+	@GetMapping(value = "/admin/don-hang-da-giao")
+	public String sentOrder() {
+		return "/admin/don-hang-da-giao";
 	}
 	
-	@GetMapping(value = "/admin/don-hang-chi-tiet")
+	@GetMapping(value = "/admin/unsent-order-detail")
+	public String unsentOrderDetail(@RequestParam("id") Integer id, Model model) {
+		Cart cart = cartService.findOneById(id);
+		model.addAttribute("bill", cartService.findOneById(id));
+		model.addAttribute("staffs",userService.getFreeStaff());
+		if (cart.getStaff() != null){
+			model.addAttribute("staffId", cart.getStaff().getId());
+		}
+		return "/admin/chi-tiet-don-hang-chua-giao";
+	}
+
+	@GetMapping(value = "/admin/sent-order-detail")
 	public String billdetail(@RequestParam("id") Integer id, Model model) {
-		model.addAttribute("bill", billservice.findOneById(id));
-		return "/admin/chi-tiet-don-hang";
+		Cart cart = cartService.findOneById(id);
+		model.addAttribute("bill", cartService.findOneById(id));
+		return "/admin/chi-tiet-don-hang-da-giao";
+	}
+
+	@GetMapping(path = "/invoice/export/{id}")
+	public void exportPDF(HttpServletResponse response, @PathVariable Integer id) throws IOException {
+		response.setContentType("application/pdf");
+		String headerKey = "Content-Disposition";
+		String headerValue = "attachment; filename=invoice.pdf";
+		response.setHeader(headerKey, headerValue);
+		// Get Booking form
+		Cart cart = cartService.findOneById(id);
+		PDFExporter.export(response, cart);
 	}
 }

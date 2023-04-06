@@ -3,8 +3,6 @@
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="_csrf" data-th-content="${_csrf.token}" />
-   <meta name="_csrf_header" data-th-content="${_csrf.headerName}" />
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link type="text/css" rel="stylesheet" th:href="@{/font/fontawesome/css/all.css}"/>
    <link type="text/css" rel="stylesheet" th:href="@{/css/owl.carousel.min.css}"/>
@@ -148,16 +146,16 @@
                                      <div th:each="pro:${productList}" class="col-sm-6 col-md-4 col-lg-4">
                                         <div class="product-box">
                                             <div class="product-thumbnail flexbox-grid">
-                                                <a th:href="@{'/freshfood/check?id='+${pro.id}}" th:title="${pro.name}">
+                                                <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${pro.id}}" th:title="${pro.name}">
                                                    <img th:src="${pro.ProductImagePath}" th:alt="${pro.name}"/>
                                                 </a>
                                                 <div class="product-action d-none">
                                                     <form class="form variants form-nut-grid margin-bottom-0"> 
                                                         <div>
-                                                            <a class="btn-buy btn-cart btn left-to add_to_cart" data-toggle="tooltip" title="Mua ngay" th:href="@{'/freshfood/check?id='+${pro.id}}">
+                                                            <a class="btn-buy btn-cart btn left-to add_to_cart" data-toggle="tooltip" title="Mua ngay" th:href="@{'/freshfood/chi-tiet-san-pham?id='+${pro.id}}">
                                                                 <i class="fas fa-shopping-bag"></i>
                                                             </a>
-                                                            <a th:href="@{'/freshfood/check?id='+${pro.id}}" data-toggle="tooltip" title="Xem" class="btn-gray btn_view btn right-to">
+                                                            <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${pro.id}}" data-toggle="tooltip" title="Xem" class="btn-gray btn_view btn right-to">
                                                                <i class="fas fa-eye"></i>
                                                             </a>
                                                         </div>
@@ -166,7 +164,7 @@
                                            </div>
                                            <div class="product-info text-center">
                                                 <h3 class="product-name">
-                                                    <a th:href="@{'/freshfood/check?id='+${pro.id}}"  th:title="${pro.name}">
+                                                    <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${pro.id}}"  th:title="${pro.name}">
                                                         <span>[[${pro.name}]]</span>
                                                     </a>
                                                 </h3>
@@ -183,13 +181,13 @@
                                     <div th:each="pro:${productList}" class="col-sm-12">
                                         <div class="product-box clearfix">
                                             <div class="product-thumbnail float-left">
-                                                <a th:href="@{'/freshfood/check?id='+${pro.id}}" th:title="${pro.name}">
+                                                <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${pro.id}}" th:title="${pro.name}">
                                                     <img th:src="${pro.ProductImagePath}" th:alt="${pro.name}"/>
                                                 </a>
                                             </div>
                                             <div class="product-info float-left">
                                                 <h3 class="product-name"> 
-                                                    <a th:href="@{'/freshfood/check?id='+${pro.id}}">[[${pro.name}]]</a>
+                                                    <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${pro.id}}">[[${pro.name}]]</a>
                                                 </h3>
                                                 <div class="price-box clearfix">
                                                     <div class="special-price float-left">
@@ -199,11 +197,11 @@
                                                     </div>
                                                 </div>
                                                 <form class="variants pro-action-btn margin-top-15">
-                                                    <a th:href="@{'/freshfood/check?id='+${pro.id}}" class="btn-buy btn-cart  btn btn-primary" data-toggle="tooltip" title="Mua ngay">
+                                                    <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${pro.id}}" class="btn-buy btn-cart  btn btn-primary" data-toggle="tooltip" title="Mua ngay">
                                                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
                                                        Mua ngay
                                                     </a>
-                                                    <a th:href="@{'/freshfood/check?id='+${pro.id}}" class="btn btn-secondary" data-toggle="tooltip" title="Xem">
+                                                    <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${pro.id}}" class="btn btn-secondary" data-toggle="tooltip" title="Xem">
                                                        <i class="fa fa-eye" aria-hidden="true"></i>
                                                     </a>
                                                 </form>

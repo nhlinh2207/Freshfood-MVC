@@ -1,77 +1,114 @@
 package com.linh.service.imp;
 
-import java.util.List;
+import java.util.*;
 
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.linh.dto.mapper.Mapper;
+import com.linh.dto.request.RegistryRequest;
+import com.linh.model.*;
+import com.linh.respository.ICitytRepo;
+import com.linh.respository.ICountryRepo;
+import com.linh.respository.IRoleRepository;
+import com.linh.service.ICartService;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.linh.entity.AuthProvider;
-import com.linh.entity.UserEntity;
-import com.linh.respository.InUserRes;
-import com.linh.service.InUserService;
+import com.linh.respository.IUserRepository;
+import com.linh.service.IUserService;
 import com.linh.utils.UserPrincipal;
 
 @Service
-public class UserService implements InUserService {
+@AllArgsConstructor
+public class UserService implements IUserService {
     
-	@Autowired
-	private InUserRes user;
-		
+	private final IUserRepository userRepository;
+	private final ICitytRepo cityRepository;
+	private final ICountryRepo countryRepository;
+	private final IRoleRepository roleRepository;
+	private final PasswordEncoder passwordEncoder;
+	private final ICartService cartService;
+
 	@Override
-	public boolean isEmailExist(String email) {
-		// TODO Auto-generated method stub
-		return user.findByEmail(email).isPresent();
+	public boolean existsByEmail(String email) {
+		return userRepository.existsByEmail(email);
 	}
 
 	@Override
-	@Transactional
-	public UserEntity save(UserEntity userEntity) {
-		// TODO Auto-generated method stub
-		return user.save(userEntity);
+	public User registry(RegistryRequest req) {
+		User user = Mapper.convertToUserEntity(req);
+		//Tạo địa chỉ
+		Address address = Address.builder()
+				.fullAddress(req.getAddress())
+				.countryId(countryRepository.findById(req.getCountryId()).get().getId())
+				.cityId(cityRepository.findById(req.getCountryId()).get().getId())
+				.createTime(new Date())
+				.user(user)
+				.type("RESIDENT ADDRESS")
+				.build();
+
+		user.setAddress(address);
+		user.setPassword(passwordEncoder.encode(req.getPassword()));
+
+		//Tạo role cho user
+		List<Role> roles = new ArrayList<>();
+//		roles.add(roleRepository.findByName("ADMIN"));
+		roles.add(roleRepository.findByName("USER"));
+		user.setRoles(roles);
+		user = userRepository.saveAndFlush(user);
+
+		Cart cart = Cart.builder()
+				.user(user)
+				.status("UNSENT")
+				.build();
+		cartService.save(cart);
+		return user;
 	}
 
 	@Override
-	public UserEntity getLoggingInUsser() {
+	public User getCurrentLoginUser() {
 		// TODO Auto-generated method stub
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         //SecurityContextHolder là nơi lưu trữ thông tin về bối cảnh bảo mật hiện tại của ứng dụng
 		//trong đó bao gồm chủ thể đang sử dụng ứng dụng
 		//đối tượng Authentication đc dùng để thể hiện nhgx thông tin này
 		//getContext trả về đối tượng là 1 thể hiện của interface SecurityContext 
-		UserEntity userEntity= null;
+		User user= null;
 		if (principal instanceof UserPrincipal) {
-		 userEntity = ((UserPrincipal)principal).getUser();
+		 user = ((UserPrincipal)principal).getUser();
 		}
-		return userEntity;
+		return user;
 	}
 
 	@Override
-	public UserEntity findOneByEmail(String email) {
-		// TODO Auto-generated method stub
-		return user.findOneByEmail(email);
+	public User findByEmail(String email) {
+		return userRepository.findByEmail(email);
 	}
 
 	@Override
-	public void updateUser(String email, String name, AuthProvider authprovider) {
-		UserEntity userEntity = user.findOneByEmail(email);
-		userEntity.setFullname(name);
-		userEntity.setAuthProvider(authprovider);;
-		user.save(userEntity);
+	public void update(User user) {
+		userRepository.saveAndFlush(user);
 	}
+
 
 	@Override
 	public List<String> getEmails() {
-		// TODO Auto-generated method stub
-		return user.getEmails();
+		return userRepository.getEmails();
 	}
 
 	@Override
-	public UserEntity findOneById(Integer id) {
-		// TODO Auto-generated method stub
-		return user.findOneById(id);
+	public List<User> getFreeStaff() {
+		return userRepository.getFreeStaff();
+	}
+
+	@Override
+	public List<User> findAll() {
+		return userRepository.findAll();
+	}
+
+	@Override
+	public User findById(Integer id) {
+		return userRepository.findById(id).get();
 	}
 
 }

@@ -8,77 +8,52 @@ import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.linh.model.Cart;
+import com.linh.model.CartItem;
+import com.linh.model.Product;
+import com.linh.service.*;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.linh.entity.CartItemEntity;
-import com.linh.entity.ProductEntity;
-import com.linh.entity.UserEntity;
-import com.linh.service.InCartItemService;
-import com.linh.service.InCategoryService;
-import com.linh.service.InCountryService;
-import com.linh.service.InProductService;
-import com.linh.service.InRoleService;
-import com.linh.service.InUserService;
+import com.linh.model.User;
 
 @Controller(value = "Controller_Of_Web")
 @RequestMapping("/freshfood")
+@AllArgsConstructor
 public class HomeController {
+
+	private final ICategoryService categoryService;
+	private final IProductService fastFoodService;
+	private final IUserService userService;
+	private final ICartService cartService;
+	private final ICountryService countryService;
 	
-	@Autowired
-	private InCategoryService category;
-	
-	@Autowired
-	private InCountryService country;
-	
-	@Autowired
-	private PasswordEncoder passwordencoder;
-	
-	@Autowired
-	private InProductService product;
-	
-	@Autowired
-	private InUserService userservice;
-	
-	@Autowired
-	private InRoleService role;
-	
-	@Autowired
-	private InCartItemService cartservice;
-	
-    @RequestMapping(value = "/trang-chu",method = RequestMethod.GET)
+    @GetMapping(value = "/trang-chu")
     public ModelAndView trangchu() {
     	ModelAndView mv = new ModelAndView("web/trang-chu");
-    	mv.addObject("category", category.findAll());
-    	mv.addObject("hoaQuaNhapKhau", product.findByCategory(category.findOneById(4)));
-    	mv.addObject("rauCuSach", product.findByCategory(category.findOneById(5)));
-    	mv.addObject("traiCayTuoi", product.findByCategory(category.findOneById(8)));
-    	mv.addObject("haiSanTuoi", product.findByCategory(category.findOneById(3)));
-    	mv.addObject("thitTuoi", product.findByCategory(category.findOneById(6)));
-    	mv.addObject("doUong", product.findByCategory(category.findOneById(9)));
+    	mv.addObject("category", categoryService.findAll());
+    	mv.addObject("hoaQuaNhapKhau", fastFoodService.findByCategory(categoryService.findById(1)));
+    	mv.addObject("rauCuSach", fastFoodService.findByCategory(categoryService.findById(2)));
+    	mv.addObject("traiCayTuoi", fastFoodService.findByCategory(categoryService.findById(3)));
+    	mv.addObject("haiSanTuoi", fastFoodService.findByCategory(categoryService.findById(4)));
+    	mv.addObject("thitTuoi", fastFoodService.findByCategory(categoryService.findById(5)));
+    	mv.addObject("doUong", fastFoodService.findByCategory(categoryService.findById(6)));
     	return mv;
     }
-    @RequestMapping(value = "/gioi-thieu",method = RequestMethod.GET)
+
+    @GetMapping(path = "/gioi-thieu")
     public ModelAndView gioithieu() {
-    	ModelAndView mv = new ModelAndView("web/gioi-thieu");
-    	return mv;
+    	return new ModelAndView("web/gioi-thieu");
     }
     
-    @RequestMapping(value = "/san-pham",method = RequestMethod.GET)
+    @GetMapping(value = "/san-pham")
     public ModelAndView sanpham(HttpServletRequest request) {
     	ModelAndView mv = new ModelAndView("web/san-pham");
  	    String search = (request.getParameter("search") == null) ? null : request.getParameter("search");
@@ -87,13 +62,13 @@ public class HomeController {
  	    String sortDir = (request.getParameter("sortdir") == null) ? "asc" : request.getParameter("sortdir");
         Integer cateId = (request.getParameter("id") == null) ? null : Integer.parseInt(request.getParameter("id"));
  	    
- 	    List<ProductEntity> productList = new ArrayList<ProductEntity>();
-        Page<ProductEntity> pages = product.findAll(currentPage, search, sortBy, sortDir);
+ 	    List<Product> productList;
+        Page<Product> pages = fastFoodService.findAll(currentPage, search, sortBy, sortDir);
         if (cateId == null) {
             productList = pages.getContent();
 		}else {
-	        productList = product.findByCategory(category.findOneById(cateId));
-	        mv.addObject("cateName", category.findOneById(cateId).getName());
+	        productList = fastFoodService.findByCategory(categoryService.findById(cateId));
+	        mv.addObject("cateName", categoryService.findById(cateId).getName());
 		}
         
         int totalPages = pages.getTotalPages();
@@ -115,151 +90,78 @@ public class HomeController {
         mv.addObject("totalPages", totalPages);
         mv.addObject("currentPage", currentPage);
     	mv.addObject("productList", productList);
-    	mv.addObject("category", category.findAll());
+    	mv.addObject("category", categoryService.findAll());
     	return mv;
     }
-    
-    @RequestMapping(value = "/dang-ki", method = RequestMethod.GET)
-    public ModelAndView register() {
-    	ModelAndView mv = new ModelAndView("web/dang-ki");
-    	UserEntity user = new UserEntity();
-    	mv.addObject("user", user);
-    	mv.addObject("country", country.findAll());
-    	return mv;
-    }
-   
-    @RequestMapping(value = "/dang-nhap", method = RequestMethod.GET)
-    public ModelAndView login() {
-    	ModelAndView mv = new ModelAndView("web/dang-nhap");
-    	mv.addObject("user", new UserEntity());
-    	return mv;
-    }
-    
-    @RequestMapping(value = "/dang-ki", method = RequestMethod.POST)
-    public ModelAndView userSaving(@Valid @ModelAttribute("user") UserEntity user, BindingResult bindingResult, HttpServletRequest request){
-    	ModelAndView mv = null;
-    	int c = 0;
-    	if(userservice.isEmailExist(user.getEmail()) == true) {
-    		bindingResult.addError(new FieldError("user", "email", "email đã tồn tại !"));
-    	}
-    	if(!user.getPassword().equals(request.getParameter("confirm"))) {
-    		bindingResult.addError(new FieldError("user","password", "password không khớp !"));
-    	}
-    	if(request.getParameter("country_id").equals("")) {
-    		bindingResult.addError(new FieldError("user","country", "Vui lòng chọn quốc gia !"));
-    	}
-    	if(request.getParameter("zone_id").equals("")) {
-    		bindingResult.addError(new FieldError("user","city", "Vui lòng chọn thành phố !"));
-    	}
-    		
-    	if(bindingResult.hasErrors()) {
-    		c++;
-    		mv = new ModelAndView("web/dang-ki");
-    		if(request.getParameter("agree") == null) {
-    		   mv.addObject("alert", "Bạn phải đồng ý với chính sách bảo mật");
-    		}
-    		mv.addObject("country", country.findAll());
-    		mv.addObject("user", user);
-    	}
-    	else {
-    		if(request.getParameter("agree") == null) {
-    			c++;
-    			mv = new ModelAndView("web/dang-ki");
-        		mv.addObject("country", country.findAll());
-        		mv.addObject("user", user);
-    			mv.addObject("alert", "Bạn phải đồng ý với chính sách bảo mật");
-    		}else {
-    		    mv = new ModelAndView("redirect:/freshfood/dang-nhap");
-    		    mv.addObject("user",user);
-    		}
-    	}
-    	if(c == 0) {
-    		user.setPassword(passwordencoder.encode(user.getPassword()));
-       	    user.setCity(request.getParameter("zone_id"));
-    	    user.setCountry(country.findOneById(Integer.parseInt(request.getParameter("country_id"))));
-    	    user.setStatus(1);
-    	    user.getRoles().add(role.findOneByName("USER"));
-    	    role.findOneByName("USER").getUsers().add(user);
-    	    userservice.save(user);
-    	}
-    	return mv;
-    }
-    
-    @RequestMapping(value = "/check", method = RequestMethod.GET)
+
+    @GetMapping(value = "/chi-tiet-san-pham")
     public ModelAndView checkProduct(@RequestParam("id") Integer id){
          ModelAndView mv = new ModelAndView("web/check");
-         ProductEntity p = product.findOneById(id);
-         List<ProductEntity> splq = product.findByCategory(p.getCategory());
+         Product p = fastFoodService.findById(id);
+         List<Product> splq = fastFoodService.findByCategory(p.getCategory());
          mv.addObject("product", p);
          mv.addObject("splq",splq);
-         mv.addObject("user", userservice.getLoggingInUsser());
+         mv.addObject("user", userService.getCurrentLoginUser());
          return mv;
     }
     
-    @RequestMapping(value = "/cartitems", method = RequestMethod.GET)
+    @GetMapping(value = "/cartitems")
     public ModelAndView allCartItem(HttpServletRequest request) {
-    	UserEntity user = userservice.getLoggingInUsser();
-    	List<CartItemEntity> cartlist = new ArrayList<CartItemEntity>();
-    	long tongtien = 0;
+    	User user = userService.getCurrentLoginUser();
+		List<Cart> carts;
+		Cart currentCart;
+    	List<CartItem> cartDetails = new ArrayList<>();
+    	int tongtien = 0;
     	if(user != null) {
-    		cartlist = cartservice.findByUser(user);
+			carts = cartService.findByUser(user);
+			currentCart = carts.get(carts.size()-1);
+    		cartDetails = currentCart.getCartItems();
     	}else {
     		HttpSession session = request.getSession();
     		Map<Integer, Integer> cart = (Map<Integer, Integer>)session.getAttribute("cart");
     		if (cart == null) {
-				cart = new LinkedHashMap<Integer, Integer>();
+				cart = new LinkedHashMap<>();
 			}
     		int id = 0;
     		for (Entry<Integer, Integer> item: cart.entrySet()) {
-				CartItemEntity c = new CartItemEntity();
-				c.setProduct(product.findOneById(item.getKey()));
+				CartItem c = new CartItem();
+				c.setProduct(fastFoodService.findById(item.getKey()));
 				c.setQuantity(item.getValue());
-				c.setUser(user);
+				c.setCart(null);
 				c.setId(id);
-				cartlist.add(c);
+				cartDetails.add(c);
 				id++;
 			}
     	}
-    	for (CartItemEntity itemEntity : cartlist){
-    		tongtien += itemEntity.getProduct().getPrice() * itemEntity.getQuantity();
+    	for (CartItem item : cartDetails){
+    		tongtien += item.getProduct().getPrice() * item.getQuantity();
 		}
     	ModelAndView mv = new ModelAndView("web/cartitems");
-    	mv.addObject("cartitems", cartlist);
+    	mv.addObject("cartitems", cartDetails);
     	mv.addObject("tongtien",tongtien);
     	return mv;
     }
     
-    @RequestMapping(value = "/checkout", method = RequestMethod.GET)
+    @GetMapping(value = "/checkout")
     public ModelAndView checkout() {
     	ModelAndView mv = new ModelAndView("web/checkout");
     	//mv.addObject("username", userservice.getLoggingInUsser().getFullname());
-    	UserEntity userEntity = userservice.getLoggingInUsser();
-    	if (userEntity != null) {
-			mv.addObject("username", userEntity.getFullname());
+    	User user = userService.getCurrentLoginUser();
+    	if (user != null) {
+			mv.addObject("username", user.getFullName());
 		}
     	return mv;
     }
     
     @GetMapping(value = "/thanh-toan")
     public String thanhtoan(Model model){
-    	model.addAttribute("country", country.findAll());
+    	model.addAttribute("country", countryService.findAll());
     	return "web/thanh-toan";
-    }
-    
-    @GetMapping(value = "/profile")
-    public String profile(Model model) {
-    	UserEntity user = userservice.getLoggingInUsser();
-    	model.addAttribute("user", user);
-    	return "web/profile";
     }
     
     @GetMapping(value = "/lien-he")
     public String contact(Model model) {
     	return "web/lien-he";
     }
-    
-    @GetMapping(value = "/res")
-    public ResponseEntity<String> resp0nse() {
-    	return ResponseEntity.ok().body("linh");
-    }
+
 }
