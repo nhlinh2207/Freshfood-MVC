@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import com.linh.model.*;
 import com.linh.service.IMessageService;
+import com.linh.utils.MoneyFormatUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -122,7 +123,7 @@ public class CartAPI {
             for (CartItem item: cartDetails) {
 				tongtien += item.getProduct().getPrice() * item.getQuantity();
 			}			
-			cartItems.put("tongtien", tongtien+"");
+			cartItems.put("tongtien", MoneyFormatUtil.format(tongtien));
 			cartItems.put("time", new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(carts.get(i).getOrderTime()));
 			maps.add(cartItems);
 		}
@@ -138,9 +139,10 @@ public class CartAPI {
 			Product p = item.getProduct();
 			a.put("image", p.getProductExtraImagePath1());
 			a.put("name",p.getName());
-			a.put("price", p.getPrice()+"");
+			a.put("price", p.getPriceCurrency());
 			a.put("solg", item.getQuantity()+"");
 			a.put("tonggia", (item.getQuantity() * p.getPrice())+"");
+			a.put("totalMoney", MoneyFormatUtil.format(item.getQuantity() * p.getPrice()));
 		    res.add(a);
 		}
 		return res;

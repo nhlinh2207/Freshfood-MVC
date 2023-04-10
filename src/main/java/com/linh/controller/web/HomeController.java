@@ -13,6 +13,7 @@ import com.linh.model.Cart;
 import com.linh.model.CartItem;
 import com.linh.model.Product;
 import com.linh.service.*;
+import com.linh.utils.MoneyFormatUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -138,7 +139,7 @@ public class HomeController {
 		}
     	ModelAndView mv = new ModelAndView("web/cartitems");
     	mv.addObject("cartitems", cartDetails);
-    	mv.addObject("tongtien",tongtien);
+    	mv.addObject("tongtien", MoneyFormatUtil.format(tongtien));
     	return mv;
     }
     

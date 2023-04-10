@@ -61,7 +61,7 @@ public class PDFExporter {
         for (CartItem d : bookingForm.getCartItems()){
             totalRoomPrice += d.getQuantity()*d.getProduct().getPrice();
         }
-        Paragraph roomPrice = new Paragraph("Tổng tiền mua hàng:  "+totalRoomPrice+" đ", fontTitle);
+        Paragraph roomPrice = new Paragraph("Tổng tiền mua hàng:  "+MoneyFormatUtil.format(totalRoomPrice), fontTitle);
         roomPrice.setAlignment(Paragraph.ALIGN_LEFT);
         roomPrice.setSpacingBefore(30);
         document.add(roomPrice);
@@ -74,12 +74,12 @@ public class PDFExporter {
         for (CartItem item : cartDetails){
             Product fastFood = item.getProduct();
             int foodPrice =item.getQuantity()*fastFood.getPrice();
-            serviceFeeInfo.add("       "+fastFood.getName()+" :   "+fastFood.getPrice()+" đ  x"+item.getQuantity()+"    =   "+foodPrice+" đ\n\n");
+            serviceFeeInfo.add("       "+fastFood.getName()+" :   "+fastFood.getPriceCurrency()+"  x"+item.getQuantity()+"    =   "+MoneyFormatUtil.format(foodPrice)+" đ\n\n");
         }
         document.add(serviceFeeInfo);
 
         //Set total to be paid
-        Paragraph totalFee = new Paragraph("Tổng tiền đã trả:  "+totalRoomPrice+" đ", fontTotal);
+        Paragraph totalFee = new Paragraph("Tổng tiền đã trả:  "+MoneyFormatUtil.format(totalRoomPrice), fontTotal);
         totalFee.setAlignment(Paragraph.ALIGN_LEFT);
         totalFee.setSpacingBefore(30);
         document.add(totalFee);

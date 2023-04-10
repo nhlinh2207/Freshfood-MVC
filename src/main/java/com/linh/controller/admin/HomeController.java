@@ -12,9 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.linh.model.Cart;
 import com.linh.model.Product;
+import com.linh.respository.ICartItemRepo;
 import com.linh.respository.ICartRepo;
 import com.linh.service.ICartService;
 import com.linh.service.IUserService;
+import com.linh.utils.ExcelExporter;
 import com.linh.utils.MoneyFormatUtil;
 import com.linh.utils.PDFExporter;
 import lombok.AllArgsConstructor;
@@ -42,6 +44,8 @@ public class HomeController {
 	private final ICartService cartService;
 	private final IUserService userService;
 	private final ICartRepo cartRepo;
+	private final IProductService productService;
+	private final ICartItemRepo cartItemRepo;
 	
 	@RequestMapping(value = "/admin/trang-chu", method = RequestMethod.GET)
 	public ModelAndView trangchu() throws ParseException {
@@ -191,5 +195,16 @@ public class HomeController {
 		// Get Booking form
 		Cart cart = cartService.findOneById(id);
 		PDFExporter.export(response, cart);
+	}
+
+	@GetMapping(path = "/excel/export")
+	public void exportExcel(HttpServletResponse response) throws IOException {
+		response.setContentType("application/octet-stream");
+		String headerKey = "Content-Disposition";
+		String headerValue = "attachment; filename=report.xlsx";
+		response.setHeader(headerKey, headerValue);
+		// Get Booking form
+		ExcelExporter excelExporter = new ExcelExporter(productService, userService, cartItemRepo, cartService);
+		excelExporter.export(response);
 	}
 }

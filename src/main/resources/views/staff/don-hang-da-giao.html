@@ -27,7 +27,7 @@
 <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul th:replace="fragment-admin::sidebar"></ul>
+    <ul th:replace="fragment-staff::sidebar-staff"></ul>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -37,7 +37,7 @@
         <div id="content">
 
             <!-- Topbar -->
-            <nav th:replace="fragment-admin::topbar"></nav>
+            <nav th:replace="fragment-staff::topbar-staff"></nav>
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
@@ -95,7 +95,7 @@
         <!-- End of Main Content -->
 
         <!-- Footer -->
-        <footer th:replace="fragment-admin::footer"></footer>
+        <footer th:replace="fragment-staff::footer-staff"></footer>
         <!-- End of Footer -->
 
     </div>
@@ -103,7 +103,7 @@
 
 </div>
 <!-- End of Page Wrapper -->
-<div th:replace="fragment-admin::scroll-top"></div>
+<div th:replace="fragment-staff::scroll-top-staff"></div>
 
 <!-- Bootstrap core JavaScript-->
 <script type="text/javascript" th:src="@{/vendor/jquery/jquery.min.js}"></script>

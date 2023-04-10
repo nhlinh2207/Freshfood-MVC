@@ -8,6 +8,7 @@ import com.linh.service.ICartItemService;
 import com.linh.service.ICartService;
 import com.linh.service.IMessageService;
 import com.linh.service.IUserService;
+import com.linh.utils.MoneyFormatUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +44,7 @@ public class CartStaffAPI {
             for (CartItem item: cartDetails) {
                 tongtien += item.getProduct().getPrice() * item.getQuantity();
             }
-            cartItems.put("tongtien", tongtien+"");
+            cartItems.put("tongtien", MoneyFormatUtil.format(tongtien));
             cartItems.put("time", new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(carts.get(i).getOrderTime()));
             maps.add(cartItems);
         }
