@@ -84,6 +84,18 @@ public class User {
 	)
 	private List<Role> roles;
 
+	@OneToMany(
+			mappedBy = "user",
+			cascade = CascadeType.ALL
+	)
+	List<Rank> ranks;
+
+	@OneToMany(
+			mappedBy = "user",
+			cascade = CascadeType.ALL
+	)
+	List<Comment> comments;
+
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private Address address;
 	

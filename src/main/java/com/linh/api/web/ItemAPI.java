@@ -35,7 +35,7 @@ public class ItemAPI {
 	private final ICartItemService cartDetailService;
         
 	@GetMapping(value = "/freshfood/cart/total")
-	 public Map<String, String> getTotal(HttpServletRequest request){
+	 public Map<String, String> getTotalQuantity(HttpServletRequest request){
 		Map<String, String> aMap = new HashMap<String, String>();
 		User user = userService.getCurrentLoginUser();
 		int total = 0;
@@ -53,7 +53,7 @@ public class ItemAPI {
 	}
 	
 	@GetMapping(value = "/freshfood/cart/all")
-	public List<Map<String, String>> findall(HttpServletRequest request){
+	public List<Map<String, String>> findAllItemsByUser(HttpServletRequest request){
 		User user = userService.getCurrentLoginUser();
         List<Map<String, String>> cartDetails = new ArrayList<Map<String,String>>();
 		if (user != null) {
@@ -100,7 +100,7 @@ public class ItemAPI {
 	}
 	
 	@PostMapping(value = "/freshfood/cart/add")
-	public Map<String, String> cart(HttpServletRequest request) {
+	public Map<String, String> saveCart(HttpServletRequest request) {
 		
 		String fastFoodId = request.getParameter("pro-id");
 		String qu = request.getParameter("quantity");
@@ -155,7 +155,7 @@ public class ItemAPI {
 	}
 	
 	@DeleteMapping(value = "/freshfood/cart/delete/{id}")
-	public Map<String, String> delete(@PathVariable("id") Integer id, HttpServletRequest request) {
+	public Map<String, String> deleteCart(@PathVariable("id") Integer id, HttpServletRequest request) {
 		Map<String, String> a = new HashMap<String, String>();
 		User user = userService.getCurrentLoginUser();
 		if (user != null) {
@@ -188,7 +188,7 @@ public class ItemAPI {
 	}
 	
 	@PutMapping(value = "/freshfood/cart/update/{id}/{val}")
-	public Map<String, String> update(@PathVariable("id") Integer id,
+	public Map<String, String> updateCart(@PathVariable("id") Integer id,
 			                          @PathVariable("val") Integer val,
 			                          HttpServletRequest request){
 		Map<String, String> aMap = new HashMap<String, String>();
@@ -221,13 +221,5 @@ public class ItemAPI {
 		}
 		
 		return aMap;
-	}
-	
-	@PostMapping(value = "/freshfood/cart/order")
-	public Integer[] order(@RequestBody Integer ids[]) {
-	     for(Integer id: ids) {
-	    	System.out.println(id+" ");
-	     }
-	     return ids;
 	}
 }

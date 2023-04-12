@@ -14,8 +14,7 @@ import com.linh.model.Cart;
 import com.linh.model.Product;
 import com.linh.respository.ICartItemRepo;
 import com.linh.respository.ICartRepo;
-import com.linh.service.ICartService;
-import com.linh.service.IUserService;
+import com.linh.service.*;
 import com.linh.utils.ExcelExporter;
 import com.linh.utils.MoneyFormatUtil;
 import com.linh.utils.PDFExporter;
@@ -29,8 +28,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.linh.service.ICategoryService;
-import com.linh.service.IProductService;
 import com.linh.utils.FileUploadUtils;
 
 @Controller(value = "Controller_Of_Admin")
@@ -46,6 +43,7 @@ public class HomeController {
 	private final ICartRepo cartRepo;
 	private final IProductService productService;
 	private final ICartItemRepo cartItemRepo;
+	private final IRatingService ratingService;
 	
 	@RequestMapping(value = "/admin/trang-chu", method = RequestMethod.GET)
 	public ModelAndView trangchu() throws ParseException {
@@ -72,6 +70,7 @@ public class HomeController {
 		mv.addObject("totalMoneyInYear", MoneyFormatUtil.format(totalMoneyInYear));
 		mv.addObject("totalMoneyInMonth", MoneyFormatUtil.format(totalMoneyInMonth));
 		mv.addObject("totalUser", totalUser);
+		mv.addObject("totalRating", ratingService.getTotalCount());
 		return mv;
 	}
 	

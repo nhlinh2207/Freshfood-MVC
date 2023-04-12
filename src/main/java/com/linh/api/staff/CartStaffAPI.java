@@ -30,7 +30,7 @@ public class CartStaffAPI {
     private final IMessageService messageService;
 
     @GetMapping(value = "/freshfood/staff/cart/all/{type}")
-    public List<Map<String, String>> findall(@PathVariable String type){
+    public List<Map<String, String>> findAllOrderByType(@PathVariable String type){
         User currentUser = userService.findById(userService.getCurrentLoginUser().getId());
         List<Map<String, String>> maps = new ArrayList<Map<String,String>>();
         List<Cart> carts = cartService.findByStaff(type, currentUser);
@@ -52,7 +52,7 @@ public class CartStaffAPI {
     }
 
     @PutMapping(value = "/freshfood/staff/cart/updateStatus/{cartId}")
-    public String updateStatus(@PathVariable String cartId){
+    public String updateOrderStatus(@PathVariable String cartId){
         Cart cart = cartService.findOneById(Integer.parseInt(cartId));
         cart.setStatus("SENT");
         cart.setDeliverTime(new Date());

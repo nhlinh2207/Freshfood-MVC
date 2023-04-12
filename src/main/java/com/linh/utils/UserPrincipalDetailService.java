@@ -16,20 +16,20 @@ public class UserPrincipalDetailService implements UserDetailsService{
 	private static final Logger log = LoggerFactory.getLogger(UserPrincipalDetailService.class);
 
 	@Autowired
-	private IUserRepository user;
+	private IUserRepository userRepository;
 	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
 		log.trace("Entering method ...");
 		log.debug("Authenticating ... ");
-		if (!user.getEmails().contains(email)) {
+		if (!userRepository.getEmails().contains(email)) {
 			log.error("Wrong email !");
 			throw new UsernameNotFoundException("Wrong username"); 
 		}else {
 			log.warn("Testing email ...");
 			log.info("Authenticated successfully");
-			return new UserPrincipal(user.findByEmail(email));
+			return new UserPrincipal(userRepository.findByEmail(email));
 		}        
 	}
 }

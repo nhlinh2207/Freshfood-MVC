@@ -81,6 +81,18 @@ public class Product {
 	)
 	List<CartItem> cartItems;
 
+	@OneToMany(
+			mappedBy = "product",
+			cascade = CascadeType.ALL
+	)
+	List<Rank> ranks;
+
+	@OneToMany(
+			mappedBy = "product",
+			cascade = CascadeType.ALL
+	)
+	List<Comment> comments;
+
 	@Transient
 	public String getProductImagePath() {
 		return (id == null || image == null) ? null : "/image/san-pham/"+id+"/"+image;

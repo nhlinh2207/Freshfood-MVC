@@ -20,7 +20,7 @@ public class CityAPI {
 	private final ICountryRepo country;
     
 	@GetMapping(value = "/freshfood/api/city/{id}")
-	public List<City> getCity(@PathVariable Integer id) {
+	public List<City> getCityByCountryId(@PathVariable Integer id) {
 		List<City> c = new ArrayList<City>();
 		for(City i : city.findByCountry(country.findById(id).get())) {
 			  City e = City.builder().id(i.getId()).name(i.getName()).build();

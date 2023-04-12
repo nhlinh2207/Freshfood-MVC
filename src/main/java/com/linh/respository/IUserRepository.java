@@ -10,6 +10,7 @@ import com.linh.model.User;
 public interface IUserRepository extends JpaRepository<User, Integer> {
 
 	boolean existsByEmail(String email);
+
 	User findByEmail(String email);
 	
 	@Query("SELECT e.email FROM User e")

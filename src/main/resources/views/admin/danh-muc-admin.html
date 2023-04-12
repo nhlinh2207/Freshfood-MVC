@@ -187,14 +187,13 @@
 			       //      xhr.setRequestHeader(name, token);
 		           // },
 		           success: function(json){
-					   swal({
-						   title: "Thành công !",
-						   text: "Thêm danh mục thành công",
+					   swal("Cập nhật danh mục thành công !", {
 						   icon: "success",
-						   buttons: true,
-						   dangerMode: true,
-					   })
-					   loadcategory();
+					   }).then((ok) => {
+						   if (ok) {
+							   loadcategory();
+						   }
+					   });
 				   },
 		           error: function(){
 			           alert("không thành công !");
@@ -220,7 +219,13 @@
 						 //      xhr.setRequestHeader(name, token);
 						 // },
 						 success: function(json){
-							 loadcategory();
+							 swal("Xóa danh mục thành công !", {
+								 icon: "success",
+							 }).then((ok) => {
+								 if (ok) {
+									 loadcategory();
+								 }
+							 });
 						 },
 						 error: function(){
 							 alert("không thành công !");

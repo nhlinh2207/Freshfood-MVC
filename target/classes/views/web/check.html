@@ -12,8 +12,10 @@
    <link type="text/css" rel="stylesheet" th:href="@{/css/base.css}"/>
    <link type="text/css" rel="stylesheet" th:href="@{/css/index.css}"/>
    <link type="text/css" rel="stylesheet" th:href="@{/css/responsive.css}"/>
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
    <title>[[${product.name}]]</title>
    
 </head>
@@ -200,12 +202,84 @@
                                     </div>
                                </div>
                             </div>
+
+                            <!--Comments And Rating -->
+                            <div class="row">
+                                <div class="col-sm-12 margin-bottom-20 margin-top-15">
+                                     <div class="product-tab e-tab">
+                                         <ul class="tabs tabs-title clearfix">
+                                             <li class="tab-link  has-content" data-toggle="tab" href="#tab-comment" data-tab="tab-comment">
+                                                 <h5>
+                                                     <span style="color: #fff">Bình luận</span>
+                                                 </h5>
+                                             </li>
+                                             <li class="tab-link has-content active" href="#tab-review" data-toggle="tab" data-tab="tab-review">
+                                                 <h5>
+                                                     <span style="color: #fff">Đánh giá</span>
+                                                 </h5>
+                                             </li>
+                                         </ul>
+                                         <div class="tab-comment tab-content" id="tab-comment">
+                                             <div class="rte"></div>
+                                         </div>
+                                         <div class="tab-review tab-content active current" id="tab-review">
+                                             <div id="linh-product-reviews" class="linh-product-reviews" data-id="11480172">
+                                                 <div>
+                                                     <div id="linh-product-reviews-sub">
+                                                         <div id="linh-product-reviews-summary" class="linh-product-reviews-summary mb-4">
+                                                             <div>
+                                                                 <div class="bpr-summary" id="linh-rating-info">
+
+                                                                 </div>
+                                                             </div>
+                                                         </div>
+                                                     </div>
+                                                     <form class="form-horizontal" id="form-rating">
+                                                         <h2>Viết đánh giá</h2>
+                                                         <fieldset class="form-group required">
+                                                             <div class="">
+                                                                 <input type="hidden" th:value="${product.id}" name="productId"/>
+                                                                 <label class="control-label" for="input-name">Họ tên</label>
+                                                                 <input type="text" name="ratingName" value="" id="input-name" class="form-control">
+                                                             </div>
+                                                         </fieldset>
+                                                         <fieldset class="form-group required">
+                                                             <div class="">
+                                                                 <label class="control-label" for="input-review">Nội dung đánh giá</label>
+                                                                 <textarea name="ratingContent" rows="5" id="input-review" class="form-control"></textarea>
+                                                                 <div class="help-block"><span class="text-danger">Chú ý:</span> Không sử dụng các định dạng HTML!</div>
+                                                             </div>
+                                                         </fieldset>
+                                                         <fieldset class="form-group required">
+                                                             <div class="rating_review">
+                                                                 <label class="control-label"><strong>Xếp hạng</strong></label>
+                                                                 &nbsp;&nbsp;&nbsp; Chưa tốt&nbsp;
+                                                                 <input type="radio" name="ratingValue" value="1">&nbsp;
+                                                                 <input type="radio" name="ratingValue" value="2">&nbsp;
+                                                                 <input type="radio" name="ratingValue" value="3">&nbsp;
+                                                                 <input type="radio" name="ratingValue" value="4">&nbsp;
+                                                                 <input type="radio" name="ratingValue" value="5">&nbsp;
+                                                                 Tốt
+                                                             </div>
+                                                             <div class="buttons clearfix">
+                                                                 <div class="pull-right">
+                                                                     <button type="button" onclick="sendRating()" id="button-rating" class="btn btn-primary">Gửi đánh giá</button>
+                                                                 </div>
+                                                             </div>
+                                                         </fieldset>
+                                                     </form>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <section class="section featured-product wow fadeInUp mb-4">
+        <section class="section featured-product wow fadeInUp mb-4 mt-3">
             <div class="container">
                  <div class="section-title text-center">
                     <h2>
@@ -222,7 +296,7 @@
                                 <div class="product-action d-none">
                                     <form class="form variants form-nut-grid margin-bottom-0">
                                         <div>
-                                            <a class="btn-buy btn-cart btn btn-primary left-to add_to_cart" data-toggle="tooltip" title="Mua ngay" th:href="@{'/freshfood/checkout?id='+${sp.id}}">
+                                            <a class="btn-buy btn-cart btn left-to add_to_cart" data-toggle="tooltip" title="Mua ngay" th:href="@{'/freshfood/chi-tiet-san-pham?id='+${sp.id}}">
                                                 <i class="fa fa-shopping-bag"></i>
                                             </a>
                                             <a th:href="@{'/freshfood/chi-tiet-san-pham?id='+${sp.id}}" data-toggle="tooltip" title="Xem" class="btn-gray btn_view btn right-to">
@@ -256,8 +330,9 @@
     
    <script type="text/javascript">
      $(document).ready(function(){
+         loadRatingInfo()
+
     	 $("#button-cart").click(function(){
-     	    
      	    	   // var token = $('meta[name = "_csrf"]').attr('content');
      	    	   // var name = $('meta[name = "_csrf_header"]').attr('content');
     	           $.ajax(
@@ -287,12 +362,81 @@
     	    		   alert("Không thành công !");
     	    	    }
     	        });
-     	    
         }); 
      });
+
+     function loadRatingInfo(){
+         const productId = [[${product.id}]];
+         $.ajax({
+             url: '/freshfood/rating/info/'+productId,
+             type: 'get',
+             datatype: 'json',
+             success: function(json){
+                 let info = '';
+                 let totalCount = json['totalCount'];
+                 let averageValue = Number(json['averageValue']);
+                 info += '<span class="bpr-summary-average">'+totalCount+'&nbsp;<i class="fas fa-user" style="font-size: 20px"></i>&nbsp;&nbsp;&nbsp;</span>'+
+                         '<div class="linh-product-reviews-star" id="linh-prv-summary-star">';
+                 // Render rating stars
+                 if (averageValue > 0){
+                     for(let i = 1;i <= averageValue; i++){
+                         info += '<i class="fas fa-star" style="color : #F7DC26"></i>&nbsp;'
+                     }
+                 }
+                 if (averageValue < 5){
+                     for (let i = averageValue+1 ; i <= 5 ;i++){
+                         info += '<i class="fas fa-star" style="color : lightgrey"></i>&nbsp;'
+                     }
+                 }
+                 info += '</div>';
+                 $('#linh-rating-info').html(info);
+             },
+             error: function(){
+                 alert("Không load đơn hàng thành công !");
+             }
+         });
+     }
+
+     function sendRating(){
+         swal({
+             title: "Đánh giá",
+             text: "Bạn muốn gửi đánh giá ?",
+             icon: "warning",
+             buttons: true,
+             dangerMode: false,
+         }).then((ok) => {
+             if(ok){
+                 var formData = $('#form-rating').serializeArray();
+                 var data = {};
+                 $.each(formData, function (i, v) {
+                     data[""+v.name+""] = v.value;
+                 });
+                 $.ajax({
+                     url: '/freshfood/rating/save',
+                     type: 'POST',
+                     contentType: 'application/json',
+                     data: JSON.stringify(data),
+                     success: function (json) {
+                         swal("Gửi đánh giá thành công !", {
+                             icon: "success",
+                         }).then((ok) => {
+                             if (ok)
+                                 loadRatingInfo();
+                         });
+                     },
+                     error: function (xhr, ajaxOptions, thrownError) {
+                         alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                     }
+                 });
+             }else{
+                 swal("Bạn chưa gửi đánh giá")
+             }
+         });
+     }
    </script>
     
-   <script type="text/javascript" th:src="@{/js/owl.carousel.min.js}"></script> 
+   <script type="text/javascript" th:src="@{/js/owl.carousel.min.js}"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
    <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>          
    <script type="text/javascript" th:src="@{/js/all.js}"></script>          
    <script type="text/javascript" th:src="@{/js/index.js}"></script>

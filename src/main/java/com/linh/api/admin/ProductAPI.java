@@ -14,7 +14,7 @@ public class ProductAPI {
 	private final IProductService productService;
 	
 	@DeleteMapping("/freshfood/product/xoa/{id}")
-	public String xoa(@PathVariable("id") Integer id) {
+	public String deleteProduct(@PathVariable("id") Integer id) {
 		productService.delete(id);
 		return id.toString();
 	}
