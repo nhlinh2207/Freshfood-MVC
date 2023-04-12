@@ -1125,3 +1125,59 @@ ul#cart-slidebar .right_ct{
 .contact .contact-box-info .item .info a{
     color: #FE9705;
 }
+
+/** COMMENT AND RATING **/
+.product-tab > ul {
+    margin-bottom: 10px;
+}
+
+.product-tab .tab-link{
+    border: none;
+    border-radius: 5px;
+    background: #80BB35;
+    margin-right: 10px;
+    padding: 0 25px;
+    float: left;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.product-tab .tab-link.active{
+    background: #FE9705;
+}
+
+#linh-product-reviews #linh-product-reviews-sub {
+    width: 100%;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: normal;
+    font-style: normal;
+}
+
+#linh-product-reviews #linh-product-reviews-sub .linh-product-reviews-summary {
+    width: 100%;
+    padding: 10px;
+    float: left;
+}
+
+#linh-product-reviews #linh-product-reviews-sub .linh-product-reviews-summary .bpr-summary {
+    display: table;
+}
+
+#linh-product-reviews #linh-product-reviews-sub .linh-product-reviews-summary .bpr-summary .bpr-summary-average {
+    display: table-cell;
+    font-size: 28px;
+    padding-right: 15px;
+}
+
+#linh-product-reviews #linh-product-reviews-sub .linh-product-reviews-summary .bpr-summary .zozoweb-product-reviews-star {
+    display: table-cell;
+}
+
+#linh-product-reviews .linh-product-reviews-star i {
+    font-size: 25px !important;
+}
+
+#linh-product-reviews #linh-product-reviews-sub .linh-product-reviews-summary .bpr-summary-caption {
+    display: table-row;
+}

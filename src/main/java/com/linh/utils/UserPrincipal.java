@@ -14,10 +14,8 @@ import com.linh.model.User;
 //đc luu trong SecurityContextHolder
 //và UserDetailService dùng để tạo ra UserDetails dựa theo username đc đưa vào
 public class UserPrincipal implements UserDetails{
-	
-	private static final long serialVersionUID = 1L;
-	
-	private User user;
+
+	private final User user;
 	
 	public UserPrincipal(User user) {
 		this.user = user;

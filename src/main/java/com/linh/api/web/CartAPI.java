@@ -37,10 +37,9 @@ public class CartAPI {
 	private final ICartService cartService;
 	private final ICartItemService cartDetailService;
 	private final IProductService fastFoodService;
-	private final IMessageService messageService;
 
 	@PostMapping(value = "/freshfood/bill/add")
-	public void add(@RequestBody CreateCartRequest request, HttpServletRequest req) {
+	public void saveOrder(@RequestBody CreateCartRequest request, HttpServletRequest req) {
 		User user = userService.getCurrentLoginUser();
 		Address address = Address.builder()
 				.cityId(cityService.findById(request.getCityId()).getId())
@@ -98,7 +97,7 @@ public class CartAPI {
 	}
 
 	@GetMapping(path = "/freshfood/bill/assignToStaff/{cartId}/{staffId}")
-	public Map<String, String> assignCartToStaff(@PathVariable Integer cartId, @PathVariable Integer staffId){
+	public Map<String, String> assignOrderToStaff(@PathVariable Integer cartId, @PathVariable Integer staffId){
 		Map<String, String> result = new LinkedHashMap<>();
 		try {
 			cartService.assignToStaff(cartId, staffId);
@@ -110,7 +109,7 @@ public class CartAPI {
 	}
 	
 	@GetMapping(value = "/freshfood/bill/all/{type}")
-	public List<Map<String, String>> findall(@PathVariable String type){
+	public List<Map<String, String>> findAllOrder(@PathVariable String type){
 		List<Map<String, String>> maps = new ArrayList<Map<String,String>>();
 		List<Cart> carts = cartService.findAll(type);
 		for (int i = 0; i < carts.size(); i++) {
@@ -131,7 +130,7 @@ public class CartAPI {
 	}
 	
 	@GetMapping(value = "/freshfood/billitem/{billid}")
-	public List<Map<String, String>> findallbillitem(@PathVariable("billid") Integer billid){
+	public List<Map<String, String>> findAllOrderItems(@PathVariable("billid") Integer billid){
 		List<Map<String, String>> res = new ArrayList<>();
 		List<CartItem> cartDetails =  cartDetailService.findByCart(cartService.findOneById(billid));
 		for (CartItem item : cartDetails) {

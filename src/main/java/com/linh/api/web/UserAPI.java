@@ -18,7 +18,7 @@ public class UserAPI {
 	private final IUserRepository userRepository;
 	
 	@PostMapping(value = "/freshfood/user/update")
-	public void update(@RequestBody User user) {
+	public void updateUserInfo(@RequestBody User user) {
 		System.out.println(user.getFullName()+ " " + user.getEmail());
 	}
 

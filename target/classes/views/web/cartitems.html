@@ -46,9 +46,13 @@
               </div>
           </div>
       </li>
-      <li th:if = "${cartitems.size() > 0}" class = "text-center pd right_ct">
-          <a class="btn btn-primary" th:href="@{/freshfood/checkout}">
+      <li th:if = "${cartitems.size() > 0}" style="display: flex; align-items: center; justify-content: space-between" class = "text-center pd right_ct">
+          <a class="btn btn-primary mr-3" th:href="@{/freshfood/checkout}">
              <span>Chi tiết</span>
+          </a>
+
+          <a class="btn btn-success" th:href="@{/freshfood/thanh-toán}">
+              <span>Thanh toán</span>
           </a>
       </li>
    </ul>

@@ -24,27 +24,27 @@ public class CatalogAPI {
 	private final ICategoryService categoryService;
 	
 	@GetMapping(value = "/freshfood/category/getall")
-	public List<CategoryDto> findall(){
+	public List<CategoryDto> findAllCategories(){
 		return categoryService.findAll();
 	}
 	
 	@PostMapping(value = "/freshfood/category/add")
 	@Transactional
-	public Integer themmoi(@RequestBody Category cate) {
+	public Integer saveCategory(@RequestBody Category cate) {
 		categoryService.save(cate);;
 		return cate.getId();
 	}
 	
 	@DeleteMapping(value = "/freshfood/category/xoa/{id}")
 	@Transactional
-	public Integer xoa(@PathVariable("id") Integer id) {
+	public Integer deleteCategory(@PathVariable("id") Integer id) {
 		categoryService.delete(id);
 		return id;
 	}
 	
 	@PutMapping(value = "/freshfood/category/update")
 	@Transactional
-	public Integer capnhat(@RequestBody Category cate) {
+	public Integer updateCategory(@RequestBody Category cate) {
 		categoryService.update(cate.getId(), cate.getName());
 		return cate.getId();
 	}

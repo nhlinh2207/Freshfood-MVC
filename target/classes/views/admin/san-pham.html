@@ -170,7 +170,12 @@
                            type : 'delete',
                            dataType: 'json',
                            success: function(json){
-                               window.location = "/freshfood/admin/san-pham";
+                               swal("Xóa sản phẩm thành công !", {
+                                   icon: "success",
+                               }).then((ok) => {
+                                   if (ok)
+                                       window.location = "/freshfood/admin/san-pham";
+                               });
                            },
                            error: function(){
                                alert("không thành công !");
