@@ -13,7 +13,8 @@
    <link type="text/css" rel="stylesheet" th:href="@{/css/base.css}"/>
    <link type="text/css" rel="stylesheet" th:href="@{/css/index.css}"/>
    <link type="text/css" rel="stylesheet" th:href="@{/css/responsive.css}"/>
-   <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
    <title>Trang chủ</title>
 </head>
@@ -87,7 +88,7 @@
                     </div>
                     <div id="content" class="col-sm-12 col-xs-12 col-md-12">
                         <h3>User: [[${user.fullname}]]</h3>
-                        <form th:action="@{/freshfood/dang-ki}" th:object="${user}" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                        <form th:action="@{/freshfood/dang-ky}" th:object="${user}" method="POST" enctype="multipart/form-data" class="form-horizontal">
                             <fieldset id="account">
                                 <legend>Chi tiết tài khoản</legend>
                                 <div class="form-group required" style="display: none">
@@ -120,12 +121,6 @@
                                     <div class="col-sm-12 col-md-10">
                                         <input th:field="*{phone}" type="tel" name="telephone" value="" placeholder="Điện thoại" id="input-telephone" class="form-control" />
                                         <div class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
-                                    </div>
-                                </div>
-                                <div class="form-group required row">
-                                    <label class="col-sm-12 col-md-2 control-label text-lg-right" for="input-fax">Số Fax</label>
-                                    <div class="col-sm-12 col-md-10">
-                                        <input th:field="*{fax}" type="text" name="fax" value="" placeholder="Số Fax" id="input-fax" class="form-control" />
                                     </div>
                                 </div>
                             </fieldset>
