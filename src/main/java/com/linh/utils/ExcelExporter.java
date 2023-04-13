@@ -15,15 +15,16 @@ import org.springframework.stereotype.Service;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ExcelExporter {
 
-    private XSSFWorkbook xssfWorkbook;
-    private XSSFSheet xssfSheet1;
-    private XSSFSheet xssfSheet2;
-    private XSSFSheet xssfSheet3;
+    private final XSSFWorkbook xssfWorkbook;
+    private final XSSFSheet xssfSheet1;
+    private final XSSFSheet xssfSheet2;
+    private final XSSFSheet xssfSheet3;
 
     private final IProductService productService;
     private final  IUserService userService;
@@ -65,16 +66,22 @@ public class ExcelExporter {
         cell.setCellValue("id");
 
         cell = row.createCell(1);
-        cell.setCellValue("Tên khách hàng");
+        cell.setCellValue("Tên người nhận");
 
         cell = row.createCell(2);
         cell.setCellValue("Địa chỉ giao hàng");
 
         cell = row.createCell(3);
-        cell.setCellValue("Số lượng món ăn");
+        cell.setCellValue("Số lượng món ăn đã đặt");
 
         cell = row.createCell(4);
         cell.setCellValue("Tổng giá");
+
+        cell = row.createCell(5);
+        cell.setCellValue("Thời gian đặt");
+
+        cell = row.createCell(6);
+        cell.setCellValue("Thời gian giao");
     }
 
     public void writeHeaderRowSheet3(){
@@ -128,7 +135,37 @@ public class ExcelExporter {
             cell = row.createCell(4);
             cell.setCellValue(count);
         }
+    }
 
+    public void writeDataRow2(){
+        SimpleDateFormat sfm = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        List<Cart> carts = cartService.findAll("SENT");
+        for (int i = 0; i<carts.size(); i++){
+            Cart cart = carts.get(i);
+
+            Row row = xssfSheet2.createRow(i+1);
+            Cell cell = row.createCell(0);
+            cell.setCellValue(cart.getId());
+
+            cell = row.createCell(1);
+            cell.setCellValue(cart.getReceiverName());
+
+            cell = row.createCell(2);
+            cell.setCellValue(cart.getAddress().getFullAddress());
+
+            cell = row.createCell(3);
+            cell.setCellValue(cart.getCartItems().size());
+
+            cell = row.createCell(4);
+            cell.setCellValue(MoneyFormatUtil.format(Math.round(cart.getTotalPrice())));
+
+            cell = row.createCell(5);
+            cell.setCellValue(sfm.format(cart.getOrderTime()));
+
+            cell = row.createCell(6);
+            cell.setCellValue(sfm.format(cart.getDeliverTime()));
+
+        }
     }
 
     public void writeDataRow3(){
@@ -166,6 +203,7 @@ public class ExcelExporter {
         writeHeaderRowSheet2();
         writeHeaderRowSheet3();
         writeDataRow1();
+        writeDataRow2();
         writeDataRow3();
 
         ServletOutputStream servletOutputStream = response.getOutputStream();
