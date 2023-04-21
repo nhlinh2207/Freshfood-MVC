@@ -125,6 +125,10 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.12.5" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.12.5" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.12.5" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-websocket:2.5.5" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-messaging:5.3.10" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-websocket:5.3.10" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bower:stomp-websocket:2.3.4" level="project" />
     <orderEntry type="library" name="Maven: com.github.librepdf:openpdf:1.3.8" level="project" />
     <orderEntry type="library" name="Maven: com.github.albfernandez:juniversalchardet:2.3.0" level="project" />
     <orderEntry type="library" name="Maven: io.springfox:springfox-swagger2:2.9.2" level="project" />
