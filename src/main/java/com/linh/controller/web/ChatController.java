@@ -40,7 +40,7 @@ public class ChatController {
 
     @RequestMapping("/chat")
     public ModelAndView getRooms() {
-        ModelAndView modelAndView = new ModelAndView("chat");
+        ModelAndView modelAndView = new ModelAndView("web/chat");
         List<ChatRoom> chatRooms = chatRoomService.findAll();
         modelAndView.addObject("chatRooms", chatRooms);
         return modelAndView;
