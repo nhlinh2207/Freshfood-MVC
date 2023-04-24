@@ -8,7 +8,6 @@ import com.linh.model.ConnectedUser;
 import com.linh.respository.IChatRoomRepo;
 import com.linh.service.IChatMessageService;
 import com.linh.service.IChatRoomService;
-import com.linh.service.IMessageService;
 import com.linh.utils.Destination;
 import com.linh.utils.enums.SystemUsers;
 import lombok.AllArgsConstructor;

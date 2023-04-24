@@ -10,6 +10,8 @@
    <link th:href="@{/css/base.css}" rel="stylesheet" />
    <link th:href="@{/css/index.css}" rel="stylesheet" />
    <link th:href="@{/css/responsive.css}" rel="stylesheet" />
+    <link th:href="@{/css/typing.css}" rel="stylesheet" />
+    <link th:href="@{/css/chat.css}" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
@@ -435,6 +437,49 @@
                                 <div class="back-to-top">
                                     <i class="fa fa-angle-up"></i>
                                 </div>
+<!--                                Chat box-->
+                                <div class="chatbox">
+                                    <div class="chatbox__support">
+                                        <div class="chatbox__header">
+                                            <div class="chatbox__content--header text-center">
+                                                <h4 style="color: white">Freshfood Chat Box</h4>
+                                            </div>
+                                        </div>
+                                        <div class="chatbox__messages">
+                                            <div>
+                                                <div class="messages__item messages__item--visitor">
+                                                    <p>Can you let me talk to the support?</p>
+                                                </div>
+                                                <div class="messages__item messages__item--operator">
+                                                    <p>Sure!</p>
+                                                </div>
+                                                <div class="messages__item messages__item--visitor">
+                                                    <p>Need your help, I need a developer in my site.</p>
+                                                </div>
+                                                <div class="messages__item messages__item--operator">
+                                                    <p>
+                                                        Hi... What is it? I'm a front-end developer, yay!
+                                                    </p>
+                                                </div>
+                                                <div class="messages__item messages__item--typing">
+                                                    <span class="messages__dot"></span>
+                                                    <span class="messages__dot"></span>
+                                                    <span class="messages__dot"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="chatbox__footer">
+                                            <img th:src="@{/image/logo/emojis.svg}" alt="" />
+                                            <img th:src="@{/image/logo/microphone.svg}" alt="" />
+                                            <input type="text" placeholder="Write a message..." />
+                                            <p class="chatbox__send--footer">Send</p>
+                                            <img th:src="@{/image/logo/attachment.svg}" alt="" />
+                                        </div>
+                                    </div>
+                                    <div class="chatbox__button">
+                                        <img th:src="@{/image/logo/chatbox-icon.svg}" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -444,6 +489,7 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
    <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>          
    <script type="text/javascript" th:src="@{/js/all.js}"></script>          
-   <script type="text/javascript" th:src="@{/js/index.js}"></script>        
+   <script type="text/javascript" th:src="@{/js/index.js}"></script>
+  <script type="text/javascript" th:src="@{/js/Chat.js}"></script>
 </body>
 </html>
