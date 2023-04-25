@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface IChatMessageService {
     void appendInstantMessageToConversations(ChatMessage message) throws JsonProcessingException;
-    List<ChatMessage> findAllInstantMessagesFor(String username, String chatRoomId);
-
+    List<ChatMessage> findByChatRoomId(Integer chatRoomId);
 }

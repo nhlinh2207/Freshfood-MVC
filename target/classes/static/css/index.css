@@ -781,7 +781,7 @@ header nav .nav-item .dropdown-menu li:last-child a {
     cursor: pointer;
     position: fixed;
     right: 20px;
-    bottom: 120px;
+    bottom: 30px;
     top: auto !important;
     display: none;
 }

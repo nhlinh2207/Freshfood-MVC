@@ -22,9 +22,11 @@ public class WebSocketEventListener {
     public void handleSessionConnected(SessionConnectEvent event){
         SimpMessageHeaderAccessor accessor = SimpMessageHeaderAccessor.wrap(event.getMessage());
         String chatRoomId = accessor.getNativeHeader("chatRoomId").get(0);
+        System.out.println("ChatroomId: "+chatRoomId);
+
         accessor.getSessionAttributes().put("chatRoomId", chatRoomId);
         ConnectedUser joiningUser = new ConnectedUser(event.getUser().getName(),new Date());
-        chatRoomService.loadOldMessage(Integer.valueOf(chatRoomId), joiningUser);
+        chatRoomService.loadOldMessage(Integer.valueOf(chatRoomId));
         chatRoomService.join(Integer.valueOf(chatRoomId), joiningUser);
     }
 

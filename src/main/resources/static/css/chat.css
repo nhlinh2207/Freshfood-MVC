@@ -5,18 +5,20 @@
 .chatbox {
     position: fixed;
     z-index: 123456;
-    bottom: 30px;
-    right: 30px;
+    bottom: 90px;
+    right: 20px;
 }
 
 /* CONTENT IS CLOSE */
+.chatbox__support.chatbox--close{
+   display: none;
+}
 
 /* CONTENT ISOPEN */
-.chatbox--active {
+.chatbox__support.chatbox--active {
     transform: translateY(-40px);
     z-index: 123456;
     opacity: 1;
-
 }
 
 /* BUTTON */

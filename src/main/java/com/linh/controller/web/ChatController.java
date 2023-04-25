@@ -65,7 +65,7 @@ public class ChatController {
     public List<ChatMessage> listOldMessagesFromUserOnSubscribe(Principal principal,
                                                                 SimpMessageHeaderAccessor headerAccessor) {
         String chatRoomId = headerAccessor.getSessionAttributes().get("chatRoomId").toString();
-        return messageService.findAllInstantMessagesFor(principal.getName(), chatRoomId);
+        return messageService.findByChatRoomId(Integer.valueOf(chatRoomId));
     }
 
     @MessageMapping("/send.message")
@@ -73,14 +73,8 @@ public class ChatController {
                             SimpMessageHeaderAccessor headerAccessor) throws JsonProcessingException {
         String chatRoomId = headerAccessor.getSessionAttributes().get("chatRoomId").toString();
         instantMessage.setFromUser(principal.getName());
+        instantMessage.setSenderType(instantMessage.getSenderType());
         instantMessage.setChatRoomId(Integer.valueOf(chatRoomId));
-
-        if (instantMessage.isPublic()) {
-            System.out.println("Public from : "+instantMessage.getFromUser());
-            chatRoomService.sendPublicMessage(instantMessage);
-        } else {
-            System.out.println(instantMessage.getFromUser()+"  -->  "+instantMessage.getToUser());
-            chatRoomService.sendPrivateMessage(instantMessage);
-        }
+        chatRoomService.sendPublicMessage(instantMessage);
     }
 }

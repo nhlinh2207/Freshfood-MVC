@@ -18,11 +18,11 @@ public class ChatRoom {
     @Column(name = "Id")
     private Integer id;
 
-    @Column(name = "Name")
-    private String name;
+    @Column(name = "AdminId")
+    private Integer adminId;
 
-    @Column(name = "Description")
-    private String description;
+    @Column(name = "UserId")
+    private Integer userId;
 
     @Column(name = "ConnectedUsers", columnDefinition = "LONGTEXT CHARACTER SET utf8")
     private String connectedUsers;

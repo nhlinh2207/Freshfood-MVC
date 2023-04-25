@@ -31,6 +31,9 @@ public class ChatMessage {
     @Column(name = "Username")
     private String username;
 
+    @Column(name = "SenderType")
+    private String senderType;
+
     @Column(name = "ChatRoomId")
     private Integer chatRoomId;
 

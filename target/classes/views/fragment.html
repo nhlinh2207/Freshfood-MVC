@@ -434,12 +434,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="back-to-top">
-                                    <i class="fa fa-angle-up"></i>
-                                </div>
 <!--                                Chat box-->
-                                <div class="chatbox">
-                                    <div class="chatbox__support">
+                                <div sec:authorize="isAuthenticated()" class="chatbox" style="line-height: normal">
+                                    <div class="chatbox__support chatbox--close">
                                         <div class="chatbox__header">
                                             <div class="chatbox__content--header text-center">
                                                 <h4 style="color: white">Freshfood Chat Box</h4>
@@ -447,38 +444,25 @@
                                         </div>
                                         <div class="chatbox__messages">
                                             <div>
-                                                <div class="messages__item messages__item--visitor">
-                                                    <p>Can you let me talk to the support?</p>
-                                                </div>
-                                                <div class="messages__item messages__item--operator">
-                                                    <p>Sure!</p>
-                                                </div>
-                                                <div class="messages__item messages__item--visitor">
-                                                    <p>Need your help, I need a developer in my site.</p>
-                                                </div>
-                                                <div class="messages__item messages__item--operator">
-                                                    <p>
-                                                        Hi... What is it? I'm a front-end developer, yay!
-                                                    </p>
-                                                </div>
-                                                <div class="messages__item messages__item--typing">
-                                                    <span class="messages__dot"></span>
-                                                    <span class="messages__dot"></span>
-                                                    <span class="messages__dot"></span>
+                                                <div id="chatbox-messages">
+                                                    <!-- Chat messages content -->
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="chatbox__footer">
                                             <img th:src="@{/image/logo/emojis.svg}" alt="" />
                                             <img th:src="@{/image/logo/microphone.svg}" alt="" />
-                                            <input type="text" placeholder="Write a message..." />
-                                            <p class="chatbox__send--footer">Send</p>
+                                            <input id="input-message" type="text" placeholder="Write a message..." />
+                                            <p id="send-message" style="margin: 0; cursor: pointer" class="chatbox__send--footer">Send</p>
                                             <img th:src="@{/image/logo/attachment.svg}" alt="" />
                                         </div>
                                     </div>
                                     <div class="chatbox__button">
-                                        <img th:src="@{/image/logo/chatbox-icon.svg}" />
+                                        <img style="width: 50px; height: auto" th:src="@{/image/logo/icon-logo.png}" />
                                     </div>
+                                </div>
+                                <div class="back-to-top">
+                                    <i class="fa fa-angle-up"></i>
                                 </div>
                             </div>
                         </div>

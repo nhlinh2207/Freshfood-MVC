@@ -58,7 +58,7 @@ public class ChatMessageService implements IChatMessageService {
     }
 
     @Override
-    public List<ChatMessage> findAllInstantMessagesFor(String username, String chatRoomId) {
-        return messageRepo.findByUsernameAndChatRoomId(username, Integer.valueOf(chatRoomId));
+    public List<ChatMessage> findByChatRoomId(Integer chatRoomId) {
+        return messageRepo.findByChatRoomId(chatRoomId);
     }
 }

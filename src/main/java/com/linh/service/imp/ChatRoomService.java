@@ -38,6 +38,11 @@ public class ChatRoomService implements IChatRoomService {
     }
 
     @Override
+    public ChatRoom findByUserId(Integer userId) {
+        return chatRoomRepo.findByUserId(userId);
+    }
+
+    @Override
     public ChatRoom findById(Integer id) {
         return chatRoomRepo.findById(id).get();
     }
@@ -52,14 +57,6 @@ public class ChatRoomService implements IChatRoomService {
             String connectedUsers = objectMapper.writeValueAsString(connectedUsersList);
             chatRoom.setConnectedUsers(connectedUsers);
             chatRoom = chatRoomRepo.save(chatRoom);
-
-            sendPublicMessage(
-                    ChatMessage.builder()
-                            .chatRoomId(chatRoomId)
-                            .fromUser(SystemUsers.ADMIN.getUsername())
-                            .content(user.getUsername()+ " join us :)")
-                            .build()
-            );
 
             updateConnectedUsersViaWebSocket(chatRoom);
             return chatRoom;
@@ -83,13 +80,6 @@ public class ChatRoomService implements IChatRoomService {
         String connectedUsers = objectMapper.writeValueAsString(connectedUsersList);
         chatRoom.setConnectedUsers(connectedUsers);
         chatRoom = chatRoomRepo.save(chatRoom);
-        sendPublicMessage(
-                ChatMessage.builder()
-                        .chatRoomId(chatRoomId)
-                        .fromUser(SystemUsers.ADMIN.getUsername())
-                        .content(user.getUsername()+ " left us :(")
-                        .build()
-        );
         updateConnectedUsersViaWebSocket(chatRoom);
         return chatRoom;
     }
@@ -119,8 +109,8 @@ public class ChatRoomService implements IChatRoomService {
     }
 
     @Override
-    public void loadOldMessage(Integer chatRoomId, ConnectedUser user) {
-        List<ChatMessage> oldMessages = messageService.findAllInstantMessagesFor(user.getUsername(), chatRoomId+"");
+    public void loadOldMessage(Integer chatRoomId) {
+        List<ChatMessage> oldMessages = messageService.findByChatRoomId(chatRoomId);
         for (ChatMessage m : oldMessages){
             if (m.isPublic()){
                 webSocketMessagingTemplate.convertAndSend(
