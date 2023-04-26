@@ -12,10 +12,11 @@ public interface IChatRoomService {
     ChatRoom save(ChatRoom chatRoom);
     List<ChatRoom> findAll();
     ChatRoom findByUserId(Integer userId);
+    List<ChatRoom> findByAdminId(Integer adminId);
     ChatRoom findById(Integer id);
     ChatRoom join(Integer chatRoomId, ConnectedUser user);
     ChatRoom leave(Integer chatRoomId, ConnectedUser user) throws JsonProcessingException;
     void sendPublicMessage(ChatMessage message) throws JsonProcessingException;
     void sendPrivateMessage(ChatMessage message) throws JsonProcessingException;
-    void loadOldMessage(Integer chatRoomId);
+    void loadOldMessage(Integer chatRoomId, String username);
 }

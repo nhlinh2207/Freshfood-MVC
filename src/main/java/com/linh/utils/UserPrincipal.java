@@ -48,11 +48,7 @@ public class UserPrincipal implements UserDetails{
 	public User getUser() {
 		return this.user;
 	}
-	
-	public AuthProvider getauthprovider() {
-		return this.user.getAuthProvider();
-	}
-	
+
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub

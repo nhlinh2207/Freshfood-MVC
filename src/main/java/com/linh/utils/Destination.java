@@ -10,6 +10,10 @@ public class Destination {
         return "/queue/" + chatRoomId + ".private.messages";
     }
 
+    public static String oldMessages(String chatRoomId) {
+        return "/queue/" + chatRoomId + ".old.messages";
+    }
+
     public static String connectedUsers(String chatRoomId) {
         return "/topic/" + chatRoomId + ".connected.users";
     }

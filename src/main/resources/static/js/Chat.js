@@ -15,25 +15,27 @@ $(document).ready(function(){
 
     function disconnect() {
         if (stompClient != null) {
+            newMessages.html("");
             stompClient.disconnect();
         }
     }
 
     function  stompSuccess(){
-        // stompClient.subscribe('/chatroom/connected.users', updateConnectedUsers);
-        stompClient.subscribe('/chatroom/old.messages', oldMessages);
         stompClient.subscribe('/topic/' + chatRoomId + '.public.messages', publicMessages);
-        // stompClient.subscribe('/user/queue/' + chatRoomId + '.private.messages', privateMessages);
-        // stompClient.subscribe('/topic/' + chatRoomId + '.connected.users', updateConnectedUsers);
+        stompClient.subscribe('/user/queue/' + chatRoomId + '.old.messages', oldMessages);
+        loadOldMessages();
     }
 
     function stompFailure(){
         alert("Failed")
     }
 
+    function loadOldMessages(){
+        stompClient.send("/chatroom/old.messages", {}, {});
+    }
+
     function oldMessages(response){
         var instantMessages = JSON.parse(response.body);
-
         $.each(instantMessages, function(index, instantMessage) {
             appendPublicMessage(instantMessage);
         });
@@ -41,7 +43,7 @@ $(document).ready(function(){
     }
 
     function appendPublicMessage(instantMessage) {
-        if (instantMessage.fromUser == "ADMIN") {
+        if (instantMessage.senderType == "ADMIN") {
             newMessages
                 .append('<div class="messages__item messages__item--visitor">' +
                     '<p style="margin: 0">'+instantMessage.content+'</p>' +
@@ -95,7 +97,6 @@ $(document).ready(function(){
                 dataType: 'json',
                 success: function(json){
                     chatRoomId = json;
-                    console.log(chatRoomId);
                     chatContent.classList.remove('chatbox--close')
                     chatContent.classList.add('chatbox--active')
                     buttonStatus = !buttonStatus

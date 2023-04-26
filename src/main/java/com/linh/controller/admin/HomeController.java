@@ -3,15 +3,12 @@ package com.linh.controller.admin;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.linh.model.Cart;
-import com.linh.model.Product;
+import com.linh.model.*;
 import com.linh.respository.ICartItemRepo;
 import com.linh.respository.ICartRepo;
 import com.linh.service.*;
@@ -44,6 +41,8 @@ public class HomeController {
 	private final IProductService productService;
 	private final ICartItemRepo cartItemRepo;
 	private final IRatingService ratingService;
+	private final IChatRoomService chatRoomService;
+	private final IChatMessageService chatMessageService;
 	
 	@RequestMapping(value = "/admin/trang-chu", method = RequestMethod.GET)
 	public ModelAndView trangchu() throws ParseException {
@@ -205,5 +204,23 @@ public class HomeController {
 		// Get Booking form
 		ExcelExporter excelExporter = new ExcelExporter(productService, userService, cartItemRepo, cartService);
 		excelExporter.export(response);
+	}
+
+	@GetMapping(value = "/chat-list-admin")
+	public String getChatBoxListByAdmin(Model model) {
+		Integer adminId = userService.findByEmail(userService.getCurrentLoginUser().getEmail()).getId();
+		List<ChatRoom> chatRooms = chatRoomService.findByAdminId(adminId);
+		List<Map<String, String>> response = new ArrayList<>();
+		for (ChatRoom chatRoom : chatRooms){
+			User chatRoomUser = userService.findById(chatRoom.getUserId());
+			List<ChatMessage> chatMessages = chatMessageService.findByChatRoomId(chatRoom.getId());
+			Map<String, String> item = new LinkedHashMap<>();
+			item.put("chatRoomId", chatRoom.getId()+"");
+			item.put("username", chatRoomUser.getFullName());
+			item.put("latestMessage", chatMessages.size() > 0 ? chatMessages.get(chatMessages.size() - 1).getContent() : "");
+			response.add(item);
+		}
+		model.addAttribute("chatboxList", response);
+		return "admin/chatboxList";
 	}
 }

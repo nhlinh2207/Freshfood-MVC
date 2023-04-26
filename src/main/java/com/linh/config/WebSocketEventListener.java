@@ -22,11 +22,8 @@ public class WebSocketEventListener {
     public void handleSessionConnected(SessionConnectEvent event){
         SimpMessageHeaderAccessor accessor = SimpMessageHeaderAccessor.wrap(event.getMessage());
         String chatRoomId = accessor.getNativeHeader("chatRoomId").get(0);
-        System.out.println("ChatroomId: "+chatRoomId);
-
         accessor.getSessionAttributes().put("chatRoomId", chatRoomId);
         ConnectedUser joiningUser = new ConnectedUser(event.getUser().getName(),new Date());
-        chatRoomService.loadOldMessage(Integer.valueOf(chatRoomId));
         chatRoomService.join(Integer.valueOf(chatRoomId), joiningUser);
     }
 
@@ -35,6 +32,7 @@ public class WebSocketEventListener {
         SimpMessageHeaderAccessor headers = SimpMessageHeaderAccessor.wrap(event.getMessage());
         String chatRoomId = headers.getSessionAttributes().get("chatRoomId").toString();
         ConnectedUser leavingUser = new ConnectedUser(event.getUser().getName());
+        System.out.println("Socket disconnected");
         chatRoomService.leave(Integer.valueOf(chatRoomId), leavingUser);
     }
 }

@@ -48,7 +48,6 @@ public class ChatController {
 
     @RequestMapping("/chatroom/{chatRoomId}")
     public ModelAndView join(@PathVariable String chatRoomId, Principal principal) {
-        System.out.println(principal.getName());
         ModelAndView modelAndView = new ModelAndView("chatroom");
         modelAndView.addObject("chatRoom", chatRoomService.findById(Integer.valueOf(chatRoomId)));
         return modelAndView;
@@ -61,11 +60,10 @@ public class ChatController {
         return new ObjectMapper().readValue(chatRoom.getConnectedUsers(), ArrayList.class);
     }
 
-    @SubscribeMapping("/old.messages")
-    public List<ChatMessage> listOldMessagesFromUserOnSubscribe(Principal principal,
-                                                                SimpMessageHeaderAccessor headerAccessor) {
+    @MessageMapping("/old.messages")
+    public void listOldMessagesFromUserOnSubscribe(Principal principal, SimpMessageHeaderAccessor headerAccessor) {
         String chatRoomId = headerAccessor.getSessionAttributes().get("chatRoomId").toString();
-        return messageService.findByChatRoomId(Integer.valueOf(chatRoomId));
+        chatRoomService.loadOldMessage(Integer.valueOf(chatRoomId), principal.getName());
     }
 
     @MessageMapping("/send.message")

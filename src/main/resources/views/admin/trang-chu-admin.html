@@ -17,6 +17,8 @@
 
 	<!-- Custom styles for this template-->
 	<link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" th:href="@{/css/typing.css}" />
+	<link type="text/css" rel="stylesheet" th:href="@{/css/chat.css}" />
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	
@@ -360,6 +362,7 @@
 
 </div>
 <!-- End of Page Wrapper -->
+<div th:replace="fragment-admin::chatbox"></div>
 <div th:replace="fragment-admin::scroll-top"></div>
 
 	<!-- Bootstrap core JavaScript-->
@@ -378,6 +381,9 @@
 	<!-- Page level custom scripts -->
 	<script type="text/javascript" th:src="@{/js/chart-area-demo.js}"></script>
 	<script type="text/javascript" th:src="@{/js/chart-pie-demo.js}"></script>
+    <script type="text/javascript" th:src="@{/js/chat-admin.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.2/sockjs.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/stomp-websocket@2.3.4-next/lib/stomp.min.js"></script>
 
     <script  type="text/javascript">
 		$(document).ready(function(){

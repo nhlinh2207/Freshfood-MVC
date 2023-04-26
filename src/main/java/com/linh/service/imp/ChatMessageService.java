@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -19,23 +20,19 @@ import java.util.List;
 public class ChatMessageService implements IChatMessageService {
 
     private final IChatMessageRepo messageRepo;
-    private final IChatRoomRepo chatRoomRepo;
 
     @Override
     public void appendInstantMessageToConversations(ChatMessage message) throws JsonProcessingException {
         if (message.isPublic()) {
-            ChatRoom chatRoom = chatRoomRepo.findById(message.getChatRoomId()).get();
 
-            List<LinkedHashMap<String, String>> connectedUsers = new ObjectMapper().readValue(chatRoom.getConnectedUsers(), ArrayList.class);
-            for (LinkedHashMap<String, String> user : connectedUsers){
-                messageRepo.save(ChatMessage.builder()
+            messageRepo.save(ChatMessage.builder()
                         .chatRoomId(message.getChatRoomId())
                         .content(message.getContent())
                         .fromUser(message.getFromUser())
-                        .username(user.get("username"))
-                        .build()
-                );
-            }
+                        .username(message.getFromUser())
+                        .senderType(message.getSenderType())
+                        .createTime(new Date())
+                        .build());
         } else {
             messageRepo.save(ChatMessage.builder()
                     .chatRoomId(message.getChatRoomId())

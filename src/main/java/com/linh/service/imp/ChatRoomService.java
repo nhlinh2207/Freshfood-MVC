@@ -9,8 +9,9 @@ import com.linh.respository.IChatRoomRepo;
 import com.linh.service.IChatMessageService;
 import com.linh.service.IChatRoomService;
 import com.linh.utils.Destination;
-import com.linh.utils.enums.SystemUsers;
 import lombok.AllArgsConstructor;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +44,11 @@ public class ChatRoomService implements IChatRoomService {
     }
 
     @Override
+    public List<ChatRoom> findByAdminId(Integer adminId) {
+        return chatRoomRepo.findByAdminId(adminId);
+    }
+
+    @Override
     public ChatRoom findById(Integer id) {
         return chatRoomRepo.findById(id).get();
     }
@@ -58,7 +64,7 @@ public class ChatRoomService implements IChatRoomService {
             chatRoom.setConnectedUsers(connectedUsers);
             chatRoom = chatRoomRepo.save(chatRoom);
 
-            updateConnectedUsersViaWebSocket(chatRoom);
+//            updateConnectedUsersViaWebSocket(chatRoom);
             return chatRoom;
         }catch (Exception e){
             e.printStackTrace();
@@ -80,7 +86,7 @@ public class ChatRoomService implements IChatRoomService {
         String connectedUsers = objectMapper.writeValueAsString(connectedUsersList);
         chatRoom.setConnectedUsers(connectedUsers);
         chatRoom = chatRoomRepo.save(chatRoom);
-        updateConnectedUsersViaWebSocket(chatRoom);
+//        updateConnectedUsersViaWebSocket(chatRoom);
         return chatRoom;
     }
 
@@ -109,21 +115,12 @@ public class ChatRoomService implements IChatRoomService {
     }
 
     @Override
-    public void loadOldMessage(Integer chatRoomId) {
+    public void loadOldMessage(Integer chatRoomId, String username) {
         List<ChatMessage> oldMessages = messageService.findByChatRoomId(chatRoomId);
-        for (ChatMessage m : oldMessages){
-            if (m.isPublic()){
-                webSocketMessagingTemplate.convertAndSend(
-                        Destination.publicMessages(m.getChatRoomId()+""),
-                        m
-                );
-            }else {
-                webSocketMessagingTemplate.convertAndSendToUser(
-                        m.getUsername(),
-                        Destination.privateMessages(m.getChatRoomId()+""),
-                        m);
-            }
-        }
+        webSocketMessagingTemplate.convertAndSendToUser(
+                    username,
+                    Destination.oldMessages(chatRoomId+""),
+                    oldMessages);
     }
 
     public void updateConnectedUsersViaWebSocket(ChatRoom chatRoom) throws JsonProcessingException {
