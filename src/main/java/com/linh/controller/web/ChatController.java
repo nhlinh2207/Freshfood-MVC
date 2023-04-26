@@ -27,7 +27,6 @@ import java.util.List;
 public class ChatController {
 
     private final IChatRoomService chatRoomService;
-    private final IChatMessageService messageService;
 
     @Secured("ROLE_ADMIN")
     @PostMapping(path = "/chatroom")
@@ -35,15 +34,6 @@ public class ChatController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public ChatRoom createChatRoom(@RequestBody ChatRoom chatRoom) {
         return chatRoomService.save(chatRoom);
-    }
-
-
-    @RequestMapping("/chat")
-    public ModelAndView getRooms() {
-        ModelAndView modelAndView = new ModelAndView("web/chat");
-        List<ChatRoom> chatRooms = chatRoomService.findAll();
-        modelAndView.addObject("chatRooms", chatRooms);
-        return modelAndView;
     }
 
     @RequestMapping("/chatroom/{chatRoomId}")

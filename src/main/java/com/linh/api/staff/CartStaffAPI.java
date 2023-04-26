@@ -6,7 +6,6 @@ import com.linh.model.Message;
 import com.linh.model.User;
 import com.linh.service.ICartItemService;
 import com.linh.service.ICartService;
-import com.linh.service.IMessageService;
 import com.linh.service.IUserService;
 import com.linh.utils.MoneyFormatUtil;
 import lombok.AllArgsConstructor;
@@ -27,7 +26,6 @@ public class CartStaffAPI {
     private final ICartService cartService;
     private final IUserService userService;
     private final ICartItemService cartItemService;
-    private final IMessageService messageService;
 
     @GetMapping(value = "/freshfood/staff/cart/all/{type}")
     public List<Map<String, String>> findAllOrderByType(@PathVariable String type){
@@ -57,17 +55,6 @@ public class CartStaffAPI {
         cart.setStatus("SENT");
         cart.setDeliverTime(new Date());
         cartService.save(cart);
-
-        // Create Success Message for user
-        Message message = messageService.save(Message.builder()
-                .content("Đơn hàng "+cartId+" đã được giao thành công.")
-                .title("Giao hàng thành công")
-                .status("UNSEEN")
-                .createTime(new Date())
-                .cartId(cart.getId())
-                .user(cart.getUser())
-                .build());
-
         return "OK";
     }
 }
