@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -47,7 +46,7 @@
             <div class="clearfix"></div>
             <div class="col-sm-12 col-md-6">
                 <div class="well">
-                    <h2>Khách đặt phòng mới</h2>
+                    <h2>Khách hàng mới</h2>
                     <p><strong>Đăng kí</strong></p>
                     <p>
                         Bằng việc tạo tài khoản bạn có thể đặt phòng nhanh hơn và
@@ -134,7 +133,7 @@
         let data = {};
         data['email'] = email;
         $.ajax({
-            url : '/frehfood/api/send-reset-mail',
+            url : '/freshfood/send-reset-mail',
             data: JSON.stringify(data),
             method : 'PUT',
             dataType : 'json',

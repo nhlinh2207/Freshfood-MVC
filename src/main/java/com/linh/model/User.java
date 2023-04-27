@@ -72,6 +72,9 @@ public class User {
 	@Column(name = "Type")
 	private String type;
 
+	@Column(name = "resetPassToken")
+	private String resetPassToken;
+
 	@JsonSerialize(using = CustomDateSerializer.class)
 	@Column(name = "CreateTime")
 	private Date createTime;

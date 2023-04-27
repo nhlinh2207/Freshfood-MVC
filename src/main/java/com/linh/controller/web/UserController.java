@@ -61,7 +61,7 @@ public class UserController {
         return mv;
     }
 
-    @GetMapping(path = "/quen-pass")
+    @GetMapping(path = "/forget-password")
     public ModelAndView getForgetPassPage(){
         return new ModelAndView("web/forgetPass");
     }
@@ -73,7 +73,7 @@ public class UserController {
         return mv;
     }
 
-    @GetMapping(path = "/doi-pass")
+    @GetMapping(path = "/change-current-pass")
     public ModelAndView getChangeCurrentPassPage(){
         ModelAndView mv = new ModelAndView("web/changeCurrentPass");
         User currentUser = userService.getCurrentLoginUser();
