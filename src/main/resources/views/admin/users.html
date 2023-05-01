@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin 2 - Dashboard</title>
+
+    <!-- Custom fonts for this template-->
+    <link th:href="@{/font/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/typing.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{/css/chat.css}" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <title>Trang chủ Admin</title>
+</head>
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul th:replace="fragment-admin::sidebar"></ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav th:replace="fragment-admin::topbar"></nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="breadcrumbs" id="breadcrumbs">
+                    <script type="text/javascript">
+                        try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                    </script>
+
+                    <ul class="breadcrumb">
+                        <li>
+                            <i class="ace-icon fa fa-home home-icon"></i>
+                            <a th:href="@{/freshfood/admin/trang-chu}">Freshfood </a>
+                            <span><i class="fa fa-angle-right"></i></span>
+                        </li>
+                        &nbsp;<li class="active">Danh sách khách hàng<li>
+                    </ul><!-- /.breadcrumb -->
+                </div>
+
+                <!-- Content Row -->
+                <div class="card shadow my-4">
+                    <form>
+                        <div class="table-responsive table-cart-content">
+                            <table id="user-table" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <td class="text-center"><strong>Id</strong></td>
+                                    <td class="text-center"><strong> Họ và tên</strong></td>
+                                    <td class="text-center"><strong>Email</strong></td>
+                                    <td class="text-center"><strong>Số điện thoại</strong></td>
+                                    <td class="text-center"><strong>Trạng thái</strong></td>
+                                    <td class="text-center"><strong>Xóa</strong></td>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Content Row -->
+
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="fragment-admin::footer"></footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+<div th:replace="fragment-admin::scroll-top"></div>
+
+<!-- Bootstrap core JavaScript-->
+<script type="text/javascript" th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script type="text/javascript" th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script type="text/javascript" th:src="@{/js/sb-admin-2.min.js}"></script>
+
+<!-- Page level plugins -->
+<script type="text/javascript" th:src="@{/js/Chart.min.js}"></script>
+
+<!-- Page level custom scripts -->
+<script type="text/javascript" th:src="@{/js/chart-area-demo.js}"></script>
+<script type="text/javascript" th:src="@{/js/chart-pie-demo.js}"></script>
+
+<script type = "text/javascript">
+    $(document).ready(function(){
+        loadUsers();
+    });
+
+    function loadUsers(){
+        $.ajax({
+            url : '/freshfood/users/getall',
+            type : 'get',
+            dataType: 'json',
+            success: function(json){
+                let table = '';
+                for(let i = 0;i<json.length; i++){
+                    var html = '<tr>'+
+                        '<td class="text-center">'+
+                        '<span>'+json[i]['id']+'</span>'+
+                        '</td>'+
+                        '<td class="text-center">'+
+                        '<span>'+json[i]['fullName']+'</span>'+
+                        '</td>'+
+                        '<td class="text-center">'+
+                        '<span>'+json[i]['email']+'</span>'+
+                        '</td>'+
+                        '<td class="text-center">'+
+                        '<span>'+json[i]['phoneNumber']+'</span>'+
+                        '</td>'+
+                        '<td class="text-center">'+
+                        '<span>'+json[i]['status']+'</span>'+
+                        '</td>'+
+                        '<td class="text-center">'+
+                        '<button type="button" onclick="deleteUser('+json[i]['id']+')" data-toggle="tooltip" title class="btn btn-danger" data-original-title="Xóa">'+
+                        '<i class="fa fa-times-circle"></i>'+
+                        '</button>'+
+                        '</td>'+
+                        '</tr>';
+                    table+=html;
+                }
+                $('#user-table tbody').html(table);
+            },
+            error: function(){
+                alert("không thành công");
+            }
+        });
+    }
+
+    function deleteUser(id){
+        swal({
+            title: "Xóa khách hàng",
+            text: "Bạn có chắc chắn muốn xóa khách hàng ?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((order) => {
+            if (order) {
+                // Đặt hàng
+                $.ajax({
+                    url : '/freshfood/users/delete/'+id,
+                    type : 'delete',
+                    dataType: 'json',
+                    // beforeSend: function(xhr){
+                    //      xhr.setRequestHeader(name, token);
+                    // },
+                    success: function(json){
+                        swal("Xóa khách hàng thành công !", {
+                            icon: "success",
+                        }).then((ok) => {
+                            if (ok) {
+                                loadUsers();
+                            }
+                        });
+                    },
+                    error: function(){
+                        alert("không thành công !");
+                    }
+                });
+            } else {
+                swal("Bạn chưa xóa khách hàng!");
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

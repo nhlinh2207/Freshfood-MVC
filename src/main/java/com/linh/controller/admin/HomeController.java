@@ -223,4 +223,14 @@ public class HomeController {
 		model.addAttribute("chatboxList", response);
 		return "admin/chatboxList";
 	}
+
+	@GetMapping(value = "/admin/users")
+	public String getListUsers(Model model) {
+		return "admin/users";
+	}
+
+	@GetMapping(value = "/admin/staffs")
+	public String getListStaffs(Model model) {
+		return "admin/staffs";
+	}
 }

@@ -12,7 +12,13 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
 	boolean existsByEmail(String email);
 
 	User findByEmail(String email);
-	
+
+	@Query("SELECT e FROM User e WHERE e.status <> 'INACTIVE' AND (e.type is null or e.type <> 'STAFF')")
+	List<User> getAllActiveUsers();
+
+	@Query("SELECT e FROM User e WHERE e.type = 'STAFF' AND e.status <> 'INACTIVE'")
+	List<User> getAllActiveStaff();
+
 	@Query("SELECT e.email FROM User e")
 	List<String> getEmails();
 

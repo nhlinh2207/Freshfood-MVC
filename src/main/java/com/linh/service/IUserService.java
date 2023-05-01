@@ -24,4 +24,8 @@ public interface IUserService {
       List<User> getFreeStaff();
 
       List<User> findAll();
+
+      List<User> getAllActiveUsers();
+
+      List<User> getAllStaffs();
 }

@@ -107,6 +107,17 @@ public class UserService implements IUserService {
 	}
 
 	@Override
+	public List<User> getAllActiveUsers() {
+         return userRepository.getAllActiveUsers();
+	}
+
+	@Override
+	public List<User> getAllStaffs() {
+		List<User> all = userRepository.getAllActiveStaff();
+		return userRepository.getAllActiveStaff();
+	}
+
+	@Override
 	public User findById(Integer id) {
 		return userRepository.findById(id).get();
 	}
