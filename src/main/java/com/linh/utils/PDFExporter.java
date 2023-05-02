@@ -74,7 +74,7 @@ public class PDFExporter {
         for (CartItem item : cartDetails){
             Product fastFood = item.getProduct();
             int foodPrice =item.getQuantity()*fastFood.getPrice();
-            serviceFeeInfo.add("       "+fastFood.getName()+" :   "+fastFood.getPriceCurrency()+"  x"+item.getQuantity()+"    =   "+MoneyFormatUtil.format(foodPrice)+" đ\n\n");
+            serviceFeeInfo.add("       "+fastFood.getName()+" :   "+fastFood.getPriceCurrency()+"  x"+item.getQuantity()+"    =   "+MoneyFormatUtil.format(foodPrice)+" \n\n");
         }
         document.add(serviceFeeInfo);
 

@@ -43,6 +43,7 @@ public class HomeController {
 	private final IRatingService ratingService;
 	private final IChatRoomService chatRoomService;
 	private final IChatMessageService chatMessageService;
+	private final IChartService chartService;
 	
 	@RequestMapping(value = "/admin/trang-chu", method = RequestMethod.GET)
 	public ModelAndView trangchu() throws ParseException {
@@ -196,13 +197,13 @@ public class HomeController {
 	}
 
 	@GetMapping(path = "/excel/export")
-	public void exportExcel(HttpServletResponse response) throws IOException {
+	public void exportExcel(HttpServletResponse response) throws IOException, ParseException {
 		response.setContentType("application/octet-stream");
 		String headerKey = "Content-Disposition";
 		String headerValue = "attachment; filename=report.xlsx";
 		response.setHeader(headerKey, headerValue);
 		// Get Booking form
-		ExcelExporter excelExporter = new ExcelExporter(productService, userService, cartItemRepo, cartService);
+		ExcelExporter excelExporter = new ExcelExporter(productService, cartItemRepo, cartRepo, chartService);
 		excelExporter.export(response);
 	}
 
