@@ -1,18 +1,24 @@
 package com.linh.controller.web;
 
+import com.linh.dto.request.PushNotificationRequest;
 import com.linh.dto.request.RegistryRequest;
 import com.linh.model.City;
+import com.linh.model.TokenDevice;
 import com.linh.model.User;
 import com.linh.service.ICityService;
 import com.linh.service.ICountryService;
+import com.linh.service.IFirebaseNotificationService;
 import com.linh.service.IUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Collections;
 
 @Controller
 @RequestMapping("/freshfood")
@@ -23,6 +29,7 @@ public class UserController {
     private final IUserService userService;
     private final ICountryService countryService;
     private final ICityService cityService;
+    private final IFirebaseNotificationService firebaseNotificationService;
 
     @GetMapping(path = "/dang-nhap")
     public ModelAndView getLoginPage(){
@@ -90,5 +97,20 @@ public class UserController {
         City city = cityService.findById(currentUser.getAddress().getCityId());
         mv.addObject("city", city);
         return mv;
+    }
+
+    @GetMapping(path = "/firebase/test")
+    public ResponseEntity<?> testPushNotification(){
+        User currentUser = userService.findByEmail("nguyenhoailinh2207@gmail.com");
+        TokenDevice tokenDevice = firebaseNotificationService.getTokenDeviceByUser(currentUser);
+        String result = this.firebaseNotificationService.pushNotificationToWeb(PushNotificationRequest.builder()
+                .title("HELLO Em Tuan")
+                .body("Body")
+                .data("Data: " + currentUser.getFullName())
+                .topic("abc")
+                .tokens(Collections.singletonList(tokenDevice.getWebToken()))
+                .build());
+        log.info("Test success");
+        return ResponseEntity.ok(result);
     }
 }

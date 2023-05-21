@@ -18,6 +18,7 @@
 	<link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
 	<link type="text/css" rel="stylesheet" th:href="@{/css/typing.css}" />
 	<link type="text/css" rel="stylesheet" th:href="@{/css/chat.css}" />
+	<link type="text/css" rel="stylesheet" th:href="@{/css/bar-chart.css?v=8.1.0}" />
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	
@@ -208,7 +209,7 @@
 				<!-- Content Row -->
 				<div class="row">
 					<!-- Content Column -->
-					<div class="col-lg-6 mb-4">
+					<div class="col-lg-4 mb-4">
 						<!-- Project Card Example -->
 						<div class="card shadow mb-4">
 							<div class="card-header py-3">
@@ -322,24 +323,17 @@
 <!--						</div>-->
 					</div>
 
-					<div class="col-lg-6 mb-4">
+					<div class="col-lg-8 mb-4">
 
 						<!-- Illustrations -->
 						<div class="card shadow mb-4">
 							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
+								<h6 class="m-0 font-weight-bold text-primary">KPI doanh thu hàng tháng</h6>
 							</div>
 							<div class="card-body">
-								<div class="text-center">
-									<img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-										 th:src="@{/image/logo/undraw_posting_photo.svg}" alt="...">
+								<div class="dhx-kpi-chart">
+									<div id="kpi-chart" style="width: 100%"></div>
 								</div>
-								<p>Add some quality, svg illustrations to your project courtesy of <a
-										target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-									constantly updated collection of beautiful svg images that you can use
-									completely free and without attribution!</p>
-								<a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on
-									unDraw &rarr;</a>
 							</div>
 						</div>
 
@@ -375,7 +369,9 @@
 	<script type="text/javascript" th:src="@{/js/sb-admin-2.min.js}"></script>
 
 	<!-- Page level plugins -->
+    <script type="text/javascript" th:src="@{/js/kpi-chart.js}"></script>
 	<script type="text/javascript" th:src="@{/js/Chart.min.js}"></script>
+    <script src="https://code.jscharting.com/latest/jscharting.js"></script>
 
 	<!-- Page level custom scripts -->
 	<script type="text/javascript" th:src="@{/js/chart-area-demo.js}"></script>
@@ -388,6 +384,7 @@
 		$(document).ready(function(){
 			getPieData(2023);
 			getLineData(2023);
+			getKpiChart(2023);
 			getRatingBarData();
 		});
 
@@ -445,6 +442,66 @@
 				},
 				error: function(){
 					alert("không thành công !");
+				}
+			});
+		}
+
+		function getKpiChart(){
+			var barChartData = [];
+			$.ajax({
+				url: '/freshfood/chart/barChart/'+2023,
+				type: 'get',
+				dataType: 'json',
+				success: function(json){
+					console.log(json.length+" okokok")
+					for (var i = 0 ; i < json.length; i++){
+						var barChartItem = {};
+						barChartItem['month'] = json[i]['month'];
+						barChartItem['Doanh thu mục tiêu'] = Number(json[i]['goal']);
+						barChartItem['Doanh thu thực tế'] = Number(json[i]['real']);
+						barChartData.push(barChartItem);
+					}
+
+					const config = {
+						type: "bar",
+						css: "dhx_widget--bordered",
+						scales: {
+							"bottom": {
+								text: "month"
+							},
+							"left": {
+								maxTicks: 10,
+								max: 40000000,
+								min: 0
+							}
+						},
+						series: [
+							{
+								id: "Doanh thu mục tiêu",
+								value: "Doanh thu mục tiêu",
+								color: "#81C4E8",
+								fill: "#81C4E8"
+							},
+							{
+								id: "Doanh thu thực tế",
+								value: "Doanh thu thực tế",
+								color: "#74A2E7",
+								fill: "#74A2E7"
+							}
+						],
+						legend: {
+							series: ["Doanh thu mục tiêu", "Doanh thu thực tế"],
+							halign: "right",
+							valign: "top",
+							size: 60
+						}
+					};
+
+					const chart = new dhx.Chart("kpi-chart", config);
+					chart.data.parse(barChartData);
+				},
+				error: function(){
+					alert("Kpi chart không thành công !");
 				}
 			});
 		}
