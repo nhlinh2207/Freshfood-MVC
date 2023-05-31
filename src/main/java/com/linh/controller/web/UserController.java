@@ -104,8 +104,8 @@ public class UserController {
         User currentUser = userService.findByEmail("nguyenhoailinh2207@gmail.com");
         TokenDevice tokenDevice = firebaseNotificationService.getTokenDeviceByUser(currentUser);
         String result = this.firebaseNotificationService.pushNotificationToWeb(PushNotificationRequest.builder()
-                .title("HELLO Em Tuan")
-                .body("Body")
+                .title("Freshfood")
+                .body("Đơn hàng của bạn đã giao thành công")
                 .data("Data: " + currentUser.getFullName())
                 .topic("abc")
                 .tokens(Collections.singletonList(tokenDevice.getWebToken()))

@@ -41,7 +41,7 @@ public class FirebaseNotificationService implements IFirebaseNotificationService
                 )
                 .addAllTokens(request.getTokens()) // web
                 .build();
-
+        System.out.println(request.getTokens());
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String jsonOutput = gson.toJson(message);
         String response = FirebaseMessaging.getInstance().sendMulticast(message).getSuccessCount()+" successfully sent";
