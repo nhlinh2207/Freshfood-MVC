@@ -8,6 +8,7 @@ import com.linh.model.TokenDevice;
 import com.linh.model.User;
 import com.linh.respository.ITokenDeviceRepo;
 import com.linh.service.IFirebaseNotificationService;
+import com.linh.utils.PushNotificationUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,24 +31,7 @@ public class FirebaseNotificationService implements IFirebaseNotificationService
     }
 
     private String sendMessageToWeb(PushNotificationRequest request) throws ExecutionException, InterruptedException, FirebaseMessagingException {
-        MulticastMessage message = MulticastMessage.builder()
-                .setWebpushConfig(WebpushConfig.builder()
-                        .setNotification(WebpushNotification.builder()
-                                .setTitle(request.getTitle())
-                                .setBody(request.getBody())
-                                .setIcon("http://cist.cmc.vn/app-assets/images/logo/favicon.ico")
-                                .build()
-                        ).build()
-                )
-                .addAllTokens(request.getTokens()) // web
-                .build();
-        System.out.println(request.getTokens());
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String jsonOutput = gson.toJson(message);
-        String response = FirebaseMessaging.getInstance().sendMulticast(message).getSuccessCount()+" successfully sent";
-        // Print response
-        System.out.println(response);
-        return jsonOutput + "\n" + response;
+        return PushNotificationUtil.pushNotification(request);
     }
 
     @Override

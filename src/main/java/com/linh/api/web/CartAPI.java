@@ -1,29 +1,21 @@
 package com.linh.api.web;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.linh.dto.request.PushNotificationRequest;
 import com.linh.model.*;
+import com.linh.service.*;
 import com.linh.utils.MoneyFormatUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import com.linh.dto.CreateCartRequest;
-import com.linh.service.ICartItemService;
-import com.linh.service.ICartService;
-import com.linh.service.ICityService;
-import com.linh.service.ICountryService;
-import com.linh.service.IProductService;
-import com.linh.service.IUserService;
 
 @RestController
 @AllArgsConstructor
@@ -36,6 +28,7 @@ public class CartAPI {
 	private final ICartService cartService;
 	private final ICartItemService cartDetailService;
 	private final IProductService fastFoodService;
+	private final IFirebaseNotificationService firebaseNotificationService;
 
 	@PostMapping(value = "/freshfood/bill/add")
 	public void saveOrder(@RequestBody CreateCartRequest request, HttpServletRequest req) {
@@ -93,6 +86,18 @@ public class CartAPI {
 			newCart.setTotalPrice(totalPrice);
 			cartService.save(newCart);
 		}
+
+		// Push notification to Admin
+		User admin = userService.findByEmail("nguyenhoailinh2207@gmail.com");
+		TokenDevice tokenDevice = firebaseNotificationService.getTokenDeviceByUser(admin);
+		String result = this.firebaseNotificationService.pushNotificationToWeb(PushNotificationRequest.builder()
+				.title("Freshfood")
+				.body(user.getFullName()+" đã đặt hàng tại Freshfood")
+				.data("Data: " + user.getFullName())
+				.topic("abc")
+				.tokens(Collections.singletonList(tokenDevice.getWebToken()))
+				.build());
+		System.out.println(result);
 	}
 
 	@GetMapping(path = "/freshfood/bill/assignToStaff/{cartId}/{staffId}")
@@ -109,7 +114,7 @@ public class CartAPI {
 	
 	@GetMapping(value = "/freshfood/bill/all/{type}")
 	public List<Map<String, String>> findAllOrder(@PathVariable String type){
-		List<Map<String, String>> maps = new ArrayList<Map<String,String>>();
+		List<Map<String, String>> maps = new ArrayList<>();
 		List<Cart> carts = cartService.findAll(type);
 		for (int i = 0; i < carts.size(); i++) {
 			Map<String, String> cartItems = new LinkedHashMap<String, String>();
