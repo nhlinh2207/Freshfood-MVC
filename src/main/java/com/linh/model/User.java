@@ -1,5 +1,6 @@
 package com.linh.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.linh.utils.enums.AuthProvider;
 import com.linh.utils.CustomDateSerializer;
@@ -116,4 +117,10 @@ public class User {
 			cascade =  CascadeType.ALL
 	)
 	private List<Message> messages;
+
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	private TokenDevice tokenDevice;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<Notification> notifications;
 }

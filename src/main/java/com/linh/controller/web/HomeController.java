@@ -37,7 +37,7 @@ public class HomeController {
 	private final ICountryService countryService;
 	
     @GetMapping(value = "/trang-chu")
-    public ModelAndView trangchu() {
+    public ModelAndView homePage() {
     	ModelAndView mv = new ModelAndView("web/trang-chu");
     	mv.addObject("category", categoryService.findAll());
     	mv.addObject("hoaQuaNhapKhau", fastFoodService.findByCategory(categoryService.findById(1)));
@@ -50,12 +50,12 @@ public class HomeController {
     }
 
     @GetMapping(path = "/gioi-thieu")
-    public ModelAndView gioithieu() {
+    public ModelAndView intro() {
     	return new ModelAndView("web/gioi-thieu");
     }
     
     @GetMapping(value = "/san-pham")
-    public ModelAndView sanpham(HttpServletRequest request) {
+    public ModelAndView product(HttpServletRequest request) {
     	ModelAndView mv = new ModelAndView("web/san-pham");
  	    String search = (request.getParameter("search") == null) ? null : request.getParameter("search");
  	    int currentPage = (request.getParameter("page") == null) ? 1 : Integer.parseInt(request.getParameter("page"));
@@ -96,7 +96,7 @@ public class HomeController {
     }
 
     @GetMapping(value = "/chi-tiet-san-pham")
-    public ModelAndView checkProduct(@RequestParam("id") Integer id){
+    public ModelAndView productDetail(@RequestParam("id") Integer id){
          ModelAndView mv = new ModelAndView("web/check");
          Product p = fastFoodService.findById(id);
          List<Product> splq = fastFoodService.findByCategory(p.getCategory());
@@ -155,13 +155,13 @@ public class HomeController {
     }
     
     @GetMapping(value = "/thanh-toan")
-    public String thanhtoan(Model model){
+    public String payment(Model model){
     	model.addAttribute("country", countryService.findAll());
     	return "web/thanh-toan";
     }
     
     @GetMapping(value = "/lien-he")
-    public String contact(Model model) {
+    public String contact() {
     	return "web/lien-he";
     }
 
