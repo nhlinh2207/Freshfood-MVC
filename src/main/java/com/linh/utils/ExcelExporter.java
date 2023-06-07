@@ -164,7 +164,6 @@ public class ExcelExporter {
     private void setCellStyle(Cell cell){
         Font newFont = cell.getSheet().getWorkbook().createFont();
         CellStyle cellStyle = cell.getCellStyle();
-        System.out.println(newFont.getFontName());
         newFont.setFontHeight((short) (13*20));
         newFont.setFontName("Times New Roman");
         cellStyle.setAlignment(HorizontalAlignment.CENTER);
