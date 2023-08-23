@@ -200,7 +200,7 @@
                 data['token'] = token;
                 data['newPassword'] = newPassword;
                 $.ajax({
-                    url : '/freshfood/api/change-password',
+                    url : '/freshfood/change-password',
                     data: JSON.stringify(data),
                     method : 'PUT',
                     dataType : 'json',

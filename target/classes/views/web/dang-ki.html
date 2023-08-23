@@ -222,7 +222,7 @@
 <script type="text/javascript" th:src="@{/js/all.js}"></script>
 <script type="text/javascript" th:src="@{/js/index.js}"></script>
 <script type="text/javascript" th:src="@{/js/Chat.js}"></script>
-<script th:src="@{/js/firebase-messaging-sw.js}"></script>
+<script th:src="@{/firebase-messaging-sw.js}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.2/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stomp-websocket@2.3.4-next/lib/stomp.min.js"></script>
 
@@ -357,36 +357,36 @@
         }
     }
 
-   /* function getFirebaseToken(){
-        // Get firebase device token
-        const firebaseConfig = {
-            apiKey: "AIzaSyCt6-1wELxeIwLRDmMr5yF-wysX_rWSpMs",
-            authDomain: "spring-firebase-fcm.firebaseapp.com",
-            projectId: "spring-firebase-fcm",
-            storageBucket: "spring-firebase-fcm.appspot.com",
-            messagingSenderId: "645957630945",
-            appId: "1:645957630945:web:afa125cb89bbf03e9670a0",
-            measurementId: "G-W57VMWPQ16"
-        };
-
-        initializeApp(firebaseConfig);
-        const messaging = getMessaging();
-
-        getToken(messaging, { vapidKey: "BG3FmTLynMjAwfZH3dq3UsxzoZbxCnDVRuyjIkMCzD0V7P1iA0WVHhBrVvCPtyEneyw5cgL3S6Zv_pgkn0NDSnI" })
-            .then((currentToken) => {
-                if (currentToken) {
-                    alert(currentToken);
-                    console.log('current token for client: ', currentToken);
-                    // Perform any other neccessary action with the token
-                } else {
-                    // Show permission request UI
-                    console.log('No registration token available. Request permission to generate one.');
-                }
-            })
-            .catch((err) => {
-                console.log('An error occurred while retrieving token. ', err);
-            });
-    }*/
+    // function getFirebaseToken(){
+    //     // Get firebase device token
+    //     const firebaseConfig = {
+    //         apiKey: "AIzaSyCt6-1wELxeIwLRDmMr5yF-wysX_rWSpMs",
+    //         authDomain: "spring-firebase-fcm.firebaseapp.com",
+    //         projectId: "spring-firebase-fcm",
+    //         storageBucket: "spring-firebase-fcm.appspot.com",
+    //         messagingSenderId: "645957630945",
+    //         appId: "1:645957630945:web:afa125cb89bbf03e9670a0",
+    //         measurementId: "G-W57VMWPQ16"
+    //     };
+    //
+    //     initializeApp(firebaseConfig);
+    //     const messaging = getMessaging();
+    //
+    //     getToken(messaging, { vapidKey: "BG3FmTLynMjAwfZH3dq3UsxzoZbxCnDVRuyjIkMCzD0V7P1iA0WVHhBrVvCPtyEneyw5cgL3S6Zv_pgkn0NDSnI" })
+    //         .then((currentToken) => {
+    //             if (currentToken) {
+    //                 alert(currentToken);
+    //                 console.log('current token for client: ', currentToken);
+    //                 // Perform any other neccessary action with the token
+    //             } else {
+    //                 // Show permission request UI
+    //                 console.log('No registration token available. Request permission to generate one.');
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             console.log('An error occurred while retrieving token. ', err);
+    //         });
+    // }
 </script>
 </body>
 </html>

@@ -1,8 +1,10 @@
 package com.linh.service.imp;
 
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 import com.linh.dto.mapper.Mapper;
+import com.linh.dto.request.ContactRequest;
 import com.linh.dto.request.RegistryRequest;
 import com.linh.model.*;
 import com.linh.respository.ICitytRepo;
@@ -10,6 +12,9 @@ import com.linh.respository.ICountryRepo;
 import com.linh.respository.IRoleRepository;
 import com.linh.service.ICartService;
 import lombok.AllArgsConstructor;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +22,9 @@ import org.springframework.stereotype.Service;
 import com.linh.respository.IUserRepository;
 import com.linh.service.IUserService;
 import com.linh.utils.UserPrincipal;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 @Service
 @AllArgsConstructor
@@ -28,6 +36,7 @@ public class UserService implements IUserService {
 	private final IRoleRepository roleRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final ICartService cartService;
+	private final JavaMailSender mailSender;
 
 	@Override
 	public boolean existsByEmail(String email) {
@@ -115,6 +124,40 @@ public class UserService implements IUserService {
 	public List<User> getAllStaffs() {
 		List<User> all = userRepository.getAllActiveStaff();
 		return userRepository.getAllActiveStaff();
+	}
+
+	@Override
+	public User findByToken(String token) {
+		return userRepository.findByResetPassToken(token);
+	}
+
+	@Override
+	@Async("SCMExecutor")
+	public void contact(ContactRequest request, User currentUser) throws MessagingException, UnsupportedEncodingException {
+
+		String name = request.getName();
+		String title = request.getTitle();
+		String message = request.getMessage();
+
+		MimeMessage mimeMessage = mailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,true); //nếu dùng multipart thì tham số thứ 2 là true
+
+		//Gửi đến với tên linh
+		helper.setFrom(currentUser.getEmail(), currentUser.getFullName());
+		helper.setTo("nguyenhoailinh2207@gmail.com");
+
+
+		String mimeSubject = name + "đã gửi lời nhắn";
+		String mimeContent = "<p><b>Tên: <b/><i>"+name+"</i></p>";
+		mimeContent += "<p><b>Email: </b><i>"+currentUser.getEmail()+"</i></p>";
+		mimeContent += message;
+
+		helper.setSubject(mimeSubject);
+		//để cấu hình html , tham số thứ 2 là true
+		helper.setText(mimeContent, true);
+
+		mailSender.send(mimeMessage);
+
 	}
 
 	@Override

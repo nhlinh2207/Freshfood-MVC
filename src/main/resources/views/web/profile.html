@@ -179,6 +179,44 @@
                     </div>
                 </div>
             </div>
+            <!-- Modal add success -->
+            <div class="modal fade" id="updateSuccessModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle2">Success</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div style="color: green; font-size: 20px" class="modal-body text-center">
+                            Cập nhật thông tin thành công !
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center align-items-center">
+                            <button type="button" class="ml-4 btn btn-primary" onclick="redirect()">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Add Failed Modal -->
+            <div class="modal fade" id="updateFailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle3">Error</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div style="color: red; font-size: 20px" class="modal-body text-center">
+                            Cập nhật thông tin không thành công !
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center align-items-center">
+                            <button type="button" class="ml-4 btn btn-primary" data-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section th:replace="fragment::footer-nav"></section> 
@@ -209,7 +247,7 @@
                success: function(json){
                    html='<option value="">---Trống---</option>';
                    $.each(json, function(index, c){
-                       html += '<option value="'+c.name+'">'+c.name+'</option>';
+                       html += '<option value="'+c.id+'">'+c.name+'</option>';
                        // c là tên của mảng truyền trả về trong api
                    });
                    $('select[name="cityId"]').html(html);
@@ -292,14 +330,16 @@
            if($("#change-form").valid()){
                let data = {};
                data['id'] = $('#input-id').val();
-               data['fullName'] = $('#input-fullname').val();
+               data['firstName'] = $('#input-firstname').val();
+               data['middleName'] = $('#input-middlename').val();
+               data['lastName'] = $('#input-lastname').val();
                data['email'] = $('#input-email').val();
                data['phone'] = $('#input-phone').val();
                data['countryId'] = $('#input-country').val();
                data['cityId'] = $('#input-city').val();
                data['address'] = $('#input-address').val();
                $.ajax({
-                   url : '/hotel-demo/api/change-profile',
+                   url : '/freshfood/api/change-profile',
                    data: JSON.stringify(data),
                    method : 'PUT',
                    dataType : 'json',
@@ -328,7 +368,7 @@
        }
 
        function redirect(){
-           window.location = "/hotel-demo/trang-chu";
+           window.location = "/freshfood/trang-chu";
        }
    </script>
 </body>

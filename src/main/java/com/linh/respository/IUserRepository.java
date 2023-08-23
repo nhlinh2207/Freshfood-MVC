@@ -24,4 +24,6 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
 
 	@Query("SELECT s FROM User s WHERE s.type = 'STAFF' AND s.status = 'FREE'")
 	List<User> getFreeStaff();
+
+	User findByResetPassToken(String token);
 }

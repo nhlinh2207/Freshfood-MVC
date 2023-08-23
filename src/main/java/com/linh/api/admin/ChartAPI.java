@@ -44,7 +44,7 @@ public class ChartAPI {
           for (int i = 0; i < 6; i++){
                Map<String, String> item = new LinkedHashMap<>();
                item.put("month", "Tháng "+(i+1));
-               item.put("goal", 30000000+"");
+               item.put("goal", 5000000+"");
                item.put("real", realIncome.get(i)+"");
                response.add(item);
           }

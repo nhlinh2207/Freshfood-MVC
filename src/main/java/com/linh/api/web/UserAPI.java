@@ -1,10 +1,15 @@
 package com.linh.api.web;
 
 import com.linh.dto.SendEmailDTO;
+import com.linh.dto.request.ChangPasswordRequest;
+import com.linh.dto.request.ChangeCurrentPasswordRequest;
+import com.linh.dto.request.ChangeProfileRequest;
 import com.linh.dto.request.ResetPasswordRequest;
+import com.linh.model.Address;
 import com.linh.respository.IUserRepository;
 import com.linh.service.imp.SendEmailService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +24,7 @@ import java.util.Map;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 public class UserAPI {
 
 //	@Value("${spring.mail.username}")
@@ -63,6 +69,35 @@ public class UserAPI {
 		return result;
 	}
 
+	@PutMapping(path = "/freshfood/api/change-profile")
+	public Map<String, String> changePròile(@RequestBody ChangeProfileRequest request){
+		Map<String, String> res = new LinkedHashMap<>();
+		System.out.println(request.getCityId()+" city");
+		try{
+			User currentUser = userService.findById(request.getId());
+			currentUser.setFirstName(request.getFirstName());
+			currentUser.setFirstName(request.getMiddleName());
+			currentUser.setFirstName(request.getLastName());
+			currentUser.setEmail(request.getEmail());
+			currentUser.setPhoneNumber(request.getPhone());
+
+			Address oldAddress = currentUser.getAddress();
+			oldAddress.setCityId(request.getCityId());
+			oldAddress.setCountryId(request.getCountryId());
+			oldAddress.setFullAddress(request.getAddress());
+
+			currentUser.setAddress(oldAddress);
+			userService.update(currentUser);
+
+			res.put("success", "success");
+			return res;
+		}catch (Exception e){
+			log.error(e.getLocalizedMessage());
+			res.put("error", "error");
+			return res;
+		}
+	}
+
 	@GetMapping(path = "/freshfood/users/getall")
 	public List<Map<String, String>> getAllUsers(){
 		List<Map<String, String>> result = new ArrayList<>();
@@ -77,6 +112,43 @@ public class UserAPI {
 			result.add(item);
 		}
 		return result;
+	}
+
+	@PutMapping(path = "/freshfood/api/change-current-password")
+	public Map<String, String> changeCurrentPassword(@RequestBody ChangeCurrentPasswordRequest request){
+		Map<String, String> res = new LinkedHashMap<>();
+		try{
+			User currentUser = userService.findById(request.getId());
+			if (!passwordEncoder.matches(request.getOldPassword(), currentUser.getPassword())){
+				res.put("error", "error");
+				return res;
+			}
+			currentUser.setPassword(passwordEncoder.encode(request.getNewPassword()));
+			userService.update(currentUser);
+			res.put("success", "success");
+			return res;
+		}catch (Exception e){
+			log.error(e.getLocalizedMessage());
+			res.put("error", "error");
+			return res;
+		}
+	}
+
+	@PutMapping(path = "/freshfood/change-password")
+	public Map<String, String> changePassword(@RequestBody ChangPasswordRequest request){
+		Map<String, String> res = new LinkedHashMap<>();
+		try{
+			User user = userService.findByToken(request.getToken());
+			String newPassword = passwordEncoder.encode(request.getNewPassword());
+			user.setPassword(newPassword);
+			userService.update(user);
+			res.put("success", "success");
+			return res;
+		}catch (Exception e){
+			log.error(e.getLocalizedMessage());
+			res.put("error", "error");
+			return res;
+		}
 	}
 
 	@GetMapping(path = "/freshfood/staffs/getall")

@@ -106,8 +106,7 @@
                                                 </div>
                                                 <div class="col-md-12">
                                                     <fieldset class="form-group required">
-                                                        <input type="email" value="" placeholder="Địa chỉ Email" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,63}$" data-validation="email"
-                                                               name="email" id="email" class="form-control form-control-lg" required>
+                                                        <input type="text" value="" placeholder="Tiêu đề" name="title" id="title" class="form-control form-control-lg" required>
                                                     </fieldset>
                                                 </div>
                                             </div>
@@ -192,7 +191,7 @@
             var message = CKEDITOR.instances['message'].getData();
             var data = {};
             data["name"] = $('#contact input[name = "name"]').val();
-            data["email"] = $('#contact input[name = "email"]').val();
+            data["title"] = $('#contact input[name = "title"]').val();
             data["message"] = message;
             $.ajax({
                 url: '/freshfood/contact',

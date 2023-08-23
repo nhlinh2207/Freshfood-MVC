@@ -1,9 +1,13 @@
 package com.linh.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import com.linh.dto.request.ContactRequest;
 import com.linh.dto.request.RegistryRequest;
 import com.linh.model.User;
+
+import javax.mail.MessagingException;
 
 public interface IUserService {
 	
@@ -28,4 +32,8 @@ public interface IUserService {
       List<User> getAllActiveUsers();
 
       List<User> getAllStaffs();
+
+      User findByToken(String token);
+
+      void contact(ContactRequest request, User currentUser) throws MessagingException, UnsupportedEncodingException;
 }

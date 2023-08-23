@@ -1,5 +1,6 @@
 package com.linh.api.web;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Map.Entry;
@@ -29,9 +30,15 @@ public class CartAPI {
 	private final ICartItemService cartDetailService;
 	private final IProductService fastFoodService;
 	private final IFirebaseNotificationService firebaseNotificationService;
+	private final IChartService chartService;
+
+//	@GetMapping(path = {"/freshfood/testParam/{para1}/{para2}", "/freshfood/testParam/{para1}"})
+//	public String test(@PathVariable(name="para1") UUID para1, @PathVariable(name="para2", required = false) UUID para2){
+//		return para2 != null ? (para1+"")+(para2+"") : para1+"";
+//	}
 
 	@PostMapping(value = "/freshfood/bill/add")
-	public void saveOrder(@RequestBody CreateCartRequest request, HttpServletRequest req) {
+	public void saveOrder(@RequestBody CreateCartRequest request, HttpServletRequest req) throws ParseException {
 		User user = userService.getCurrentLoginUser();
 		Address address = Address.builder()
 				.cityId(cityService.findById(request.getCityId()).getId())
@@ -87,7 +94,7 @@ public class CartAPI {
 			cartService.save(newCart);
 		}
 
-		// Push notification to Admin
+		// Push notification to Admin when having more cart
 		User admin = userService.findByEmail("nguyenhoailinh2207@gmail.com");
 		TokenDevice tokenDevice = firebaseNotificationService.getTokenDeviceByUser(admin);
 		String result = this.firebaseNotificationService.pushNotificationToWeb(PushNotificationRequest.builder()
@@ -98,6 +105,24 @@ public class CartAPI {
 				.tokens(Collections.singletonList(tokenDevice.getWebToken()))
 				.build());
 		System.out.println(result);
+
+		// Push Notification if real income greater than goal income
+		SimpleDateFormat smf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		Date start = smf.parse("01/01/2023 00:00:00");
+		Date end = smf.parse("31/12/2023 23:59:59");
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		int month = cal.get(Calendar.MONTH);
+		List<Float> realIncome = chartService.getLineChartData(start, end);
+		if (realIncome.get(5) >= 5000000){
+			String resultIncome = this.firebaseNotificationService.pushNotificationToWeb(PushNotificationRequest.builder()
+					.title("Freshfood")
+					.body("Doanh thu đã đạt mục theo theo tháng")
+					.data("Data: " + user.getFullName())
+					.topic("abc")
+					.tokens(Collections.singletonList(tokenDevice.getWebToken()))
+					.build());
+		}
 	}
 
 	@GetMapping(path = "/freshfood/bill/assignToStaff/{cartId}/{staffId}")
@@ -105,6 +130,16 @@ public class CartAPI {
 		Map<String, String> result = new LinkedHashMap<>();
 		try {
 			cartService.assignToStaff(cartId, staffId);
+			// Push notification to Staff
+			User staff = userService.findByEmail("nguyenhoailinh2207@gmail.com");
+			TokenDevice tokenDevice = firebaseNotificationService.getTokenDeviceByUser(staff);
+			String firebaseResult = this.firebaseNotificationService.pushNotificationToWeb(PushNotificationRequest.builder()
+					.title("Freshfood")
+					.body("Bạn có đơn hàng cần giao")
+					.data("Data: " + staff.getFullName())
+					.topic("abc")
+					.tokens(Collections.singletonList(tokenDevice.getWebToken()))
+					.build());
 			result.put("success", "success");
 		}catch (Exception e){
 			result.put("success", "success");
